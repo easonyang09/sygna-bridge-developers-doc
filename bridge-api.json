@@ -6,8 +6,8 @@
     "description": "### API Request and Response\n\nREST-like - Simple and predictable URLs to access data.\nThe Bridge APIs uses GET and POST, and HTTP responses are UTF-8 encoded JSON objects.\n\n### Securing the APIs by using HTTPS\n\nHypertext Transfer Protocol Secure (HTTPS) is a variant of the standard web transfer protocol (HTTP) that adds a layer of security on the data in transit through the SSL/TLS protocol connection.\nBridge APIs use HTTPS to provide a stronger guarantee that a VASP is communicating with the real API and receiving back authentic contents. It also enhances privacy for applications and VASPs using the API.\n\n### Callback APIs\n\nVASPs require best-time updates and should avoid busy-waiting for the other party's compliance validation. We use a callback method to work around this issue and flag the VASP so it can proceed.\n\nThe beneficiary server can take as long as it needs to validate the permission request. When it finishes the validation, it will post the permission to Bridge's callback url, and Bridge will then relay the permission to the originator's callback url.\n\n### Authentication\n\nWe implement API Authentication with **API key**. All licensed exchanges must attach a valid **api_key** to every API call.\n\n## Data Confidentiality and Integrity\n\n### ECIES Encryption\n\nWe apply Elliptic Curve Integrated Encryption Scheme (ECIES) to encrypt all sensitive data between communication of VASPs.\n\nThis following diagram shows how ECIES works. ECC public/private key cryptography is used in conjunction with the Diffie-Hellman primitive to allow both sides to independently generate a shared secret key, for one-time use to encrypt data with a symmetric key algorithm.\n\n![](https://coolbitx.gitlab.io/sygna/bridge/api/images/ecies-sygna.png)\n\nWe have provided a JavaScript library on [NPM](https://www.npmjs.com/package/sygna-bridge-util) to handle ECIES encryption and decryption. You can take a look at the sample usage on the right or visit our [Github](https://github.com/CoolBitX-Technology/sygna-bridge-util/blob/master/src/crypto/ecies.js) for more information.\n\n### ECDSA Signature\n\nWe apply an ECDSA signature to ensure data integrity. All API calls must attach a *signature* signed by the requesting VASP's local private key, and every VASP can verify if the message received is valid by checking the signature and the corresponding public key.\n\nThe Digital Signature also provides message authentication (the receiver can verify the originator of the message) and non-repudiation (the sender cannot falsely claim that they have not signed the message).\n\nOur signing algorithm uses **secp256k1** Elliptic Curve with **SHA256** Hash function. The details of the signing process can also be found on our [Github](https://github.com/CoolBitX-Technology/sygna-bridge-util/blob/master/src/crypto/index.js).\n\nWith our library, we provide simple interfaces to deal with input parameters, help you convert them into JSON object strings and then go through the signing process. You will need to use different interfaces to get signatures of different API requests. These interfaces generally return a signed object, which has already inserted the signature for you, and will be ready to put into a request body.",
     "contact": {}
   },
-  "host": "test-api.sygna.io/sb",
-  "basePath": "/",
+  "host": "test-api.sygna.io",
+  "basePath": "/sb",
   "schemes": [
     "http"
   ],
@@ -43,7 +43,7 @@
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/Bridge~1VASP"
+              "$ref": "#/definitions/Bridge-VASP"
             },
             "examples": {
               "application/json": {
@@ -162,7 +162,7 @@
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/Bridge~1Status"
+              "$ref": "#/definitions/Bridge-Status"
             },
             "examples": {
               "application/json": {
@@ -272,7 +272,7 @@
             "required": true,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/Bridge~1PermissionRequestRequest"
+              "$ref": "#/definitions/Bridge-PermissionRequestRequest"
             }
           }
         ],
@@ -280,7 +280,7 @@
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/Bridge~1PermissionRequest"
+              "$ref": "#/definitions/Bridge-PermissionRequest"
             },
             "examples": {
               "application/json": {
@@ -366,7 +366,7 @@
             "required": true,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/Bridge~1PermissionRequest1"
+              "$ref": "#/definitions/Bridge-PermissionRequest1"
             }
           }
         ],
@@ -411,7 +411,7 @@
             "required": true,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/Bridge~1TransactionIDRequest"
+              "$ref": "#/definitions/Bridge-TransactionIDRequest"
             }
           }
         ],
@@ -419,7 +419,7 @@
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/Bridge~1TransactionID"
+              "$ref": "#/definitions/Bridge-TransactionID"
             },
             "examples": {
               "application/json": {
@@ -497,7 +497,7 @@
             "required": true,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/Bridge~1RetryRequest"
+              "$ref": "#/definitions/Bridge-RetryRequest"
             }
           }
         ],
@@ -612,7 +612,7 @@
             "required": true,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/Beneficiary~1PermissionRequestRequest"
+              "$ref": "#/definitions/Beneficiary-PermissionRequest"
             }
           }
         ],
@@ -620,7 +620,7 @@
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/Beneficiary~1PermissionRequest"
+              "$ref": "#/definitions/Beneficiary-PermissionRequest"
             },
             "examples": {
               "application/json; charset=utf-8": {
@@ -671,7 +671,7 @@
             "required": true,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/Originator~1PermissionRequest"
+              "$ref": "#/definitions/Originator-PermissionRequest"
             }
           }
         ],
@@ -679,7 +679,7 @@
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/Originator~1Permission"
+              "$ref": "#/definitions/Originator-Permission"
             },
             "examples": {
               "application/json; charset=utf-8": {
@@ -706,7 +706,7 @@
     }
   },
   "definitions": {
-    "Bridge/VASP": {
+    "Bridge-VASP": {
       "title": "Bridge/VASP",
       "example": {
         "vasp_data": [
@@ -780,7 +780,7 @@
         "vasp_pubkey"
       ]
     },
-    "Bridge/Status": {
+    "Bridge-Status": {
       "title": "Bridge/Status",
       "example": {
         "transferData": {
@@ -950,7 +950,7 @@
         "originator_vasp_code"
       ]
     },
-    "Bridge/PermissionRequestRequest": {
+    "Bridge-PermissionRequestRequest": {
       "title": "Bridge/PermissionRequestRequest",
       "example": {
         "data": {
@@ -1101,7 +1101,7 @@
         "signature"
       ]
     },
-    "Bridge/PermissionRequest": {
+    "Bridge-PermissionRequest": {
       "title": "Bridge/PermissionRequest",
       "example": {
         "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1"
@@ -1116,7 +1116,7 @@
         "transfer_id"
       ]
     },
-    "Bridge/PermissionRequest1": {
+    "Bridge-PermissionRequest1": {
       "title": "Bridge/PermissionRequest1",
       "example": {
         "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
@@ -1141,7 +1141,7 @@
         "signature"
       ]
     },
-    "Bridge/TransactionIDRequest": {
+    "Bridge-TransactionIDRequest": {
       "title": "Bridge/TransactionIDRequest",
       "example": {
         "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
@@ -1166,7 +1166,7 @@
         "signature"
       ]
     },
-    "Bridge/TransactionID": {
+    "Bridge-TransactionID": {
       "title": "Bridge/TransactionID",
       "example": {
         "status": "OK"
@@ -1181,7 +1181,7 @@
         "status"
       ]
     },
-    "Bridge/RetryRequest": {
+    "Bridge-RetryRequest": {
       "title": "Bridge/RetryRequest",
       "example": {
         "vasp_code": "VASPJPJT3"
@@ -1196,7 +1196,7 @@
         "vasp_code"
       ]
     },
-    "Beneficiary/PermissionRequestRequest": {
+    "Beneficiary-PermissionRequest": {
       "title": "Beneficiary/PermissionRequestRequest",
       "example": {
         "data": {
@@ -1273,7 +1273,7 @@
         "signature"
       ]
     },
-    "Beneficiary/PermissionRequest": {
+    "Beneficiary-PermissionRequestRequest": {
       "title": "Beneficiary/PermissionRequest",
       "example": {
         "status": "OK"
@@ -1288,7 +1288,7 @@
         "status"
       ]
     },
-    "Originator/PermissionRequest": {
+    "Originator-PermissionRequest": {
       "title": "Originator/PermissionRequest",
       "example": {
         "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1",
@@ -1313,7 +1313,7 @@
         "signature"
       ]
     },
-    "Originator/Permission": {
+    "Originator-Permission": {
       "title": "Originator/Permission",
       "example": {
         "status": "OK"
