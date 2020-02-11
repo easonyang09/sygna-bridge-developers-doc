@@ -874,7 +874,7 @@
       ]
     },
     "Bridge-PermissionRequestRequest": {
-      "title": "Bridge/PermissionRequestRequest",
+      "title": "Bridge/PermissionRequest",
       "example": {
         "data": {
           "private_info": "04f76bf0372c4d4679a172aaaf7fe4746cb83f2a2e5d6a5afcfe6bba72ad4c540d7940853f5fd1f4928c541c39efae81e9165598bad256fab77f6d5c4bd8d135b0553e61bbaeb6d573c71b23d656ed9e4ac37f40106ebd3aab8839c77409a3890b5f056d4e11aaf87c6d29580869ec5f81d20ecaad266ba69e234a2eb627d5c7b95957d82fd1b69172f6bce480f74d9f4ea7d4d38300669c25723e91c5bce83ec8f29aedd4",
@@ -1040,7 +1040,7 @@
       ]
     },
     "Bridge-PermissionRequest1": {
-      "title": "Bridge/PermissionRequest1",
+      "title": "Bridge/PermissionRequest",
       "example": {
         "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
         "permission_status": "ACCEPTED",
@@ -1065,7 +1065,7 @@
       ]
     },
     "Bridge-TransactionIDRequest": {
-      "title": "Bridge/TransactionIDRequest",
+      "title": "Bridge/TransactionID",
       "example": {
         "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
         "txid": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
@@ -1120,7 +1120,7 @@
       ]
     },
     "Beneficiary-PermissionRequest": {
-      "title": "Beneficiary/PermissionRequestRequest",
+      "title": "Beneficiary/PermissionRequest",
       "example": {
         "data": {
           "private_info": "045f5964c9ad8c2e66220996a0d16e34358dfc58d01071424378b3317a4620c6a08d8d0c03d5eb5a0eaa38b8f163eafabf7d1718852c5ab322803eeb20a1c159ff753e47f9968104aae450cf4e46b1f58e1f33b063ec917fec1cf2ce298582ab0b526c9b49d8c6d5595090eb09003f20a1d3dd90569ca7db195872be985db39aeb0ffb378160dd0f3f1df521ecbb53ac0a82f27889c7e0b65f2114e4620ba02639430e47159c24461db34479f3ff6036c7ae962bed4159d0e58acef2bc58c938fea85103ab",
@@ -1156,7 +1156,7 @@
       ]
     },
     "Data1": {
-      "title": "Data1",
+      "title": "Data",
       "example": {
         "private_info": "045f5964c9ad8c2e66220996a0d16e34358dfc58d01071424378b3317a4620c6a08d8d0c03d5eb5a0eaa38b8f163eafabf7d1718852c5ab322803eeb20a1c159ff753e47f9968104aae450cf4e46b1f58e1f33b063ec917fec1cf2ce298582ab0b526c9b49d8c6d5595090eb09003f20a1d3dd90569ca7db195872be985db39aeb0ffb378160dd0f3f1df521ecbb53ac0a82f27889c7e0b65f2114e4620ba02639430e47159c24461db34479f3ff6036c7ae962bed4159d0e58acef2bc58c938fea85103ab",
         "transaction": {
