@@ -141,7 +141,7 @@
             "in": "query",
             "required": true,
             "type": "string",
-            "description": "Unique `transfer_id` got from [Bridge/PermissionRequest](ref:bridgepermissionrequest-3)"
+            "description": "Unique `transfer_id` from [Bridge/PermissionRequest](ref:bridgepermissionrequest-3)"
           },
           {
             "name": "api_key",
@@ -781,7 +781,7 @@
           "type": "string"
         },
         "transaction": {
-          "$ref": "#/definitions/Transaction"
+          "type": "[Transaction](ref:transaction)"
         },
         "data_dt": {
           "type": "string"
@@ -937,7 +937,7 @@
           "type": "string"
         },
         "transaction": {
-          "$ref": "#/definitions/Transaction1"
+          "$ref": "#/definitions/Transaction"
         },
         "data_dt": {
           "type": "string"
@@ -953,8 +953,8 @@
         "signature"
       ]
     },
-    "Transaction1": {
-      "title": "Transaction1",
+    "Transaction": {
+      "title": "Transaction",
       "example": {
         "originator_vasp_code": "VASPJPJT4",
         "originator_addrs": [
