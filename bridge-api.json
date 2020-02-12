@@ -141,7 +141,7 @@
             "in": "query",
             "required": true,
             "type": "string",
-            "description": "Unique `transfer_id` got from `permissionRequest`"
+            "description": "Unique `transfer_id` got from [Bridge/PermissionRequest](ref:bridgepermissionrequest-3)"
           },
           {
             "name": "api_key",
