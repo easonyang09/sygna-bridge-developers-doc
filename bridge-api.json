@@ -781,7 +781,7 @@
           "type": "string"
         },
         "transaction": {
-          "type": "[Transaction](ref:transaction)"
+          "type": "object"
         },
         "data_dt": {
           "type": "string"
