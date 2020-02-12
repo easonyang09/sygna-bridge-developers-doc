@@ -874,7 +874,7 @@
       ]
     },
     "Bridge-PermissionRequestRequest": {
-      "title": "Bridge/PermissionRequest",
+      "title": "",
       "example": {
         "data": {
           "private_info": "04f76bf0372c4d4679a172aaaf7fe4746cb83f2a2e5d6a5afcfe6bba72ad4c540d7940853f5fd1f4928c541c39efae81e9165598bad256fab77f6d5c4bd8d135b0553e61bbaeb6d573c71b23d656ed9e4ac37f40106ebd3aab8839c77409a3890b5f056d4e11aaf87c6d29580869ec5f81d20ecaad266ba69e234a2eb627d5c7b95957d82fd1b69172f6bce480f74d9f4ea7d4d38300669c25723e91c5bce83ec8f29aedd4",
