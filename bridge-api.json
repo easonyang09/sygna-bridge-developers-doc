@@ -937,7 +937,7 @@
           "type": "string"
         },
         "transaction": {
-          "$ref": "#/definitions/Transaction"
+          "$ref": "#/definitions/Transaction1"
         },
         "data_dt": {
           "type": "string"
@@ -953,7 +953,7 @@
         "signature"
       ]
     },
-    "Transaction": {
+    "Transaction1": {
       "title": "Transaction",
       "example": {
         "originator_vasp_code": "VASPJPJT4",
