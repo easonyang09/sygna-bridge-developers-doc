@@ -372,13 +372,13 @@
         ],
         "responses": {
           "200": {
-            "description": ""
-          }, 
-          "examples": {
+            "description": "",
+            "examples": {
               "application/json": {
                 "status":"OK"
               }
             }
+          }
         }
       }
     },
