@@ -373,9 +373,6 @@
         "responses": {
           "200": {
             "description": "",
-            "schema": {
-              "$ref": "#/definitions/Bridge-PermissionRequest"
-            },
             "examples": {
               "application/json": {
                 "status":"OK"
