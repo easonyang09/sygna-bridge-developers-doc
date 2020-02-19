@@ -141,7 +141,7 @@
             "in": "query",
             "required": true,
             "type": "string",
-            "description": "Unique `transfer_id` from [Bridge/PermissionRequest](ref:https://developers.sygna.io/v1.0.1/reference#bridgepermissionrequest-3)"
+            "description": "Unique `transfer_id` from [Bridge/PermissionRequest](ref:bridgepermissionrequest-3)"
           },
           {
             "name": "api_key",
@@ -939,7 +939,7 @@
       "properties": {
         "private_info": {
           "type": "string",
-          "description":"ECIES encoded Private Information"
+          "description":"ECIES encoded [Private Information](ref:private-information)"
         },
         "transaction": {
           "$ref": "#/definitions/TransactionRef"
@@ -961,6 +961,7 @@
     },
     "TransactionRef": {
       "title": "Transaction",
+      "description":"Please see [Transaction](ref:transaction)",
       "example": {
         "originator_vasp_code": "VASPJPJT4",
         "originator_addrs": [
