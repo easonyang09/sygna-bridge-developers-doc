@@ -36,7 +36,7 @@
             "in": "header",
             "required": true,
             "type": "string",
-            "description": ""
+            "description": "replace {apikey} with 64 chars long API key got from Sygna Bridge."
           }
         ],
         "responses": {
@@ -141,7 +141,7 @@
             "in": "query",
             "required": true,
             "type": "string",
-            "description": "Unique `transfer_id` from [Bridge/PermissionRequest](ref:bridgepermissionrequest-3)"
+            "description": "Unique `transfer_id` from [Bridge/PermissionRequest](ref:https://developers.sygna.io/v1.0.1/reference#bridgepermissionrequest-3)"
           },
           {
             "name": "api_key",
