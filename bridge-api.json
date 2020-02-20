@@ -1061,15 +1061,33 @@
         },
         "permission_status": {
           "type": "string",
-          "description":"Status of the transfer permission. Currently available values: ACCEPTED, REJECTED." 
+          "description":"Status of the transfer permission. Currently available values: ACCEPTED, REJECTED." ,
+          "enum": [
+            "ACCEPTED",
+            "REJECTED"
+          ]
         },
          "reject_code": {
           "type": "string",
-          "description":"If the permission is REJECTED, reply with BVRC." 
+          "description":"If the permission is REJECTED, reply with BVRC.",
+          "enum": [
+            "BVRC001",
+            "BVRC002",
+            "BVRC003",
+            "BVRC004",
+            "BVRC999"
+          ]
         },
          "reject_message": {
           "type": "string",
-          "description":"If the permission is REJECTED, reply with BVRC." 
+          "description":"If the permission is REJECTED, reply with BVRC.",
+          "enum": [
+            "unsupported_currency",
+            "service_downtime",
+            "exceed_trading_volume",
+            "compliance_check_fail",
+            "other"
+          ]
         },
         "signature": {
           "type": "string",
