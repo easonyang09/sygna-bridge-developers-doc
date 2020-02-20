@@ -508,7 +508,55 @@
         "responses": {
           "200": {
             "description": "",
-            "headers": {}
+            "schema": {
+            },
+            "examples": {
+              "application/json": {
+                "retryItems": 2
+              }
+            },
+            "headers": {
+              "Content-Length": {
+                "type": "string",
+                "default": "82"
+              },
+              "Connection": {
+                "type": "string",
+                "default": "keep-alive"
+              },
+              "Date": {
+                "type": "string",
+                "default": "Fri, 20 Sep 2019 02:08:19 GMT"
+              },
+              "x-amzn-RequestId": {
+                "type": "string",
+                "default": "b429b641-da31-45e3-9c3f-ee27f85dc7bf"
+              },
+              "x-amz-apigw-id": {
+                "type": "string",
+                "default": "AS0mkGiYtjMFcnQ="
+              },
+              "X-Amzn-Trace-Id": {
+                "type": "string",
+                "default": "Root=1-5d843490-609b8bababe5263ff8a41e25;Sampled=0"
+              },
+              "X-Cache": {
+                "type": "string",
+                "default": "Miss from cloudfront"
+              },
+              "Via": {
+                "type": "string",
+                "default": "1.1 02ac86bea963223791833437798adf9f.cloudfront.net (CloudFront)"
+              },
+              "X-Amz-Cf-Pop": {
+                "type": "string",
+                "default": "LHR61-C2"
+              },
+              "X-Amz-Cf-Id": {
+                "type": "string",
+                "default": "rdO0DHL7CDAcjQFneLFbsYal7rtkqB9aqhfcc4pfozd_Yx5ZUVdKPg=="
+              }
+            }
           }
         }
       }
@@ -1069,7 +1117,7 @@
         },
          "reject_code": {
           "type": "string",
-          "description":"If the permission is REJECTED, reply with BVRC.",
+          "description":"If the permission is REJECTED, reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
           "enum": [
             "BVRC001",
             "BVRC002",
@@ -1080,7 +1128,7 @@
         },
          "reject_message": {
           "type": "string",
-          "description":"If the permission is REJECTED, reply with BVRC.",
+          "description":"If the permission is REJECTED, reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
           "enum": [
             "unsupported_currency",
             "service_downtime",
