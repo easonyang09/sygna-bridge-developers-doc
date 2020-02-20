@@ -36,7 +36,7 @@
             "in": "header",
             "required": true,
             "type": "string",
-            "description": "replace {apikey} with 64 chars long API key got from Sygna Bridge."
+            "description": "64 chars long API key provided by Sygna Bridge."
           }
         ],
         "responses": {
@@ -335,7 +335,7 @@
     },
     "/bridge/transaction/permission": {
       "post": {
-        "description": "This request works as a response of Bridge's [Permission Request](#02490bbf-455d-4083-a18a-9649c22764f2). Whenever a beneficiary VASP finishes processing the request from Bridge, it must post a permission request back to Bridge server, containing the confirmation result.\n\n\n![](https://i.imgur.com/yECHJqV.png)",
+        "description": "This request works as a response of Bridge's [Permission Request](ref:bridgepermissionrequest-3). Whenever a beneficiary VASP finishes processing the request from Bridge, it must post a permission request back to Bridge server, containing the confirmation result.\n\n\n![](https://i.imgur.com/yECHJqV.png)",
         "summary": "Bridge/Permission",
         "tags": [
           "Bridge"
@@ -1056,18 +1056,31 @@
       "type": "object",
       "properties": {
         "transfer_id": {
-          "type": "string"
+          "type": "string",
+          "description":"Unique transfer Id returned from Bridge/PermissionRequest api call." 
         },
         "permission_status": {
-          "type": "string"
+          "type": "string",
+          "description":"Status of the transfer permission. Currently available values: ACCEPTED, REJECTED." 
+        },
+         "reject_code": {
+          "type": "string",
+          "description":"If the permission is REJECTED, reply with BVRC." 
+        },
+         "reject_message": {
+          "type": "string",
+          "description":"If the permission is REJECTED, reply with BVRC." 
         },
         "signature": {
-          "type": "string"
+          "type": "string",
+          "description":"Signature of the object containing the previous 4 fields."
         }
       },
       "required": [
         "transfer_id",
         "permission_status",
+        "reject_code",
+        "reject_message",
         "signature"
       ]
     },
