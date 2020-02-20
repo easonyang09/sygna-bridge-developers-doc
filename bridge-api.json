@@ -842,7 +842,7 @@
           "type": "string"
         },
         "expire_date": {
-          "type": "int"
+          "type": "integer"
         },
         "permission_request_data_signature": {
           "type": "string"
@@ -1006,7 +1006,7 @@
           "description":"Timestamp in ISO 8601 format: yyyy-mm-ddThh:mm:ss[.mmm]+0000"
         },
         "expire_date":{
-          "type": "int",
+          "type": "integer",
           "description":"Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires."
         },
         "signature": {
@@ -1290,7 +1290,7 @@
           "description":"Timestamp in ISO 8601 format: yyyy-mm-ddThh:mm:ss[.mmm]+0000"
         },
         "expire_date":{
-          "type": "int",
+          "type": "integer",
           "description":"Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires."
         },
         "signature": {
