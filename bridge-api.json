@@ -882,6 +882,7 @@
     },
     "Transaction": {
       "title": "Transaction",
+      "description":"Please see [Transaction](ref:transaction)",
       "example": {
         "originator_addrs": [
           "3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D"
@@ -998,8 +999,7 @@
           "description":"ECIES encoded [Private Information](ref:private-information)"
         },
         "transaction": {
-          "$ref": "#/definitions/TransactionRef",
-          "description":"Please see [Transaction](ref:transaction)"
+          "$ref": "#/definitions/TransactionRef"
         },
         "data_dt": {
           "type": "string",
@@ -1022,6 +1022,7 @@
     },
     "TransactionRef": {
       "title": "Transaction",
+      "description":"Please see [Transaction](ref:transaction)",
       "example": {
         "originator_vasp_code": "VASPJPJT4",
         "originator_addrs": [
@@ -1279,11 +1280,10 @@
       "properties": {
         "private_info": {
           "type": "string",
-          "description":"ECIES encoded Private Information"
+          "description":"ECIES encoded [Private Information](ref:private-information)"
         },
         "transaction": {
-          "$ref": "#/definitions/Transaction",
-          "description":"Please see [Transaction](ref:transaction)"
+          "$ref": "#/definitions/Transaction"
         },
         "data_dt": {
           "type": "string",
