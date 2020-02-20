@@ -182,6 +182,7 @@
                     "originator_vasp_code": "VASPUSNY1"
                   },
                   "data_dt": "2019-07-29T06:29:00.123Z",
+                  "expire_date": "2019-07-29T16:30:00.123Z",
                   "permission_request_data_signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336",
                   "permission_status": "ACCEPTED",
                   "permission_signature": "20fe27be0af5f11657a21ab6d9f09b712406cbcbd3be2ffd30ecf7e59dfe135433f6ec14948fddf4e119d318374e02b7e3528dcf3e3b44698b420b97d985300c",
@@ -774,6 +775,7 @@
             "originator_vasp_code": "VASPUSNY1"
           },
           "data_dt": "2019-07-29T06:29:00.123Z",
+          "expire_date": "2019-07-29T16:30:00.123Z",
           "permission_request_data_signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336",
           "permission_status": "ACCEPTED",
           "permission_signature": "20fe27be0af5f11657a21ab6d9f09b712406cbcbd3be2ffd30ecf7e59dfe135433f6ec14948fddf4e119d318374e02b7e3528dcf3e3b44698b420b97d985300c",
@@ -816,6 +818,7 @@
           "originator_vasp_code": "VASPUSNY1"
         },
         "data_dt": "2019-07-29T06:29:00.123Z",
+        "expire_date": "2019-07-29T16:30:00.123Z",
         "permission_request_data_signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336",
         "permission_status": "ACCEPTED",
         "permission_signature": "20fe27be0af5f11657a21ab6d9f09b712406cbcbd3be2ffd30ecf7e59dfe135433f6ec14948fddf4e119d318374e02b7e3528dcf3e3b44698b420b97d985300c",
@@ -836,6 +839,9 @@
           "type": "object"
         },
         "data_dt": {
+          "type": "string"
+        },
+        "expire_date": {
           "type": "string"
         },
         "permission_request_data_signature": {
@@ -943,6 +949,7 @@
             "amount": 0.1516
           },
           "data_dt": "2019-07-29T06:29:00.123Z",
+          "expire_date": "2019-07-29T16:30:00.123Z",
           "signature": "ad44461b212b2360469540d4737f378a60ca0c69d802142198ed1f222c0b570c5078931e173d26e0f6600305f97184e3de32d028ffe38fe1d0cc86ead3b01ed8"
         },
         "callback": {
@@ -981,6 +988,7 @@
           "amount": 0.1516
         },
         "data_dt": "2019-07-29T06:29:00.123Z",
+        "expire_date": "2019-07-29T16:30:00.123Z",
         "signature": "ad44461b212b2360469540d4737f378a60ca0c69d802142198ed1f222c0b570c5078931e173d26e0f6600305f97184e3de32d028ffe38fe1d0cc86ead3b01ed8"
       },
       "type": "object",
@@ -993,6 +1001,10 @@
           "$ref": "#/definitions/TransactionRef"
         },
         "data_dt": {
+          "type": "string",
+          "description":"Timestamp in ISO format: yyyy-mm-ddThh:mm:ss[.mmm]+0000"
+        },
+        "expire_date":{
           "type": "string",
           "description":"Timestamp in ISO format: yyyy-mm-ddThh:mm:ss[.mmm]+0000"
         },
@@ -1223,6 +1235,7 @@
             "amount": 9
           },
           "data_dt": "2019-07-29T06:29:00.123Z",
+          "expire_date": "2019-07-29T16:30:00.123Z",
           "signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336"
         },
         "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1"
@@ -1258,6 +1271,7 @@
           "amount": 9
         },
         "data_dt": "2019-07-29T06:29:00.123Z",
+        "expire_date": "2019-07-29T16:30:00.123Z",
         "signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336"
       },
       "type": "object",
@@ -1270,6 +1284,10 @@
         },
         "data_dt": {
           "type": "string"
+        },
+        "expire_date":{
+          "type": "string",
+          "description":"Timestamp in ISO format: yyyy-mm-ddThh:mm:ss[.mmm]+0000"
         },
         "signature": {
           "type": "string"
