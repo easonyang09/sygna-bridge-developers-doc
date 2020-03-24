@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Bridge",
     "description": "###API Request and Response\n\nREST-like - Simple and predictable URLs to access data.\nThe Bridge APIs uses GET and POST, and HTTP responses are UTF-8 encoded JSON objects.\n\n### Securing the APIs by using HTTPS\n\nHypertext Transfer Protocol Secure (HTTPS) is a variant of the standard web transfer protocol (HTTP) that adds a layer of security on the data in transit through the SSL/TLS protocol connection.\nBridge APIs use HTTPS to provide a stronger guarantee that a VASP is communicating with the real API and receiving back authentic contents. It also enhances privacy for applications and VASPs using the API.\n\n### Callback APIs\n\nVASPs require best-time updates and should avoid busy-waiting for the other party's compliance validation. We use a callback method to work around this issue and flag the VASP so it can proceed.\n\nThe beneficiary server can take as long as it needs to validate the permission request. When it finishes the validation, it will post the permission to Bridge's callback url, and Bridge will then relay the permission to the originator's callback url.\n\n### Authentication\n\nWe implement API Authentication with **API key**. All licensed exchanges must attach a valid **api_key** to every API call.\n\n## Data Confidentiality and Integrity\n\n### ECIES Encryption\n\nWe apply Elliptic Curve Integrated Encryption Scheme (ECIES) to encrypt all sensitive data between communication of VASPs.\n\nThis following diagram shows how ECIES works. ECC public/private key cryptography is used in conjunction with the Diffie-Hellman primitive to allow both sides to independently generate a shared secret key, for one-time use to encrypt data with a symmetric key algorithm.\n\n![](https://coolbitx.gitlab.io/sygna/bridge/api/images/ecies-sygna.png)\n\nWe have provided a JavaScript library on [NPM](https://www.npmjs.com/package/sygna-bridge-util) to handle ECIES encryption and decryption. You can take a look at the sample usage on the right or visit our [Github](https://github.com/CoolBitX-Technology/sygna-bridge-util/blob/master/src/crypto/ecies.js) for more information.\n\n### ECDSA Signature\n\nWe apply an ECDSA signature to ensure data integrity. All API calls must attach a *signature* signed by the requesting VASP's local private key, and every VASP can verify if the message received is valid by checking the signature and the corresponding public key.\n\nThe Digital Signature also provides message authentication (the receiver can verify the originator of the message) and non-repudiation (the sender cannot falsely claim that they have not signed the message).\n\nOur signing algorithm uses **secp256k1** Elliptic Curve with **SHA256** Hash function. The details of the signing process can also be found on our [Github](https://github.com/CoolBitX-Technology/sygna-bridge-util/blob/master/src/crypto/index.js).\n\nWith our library, we provide simple interfaces to deal with input parameters, help you convert them into JSON object strings and then go through the signing process. You will need to use different interfaces to get signatures of different API requests. These interfaces generally return a signed object, which has already inserted the signature for you, and will be ready to put into a request body.",
     "contact": {}
@@ -36,7 +36,7 @@
             "in": "header",
             "required": true,
             "type": "string",
-            "description": ""
+            "description": "64 chars long API key provided by Sygna Bridge."
           }
         ],
         "responses": {
@@ -182,6 +182,7 @@
                     "originator_vasp_code": "VASPUSNY1"
                   },
                   "data_dt": "2019-07-29T06:29:00.123Z",
+                  "expire_date": 1582218947,
                   "permission_request_data_signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336",
                   "permission_status": "ACCEPTED",
                   "permission_signature": "20fe27be0af5f11657a21ab6d9f09b712406cbcbd3be2ffd30ecf7e59dfe135433f6ec14948fddf4e119d318374e02b7e3528dcf3e3b44698b420b97d985300c",
@@ -335,7 +336,7 @@
     },
     "/bridge/transaction/permission": {
       "post": {
-        "description": "This request works as a response of Bridge's [Permission Request](#02490bbf-455d-4083-a18a-9649c22764f2). Whenever a beneficiary VASP finishes processing the request from Bridge, it must post a permission request back to Bridge server, containing the confirmation result.\n\n\n![](https://i.imgur.com/yECHJqV.png)",
+        "description": "This request works as a response to Bridge's [Permission Request](ref:bridgepermissionrequest-3). Whenever a beneficiary VASP finishes processing the request from Bridge, it must post a permission request back to Bridge server, containing the confirmation result.\n\n\n![](https://i.imgur.com/yECHJqV.png)",
         "summary": "Bridge/Permission",
         "tags": [
           "Bridge"
@@ -508,14 +509,62 @@
         "responses": {
           "200": {
             "description": "",
-            "headers": {}
+            "schema": {
+            },
+            "examples": {
+              "application/json": {
+                "retryItems": 2
+              }
+            },
+            "headers": {
+              "Content-Length": {
+                "type": "string",
+                "default": "82"
+              },
+              "Connection": {
+                "type": "string",
+                "default": "keep-alive"
+              },
+              "Date": {
+                "type": "string",
+                "default": "Fri, 20 Sep 2019 02:08:19 GMT"
+              },
+              "x-amzn-RequestId": {
+                "type": "string",
+                "default": "b429b641-da31-45e3-9c3f-ee27f85dc7bf"
+              },
+              "x-amz-apigw-id": {
+                "type": "string",
+                "default": "AS0mkGiYtjMFcnQ="
+              },
+              "X-Amzn-Trace-Id": {
+                "type": "string",
+                "default": "Root=1-5d843490-609b8bababe5263ff8a41e25;Sampled=0"
+              },
+              "X-Cache": {
+                "type": "string",
+                "default": "Miss from cloudfront"
+              },
+              "Via": {
+                "type": "string",
+                "default": "1.1 02ac86bea963223791833437798adf9f.cloudfront.net (CloudFront)"
+              },
+              "X-Amz-Cf-Pop": {
+                "type": "string",
+                "default": "LHR61-C2"
+              },
+              "X-Amz-Cf-Id": {
+                "type": "string",
+                "default": "rdO0DHL7CDAcjQFneLFbsYal7rtkqB9aqhfcc4pfozd_Yx5ZUVdKPg=="
+              }
+            }
           }
         }
       }
     },
     "/beneficiary/transaction/permission-request": {
       "post": {
-        "description": "![](https://i.imgur.com/hTU5qyn.png)\n\nWhen Bridge gets a **Permission Request**, it will verify the request first to ensure the data integrity, and then **Relay the request to corresponding beneficiary server**.",
+        "description": "![](https://i.imgur.com/hTU5qyn.png)\n\nWhen Bridge gets a [**Permission Request**](ref:permission-request), it will verify the request first to ensure the data integrity, and then **Relay the request to corresponding beneficiary server**.",
         "summary": "Beneficiary/PermissionRequest",
         "tags": [
           "VASP API"
@@ -726,6 +775,7 @@
             "originator_vasp_code": "VASPUSNY1"
           },
           "data_dt": "2019-07-29T06:29:00.123Z",
+          "expire_date": 1582218947,
           "permission_request_data_signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336",
           "permission_status": "ACCEPTED",
           "permission_signature": "20fe27be0af5f11657a21ab6d9f09b712406cbcbd3be2ffd30ecf7e59dfe135433f6ec14948fddf4e119d318374e02b7e3528dcf3e3b44698b420b97d985300c",
@@ -768,6 +818,7 @@
           "originator_vasp_code": "VASPUSNY1"
         },
         "data_dt": "2019-07-29T06:29:00.123Z",
+        "expire_date": 1582218947,
         "permission_request_data_signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336",
         "permission_status": "ACCEPTED",
         "permission_signature": "20fe27be0af5f11657a21ab6d9f09b712406cbcbd3be2ffd30ecf7e59dfe135433f6ec14948fddf4e119d318374e02b7e3528dcf3e3b44698b420b97d985300c",
@@ -789,6 +840,9 @@
         },
         "data_dt": {
           "type": "string"
+        },
+        "expire_date": {
+          "type": "integer"
         },
         "permission_request_data_signature": {
           "type": "string"
@@ -828,6 +882,7 @@
     },
     "Transaction": {
       "title": "Transaction",
+      "description":"Please see [Transaction](ref:transaction)",
       "example": {
         "originator_addrs": [
           "3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D"
@@ -895,6 +950,7 @@
             "amount": 0.1516
           },
           "data_dt": "2019-07-29T06:29:00.123Z",
+          "expire_date": 1582218947,
           "signature": "ad44461b212b2360469540d4737f378a60ca0c69d802142198ed1f222c0b570c5078931e173d26e0f6600305f97184e3de32d028ffe38fe1d0cc86ead3b01ed8"
         },
         "callback": {
@@ -933,20 +989,25 @@
           "amount": 0.1516
         },
         "data_dt": "2019-07-29T06:29:00.123Z",
+        "expire_date": 1582218947,
         "signature": "ad44461b212b2360469540d4737f378a60ca0c69d802142198ed1f222c0b570c5078931e173d26e0f6600305f97184e3de32d028ffe38fe1d0cc86ead3b01ed8"
       },
       "type": "object",
       "properties": {
         "private_info": {
           "type": "string",
-          "description":"ECIES encoded Private Information"
+          "description":"ECIES encoded [Private Information](ref:private-information)"
         },
         "transaction": {
           "$ref": "#/definitions/TransactionRef"
         },
         "data_dt": {
           "type": "string",
-          "description":"Timestamp in ISO format: yyyy-mm-ddThh:mm:ss[.mmm]+0000"
+          "description":"Timestamp in ISO 8601 format: yyyy-mm-ddThh:mm:ss[.mmm]+0000"
+        },
+        "expire_date":{
+          "type": "integer",
+          "description":"Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires."
         },
         "signature": {
           "type": "string"
@@ -961,6 +1022,7 @@
     },
     "TransactionRef": {
       "title": "Transaction",
+      "description":"Please see [Transaction](ref:transaction)",
       "example": {
         "originator_vasp_code": "VASPJPJT4",
         "originator_addrs": [
@@ -1012,6 +1074,7 @@
     },
     "Callback": {
       "title": "Callback",
+      "description":"Please see [Callback](ref:callback)",
       "example": {
         "callback_url": "http://ec2-3-19-59-48.us-east-2.compute.amazonaws.com:7676/api/v1/originator/transaction/permission",
         "signature": "62bfe28b58d0e53b3b4fb0d246d954a4088d7d236769f394af2b4c230cc8093f27644596e695563ed37d0fe004b0c6c8b91873ef96315d32703a998c5e92e603"
@@ -1055,18 +1118,49 @@
       "type": "object",
       "properties": {
         "transfer_id": {
-          "type": "string"
+          "type": "string",
+          "description":"Unique transfer Id returned from Bridge/PermissionRequest api call." 
         },
         "permission_status": {
-          "type": "string"
+          "type": "string",
+          "description":"Status of the transfer permission. Currently available values: ACCEPTED, REJECTED." ,
+          "enum": [
+            "ACCEPTED",
+            "REJECTED"
+          ]
+        },
+         "reject_code": {
+          "type": "string",
+          "description":"If the permission is REJECTED, reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
+          "enum": [
+            "BVRC001",
+            "BVRC002",
+            "BVRC003",
+            "BVRC004",
+            "BVRC999"
+          ]
+        },
+         "reject_message": {
+          "type": "string",
+          "description":"If the permission is REJECTED, reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
+          "enum": [
+            "unsupported_currency",
+            "service_downtime",
+            "exceed_trading_volume",
+            "compliance_check_fail",
+            "other"
+          ]
         },
         "signature": {
-          "type": "string"
+          "type": "string",
+          "description":"Signature of the object containing the previous 4 fields."
         }
       },
       "required": [
         "transfer_id",
         "permission_status",
+        "reject_code",
+        "reject_message",
         "signature"
       ]
     },
@@ -1143,6 +1237,7 @@
             "amount": 9
           },
           "data_dt": "2019-07-29T06:29:00.123Z",
+          "expire_date": 1582218947,
           "signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336"
         },
         "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1"
@@ -1178,18 +1273,25 @@
           "amount": 9
         },
         "data_dt": "2019-07-29T06:29:00.123Z",
+        "expire_date": 1582218947,
         "signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336"
       },
       "type": "object",
       "properties": {
         "private_info": {
-          "type": "string"
+          "type": "string",
+          "description":"ECIES encoded [Private Information](ref:private-information)"
         },
         "transaction": {
           "$ref": "#/definitions/Transaction"
         },
         "data_dt": {
-          "type": "string"
+          "type": "string",
+          "description":"Timestamp in ISO 8601 format: yyyy-mm-ddThh:mm:ss[.mmm]+0000"
+        },
+        "expire_date":{
+          "type": "integer",
+          "description":"Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires."
         },
         "signature": {
           "type": "string"
@@ -1227,13 +1329,42 @@
       "type": "object",
       "properties": {
         "transfer_id": {
-          "type": "string"
+          "type": "string",
+          "description":"Unique transfer Id returned from Bridge/PermissionRequest api call."
         },
         "permission_status": {
-          "type": "string"
+          "type": "string",
+          "description":"Status of the transfer permission. Currently available values: ACCEPTED, REJECTED." ,
+          "enum": [
+            "ACCEPTED",
+            "REJECTED"
+          ]
+        },
+         "reject_code": {
+          "type": "string",
+          "description":"If the permission is REJECTED, reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
+          "enum": [
+            "BVRC001",
+            "BVRC002",
+            "BVRC003",
+            "BVRC004",
+            "BVRC999"
+          ]
+        },
+         "reject_message": {
+          "type": "string",
+          "description":"If the permission is REJECTED, reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
+          "enum": [
+            "unsupported_currency",
+            "service_downtime",
+            "exceed_trading_volume",
+            "compliance_check_fail",
+            "other"
+          ]
         },
         "signature": {
-          "type": "string"
+          "type": "string",
+          "description":"Signature of the object containing the previous fields."
         }
       },
       "required": [
