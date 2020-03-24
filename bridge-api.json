@@ -895,52 +895,45 @@
       "title": "Transaction",
       "description":"Please see [Transaction](ref:transaction)",
       "example": {
+        "originator_vasp_code": "VASPUSNY1",
         "originator_addrs": [
           "3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D"
         ],
-        "amount": 9,
+        "originator_addrs_extra": {"DT": "001"},
+        "beneficiary_vasp_code": "VASPUSNY2",
         "beneficiary_addrs": [
           "3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf"
         ],
-        "beneficiary_vasp_code": "VASPUSNY2",
+        "beneficiary_addrs_extra": {"DT": "002"},
         "transaction_currency": "0x80000000",
-        "originator_vasp_code": "VASPUSNY1"
+        "amount": 1
       },
       "type": "object",
       "properties": {
-        "originator_addrs": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+        "private_info": {
+          "type": "string",
+          "description":"ECIES encoded [Private Information](ref:private-information)"
         },
-        "amount": {
+        "transaction": {
+          "$ref": "#/definitions/TransactionRef"
+        },
+        "data_dt": {
+          "type": "string",
+          "description":"Timestamp in ISO 8601 format: yyyy-mm-ddThh:mm:ss[.mmm]+0000"
+        },
+        "expire_date":{
           "type": "integer",
-          "format": "int32"
+          "description":"Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires."
         },
-        "beneficiary_addrs": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "beneficiary_vasp_code": {
-          "type": "string"
-        },
-        "transaction_currency": {
-          "type": "string"
-        },
-        "originator_vasp_code": {
+        "signature": {
           "type": "string"
         }
       },
       "required": [
-        "originator_addrs",
-        "amount",
-        "beneficiary_addrs",
-        "beneficiary_vasp_code",
-        "transaction_currency",
-        "originator_vasp_code"
+        "private_info",
+        "transaction",
+        "data_dt",
+        "signature"
       ]
     },
     "Bridge-PermissionRequestRef": {
