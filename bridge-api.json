@@ -762,8 +762,7 @@
       "required": [
         "vasp_code",
         "vasp_name",
-        "vasp_pubkey",
-        "timestamp"
+        "vasp_pubkey"
       ]
     },
     "Bridge-Status": {
@@ -1147,7 +1146,7 @@
       "properties": {
         "transfer_id": {
           "type": "string",
-          "description":"Unique transfer Id returned from Bridge/PermissionRequest api call." 
+          "description":"Unique transfer Id returned from Bridge/PermissionRequest api call."
         },
         "permission_status": {
           "type": "string",
