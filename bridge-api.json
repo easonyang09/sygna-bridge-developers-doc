@@ -729,6 +729,10 @@
         },
         "signature": {
           "type": "string"
+        },
+        "timestamp": {
+          "type": "integer",
+          "format":"int64"
         }
       },
       "required": [
@@ -753,9 +757,6 @@
         },
         "vasp_pubkey": {
           "type": "string"
-        },
-        "timestamp": {
-          "type": "integer"
         }
       },
       "required": [
@@ -786,7 +787,6 @@
             "amount": 1
           },
           "data_dt": "2019-07-29T06:29:00.123Z",
-          "expire_date": 1582218947,
           "permission_request_data_signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336",
           "permission_status": "ACCEPTED",
           "permission_signature": "20fe27be0af5f11657a21ab6d9f09b712406cbcbd3be2ffd30ecf7e59dfe135433f6ec14948fddf4e119d318374e02b7e3528dcf3e3b44698b420b97d985300c",
@@ -829,7 +829,6 @@
           "originator_vasp_code": "VASPUSNY1"
         },
         "data_dt": "2019-07-29T06:29:00.123Z",
-        "expire_date": 1582218947,
         "permission_request_data_signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336",
         "permission_status": "ACCEPTED",
         "permission_signature": "20fe27be0af5f11657a21ab6d9f09b712406cbcbd3be2ffd30ecf7e59dfe135433f6ec14948fddf4e119d318374e02b7e3528dcf3e3b44698b420b97d985300c",
@@ -847,13 +846,14 @@
           "type": "string"
         },
         "transaction": {
-          "type": "object"
+          "$ref": "#/definitions/TransactionRef"
         },
         "data_dt": {
           "type": "string"
         },
         "expire_date": {
-          "type": "integer"
+          "type": "integer",
+          "format":"int64"
         },
         "permission_request_data_signature": {
           "type": "string"
@@ -919,10 +919,11 @@
         },
         "data_dt": {
           "type": "string",
-          "description":"Timestamp in ISO 8601 format: yyyy-mm-ddThh:mm:ss[.mmm]+0000"
+          "description":"Timestamp when transaction was created in UTC time using ISO 8601 format(2020-03-25T03:09:55+00:00)"
         },
         "expire_date":{
           "type": "integer",
+          "format": "int64",
           "description":"Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires."
         },
         "signature": {
@@ -1011,10 +1012,11 @@
         },
         "data_dt": {
           "type": "string",
-          "description":"Timestamp in ISO 8601 format: yyyy-mm-ddThh:mm:ss[.mmm]+0000"
+          "description":"Timestamp when transaction was created in UTC time using ISO 8601 format(yyyy-MM-dd'T'hh:mm:ss.sssZ)"
         },
         "expire_date":{
           "type": "integer",
+          "format": "int64",
           "description":"Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires."
         },
         "signature": {
@@ -1155,9 +1157,14 @@
             "REJECTED"
           ]
         },
+        "expire_date": {
+          "type": "integer",
+          "format":"int64",
+          "description": "Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires."
+        },
          "reject_code": {
           "type": "string",
-          "description":"If the permission is REJECTED, reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
+          "description":"Only required when the permission_status is REJECTED, reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
           "enum": [
             "BVRC001",
             "BVRC002",
@@ -1168,7 +1175,7 @@
         },
          "reject_message": {
           "type": "string",
-          "description":"If the permission is REJECTED, reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
+          "description":"Only required when the permission_status is REJECTED and reject_code is 'BVRC999', reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
           "enum": [
             "unsupported_currency",
             "service_downtime",
@@ -1185,8 +1192,6 @@
       "required": [
         "transfer_id",
         "permission_status",
-        "reject_code",
-        "reject_message",
         "signature"
       ]
     },
@@ -1317,10 +1322,11 @@
         },
         "data_dt": {
           "type": "string",
-          "description":"Timestamp in ISO 8601 format: yyyy-mm-ddThh:mm:ss[.mmm]+0000"
+          "description":"Timestamp when transaction was created in UTC time using ISO 8601 format(yyyy-MM-dd'T'hh:mm:ss.sssZ)"
         },
         "expire_date":{
           "type": "integer",
+          "format": "int64",
           "description":"Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires."
         },
         "signature": {
@@ -1370,9 +1376,14 @@
             "REJECTED"
           ]
         },
+        "expire_date": {
+          "type": "integer",
+          "format":"int64",
+          "description": "Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires."
+        },
          "reject_code": {
           "type": "string",
-          "description":"If the permission is REJECTED, reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
+          "description":"Only required when the permission_status is REJECTED, reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
           "enum": [
             "BVRC001",
             "BVRC002",
@@ -1383,7 +1394,7 @@
         },
          "reject_message": {
           "type": "string",
-          "description":"If the permission is REJECTED, reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
+          "description":"Only required when the permission_status is REJECTED and reject_code is 'BVRC999', reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
           "enum": [
             "unsupported_currency",
             "service_downtime",
