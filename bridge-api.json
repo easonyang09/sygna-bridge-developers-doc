@@ -1304,7 +1304,7 @@
           "description":"ECIES encoded [Private Information](ref:private-information)"
         },
         "transaction": {
-          "$ref": "#/definitions/Transaction"
+          "$ref": "#/definitions/TransactionRef"
         },
         "data_dt": {
           "type": "string",
