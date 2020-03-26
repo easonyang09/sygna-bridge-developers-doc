@@ -599,9 +599,6 @@
         "responses": {
           "200": {
             "description": "",
-            "schema": {
-              "$ref": "#/definitions/Beneficiary-PermissionRequest"
-            },
             "examples": {
               "application/json; charset=utf-8": {
                 "status": "OK"
@@ -916,15 +913,6 @@
         "transaction": {
           "$ref": "#/definitions/TransactionRef"
         },
-        "data_dt": {
-          "type": "string",
-          "description":"Timestamp when transaction was created in UTC time using ISO 8601 format(2020-03-25T03:09:55+00:00)"
-        },
-        "expire_date":{
-          "type": "integer",
-          "format": "int64",
-          "description":"Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires."
-        },
         "signature": {
           "type": "string"
         }
@@ -932,7 +920,6 @@
       "required": [
         "private_info",
         "transaction",
-        "data_dt",
         "signature"
       ]
     },
