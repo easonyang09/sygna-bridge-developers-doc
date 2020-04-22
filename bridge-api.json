@@ -861,8 +861,8 @@
       "title": "Body Parameters Of BeneficiaryEndpointUrl",
       "example": {
         "vasp_code":"VASPUSNY1",
-        "beneficiary_endpoint_url":"https://www.youtube.com",
-        "signature":"01c2368f67a1bc572b3fcd535324f55ded4e28d5f12c1f2f43fe8a685214906b4205046d90bb798d1b59d9edecda71c87980b66f381dc0684f73585bc03307ef"
+        "beneficiary_endpoint_url":"https://api.sygna.io/api/v1.1.0/bridge",
+        "signature":"6aa25cb51b54a9fb651dcebbaf904b2616fcfde5c5fadc984742e133c9af93992489f9979f53c6bd3d3922eaadb192d0187b2a4debe640aa459cfeb29cf8dfd6"
       },
       "type": "object",
       "properties": {
