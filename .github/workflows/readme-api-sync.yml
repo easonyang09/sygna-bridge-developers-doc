@@ -4,8 +4,8 @@ on:
   # Trigger the workflow on push or pull request, 
   push:
     # execute only for the specific branch
-     #branches:
-      #- master
+     branches:
+      - master
 jobs:
   # job1
   build:

@@ -124,6 +124,101 @@
         }
       }
     },
+    "/bridge/vasp/beneficiary-endpoint-url": {
+      "post": {
+        "description": "This allows VASP to update the Beneficiary's callback URL programmatically.",
+        "summary": "Bridge/VASP/BeneficiaryEndpointUrl",
+        "tags": [
+          "Bridge"
+        ],
+        "operationId": "Bridge/BeneficiaryEndpointUrl",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": "(Required) 64 chars long API key provided by Sygna Bridge."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Bridge-BeneficiaryEndpointUrlReq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "examples": {
+              "application/json": {
+                "status": "OK"
+              }
+            },
+            "headers": {
+              "Content-Length": {
+                "type": "string",
+                "default": "15"
+              },
+              "Connection": {
+                "type": "string",
+                "default": "keep-alive"
+              },
+              "Date": {
+                "type": "string",
+                "default": "Wed, 22 Apr 2020 05:59:44 GMT"
+              },
+              "x-amzn-RequestId": {
+                "type": "string",
+                "default": "a46e950a-64bf-4ed6-9d53-fd7e697112e4"
+              },
+              "x-amz-apigw-id": {
+                "type": "string",
+                "default": "LX-EjFnJtjMFkXw="
+              },
+              "X-Amzn-Trace-Id": {
+                "type": "string",
+                "default": "Root=1-5e9fdd50-cd569d608e14ce8005e932f4;Sampled=0"
+              },
+              "X-Cache": {
+                "type": "string",
+                "default": "Miss from cloudfront"
+              },
+              "Via": {
+                "type": "string",
+                "default": "1.1 d8bc31f1690f46d533b518410accf19f.cloudfront.net (CloudFront)"
+              },
+              "X-Amz-Cf-Pop": {
+                "type": "string",
+                "default": "SIN2-C1"
+              },
+              "X-Amz-Cf-Id": {
+                "type": "string",
+                "default": "XKp1Jy1-SHXUijPKPUkSfq6j6G7JAGeOSObJw3Qk7xnfPpf76QtvxQ=="
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
     "/bridge/transaction/status": {
       "get": {
         "description": "Get status of specific Permission Request.",
@@ -760,6 +855,31 @@
         "vasp_code",
         "vasp_name",
         "vasp_pubkey"
+      ]
+    },
+    "Bridge-BeneficiaryEndpointUrlReq": {
+      "title": "Body Parameters Of BeneficiaryEndpointUrl",
+      "example": {
+        "vasp_code":"VASPUSNY1",
+        "beneficiary_endpoint_url":"https://api.sygna.io/api/v1.1.0/bridge",
+        "signature":"6aa25cb51b54a9fb651dcebbaf904b2616fcfde5c5fadc984742e133c9af93992489f9979f53c6bd3d3922eaadb192d0187b2a4debe640aa459cfeb29cf8dfd6"
+      },
+      "type": "object",
+      "properties": {
+        "vasp_code": {
+          "type": "string"
+        },
+        "beneficiary_endpoint_url": {
+          "type": "string"
+        },
+        "signature": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "vasp_code",
+        "beneficiary_endpoint_url",
+        "signature"
       ]
     },
     "Bridge-Status": {
