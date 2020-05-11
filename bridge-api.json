@@ -148,13 +148,6 @@
             "description": "(Required) 64 chars long API key provided by Sygna Bridge."
           },
           {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          },
-          {
             "name": "Body",
             "in": "body",
             "required": true,
@@ -241,13 +234,6 @@
           },
           {
             "name": "api-key",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          },
-          {
-            "name": "Content-Type",
             "in": "header",
             "required": true,
             "type": "string",
