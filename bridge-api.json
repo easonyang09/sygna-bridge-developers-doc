@@ -847,26 +847,32 @@
       "title": "Body Parameters Of BeneficiaryEndpointUrl",
       "example": {
         "vasp_code":"VASPUSNY1",
-        "beneficiary_endpoint_url":"https://api.sygna.io/api/v1.1.0/bridge",
+        "callback_permission_request_url":"https://api.sygna.io/api/v1.1.0/bridge",
         "signature":"6aa25cb51b54a9fb651dcebbaf904b2616fcfde5c5fadc984742e133c9af93992489f9979f53c6bd3d3922eaadb192d0187b2a4debe640aa459cfeb29cf8dfd6"
       },
       "type": "object",
       "properties": {
         "vasp_code": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
-        "beneficiary_endpoint_url": {
-          "type": "string"
+        "callback_permission_request_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "callback_txid_url": {
+          "type": "string",
+          "format": "uri"
         },
         "signature": {
-          "type": "string"
+          "type": "string",
+          "minLength": 128,
+          "maxLength": 128,
+          "pattern": "^[0123456789A-Fa-f]+$"
         }
       },
-      "required": [
-        "vasp_code",
-        "beneficiary_endpoint_url",
-        "signature"
-      ]
+      "required": ["vasp_code", "signature"],
+      "additionalProperties": false
     },
     "Bridge-Status": {
       "title": "Bridge/Status",
