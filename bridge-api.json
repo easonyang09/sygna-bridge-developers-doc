@@ -689,29 +689,38 @@
         ]
       },
       "CurrencyItem" : {
+        "title": " ",
+        "example":  {
+          "currency_id": "sygna:0x80000090",
+          "currency_name": "XRP",
+          "currency_symbol": "XRP",
+          "addr_extra_info": [
+            "tag","destination_tag"
+          ]
+        },
         "type" : "object",
-        "required" : [ "currency_id", "currency_name", "currency_symbol", "addr_extra_info" ],
         "properties" : {
           "currency_id" : {
-            "type" : "string",
-            "example" : "sygna:0x80000090"
+            "type" : "string"
           },
           "currency_name" : {
-            "type" : "string",
-            "example" : "XRP"
+            "type" : "string"
           },
           "currency_symbol" : {
-            "type" : "string",
-            "example" : "XRP"
+            "type" : "string"
           },
           "addr_extra_info" : {
             "type" : "array",
             "items" : {
-              "type" : "string",
-              "example" : "tag"
+              "type" : "string"
             }
           }
-        }
+        },
+        "required" : [
+          "currency_id",
+          "currency_name",
+          "currency_symbol",
+          "addr_extra_info" ]
       },
       "Ref-BeneficiaryEndpointUrlReq": {
         "title": "BeneficiaryEndpointUrl",
