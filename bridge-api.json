@@ -8,11 +8,11 @@
   },
   "servers": [
     {
-      "url": "https://test-api.sygna.io/v2/bridge",
+      "url": "https://test-api.sygna.io/v2",
       "description": "Bridge Sandbox server"
     },
     {
-      "url": "https://{VASP-server}/v2/bridge",
+      "url": "https://{VASP-server}/v2",
       "description": "VASP Sandbox server"
     }
   ],
@@ -230,22 +230,34 @@
                         "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1",
                         "private_info": "045f5964c9ad8c2e66220996a0d16e34358dfc58d01071424378b3317a4620c6a08d8d0c03d5eb5a0eaa38b8f163eafabf7d1718852c5ab322803eeb20a1c159ff753e47f9968104aae450cf4e46b1f58e1f33b063ec917fec1cf2ce298582ab0b526c9b49d8c6d5595090eb09003f20a1d3dd90569ca7db195872be985db39aeb0ffb378160dd0f3f1df521ecbb53ac0a82f27889c7e0b65f2114e4620ba02639430e47159c24461db34479f3ff6036c7ae962bed4159d0e58acef2bc58c938fea85103ab",
                         "transaction": {
-                          "originator_vasp_code": "VASPUSNY1",
-                          "originator_addrs": [
-                            "3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D"
-                          ],
-                          "originator_addrs_extra": {
-                            "DT": "001"
+                          "originator_vasp": {
+                            "vasp_code": "VASPJPJT4",
+                            "addrs": [
+                              {
+                                "address": "bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4",
+                                "addrs_extra_info": [
+                                  {
+                                    "memo_text": "634346542"
+                                  }
+                                ]
+                              }
+                            ]
                           },
-                          "beneficiary_vasp_code": "VASPUSNY2",
-                          "beneficiary_addrs": [
-                            "3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf"
-                          ],
-                          "beneficiary_addrs_extra": {
-                            "DT": "002"
+                          "beneficiary_vasp": {
+                            "vasp_code": "VASPJPJT3",
+                            "addrs": [
+                              {
+                                "address": "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce",
+                                "addrs_extra_info": [
+                                  {
+                                    "memo_text": "Idzl1532434853"
+                                  }
+                                ]
+                              }
+                            ]
                           },
-                          "transaction_currency": "0x80000000",
-                          "amount": 1
+                          "currency_id": "sygna:0x800002ca.bnb1u9j9hkst6gf09dkdvxlj7puk8c7vh68a0kkmht",
+                          "amount": "0.1234"
                         },
                         "data_dt": "2019-07-29T06:29:00.123Z",
                         "expire_date": 1582218947,
@@ -767,22 +779,34 @@
             "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1",
             "private_info": "045f5964c9ad8c2e66220996a0d16e34358dfc58d01071424378b3317a4620c6a08d8d0c03d5eb5a0eaa38b8f163eafabf7d1718852c5ab322803eeb20a1c159ff753e47f9968104aae450cf4e46b1f58e1f33b063ec917fec1cf2ce298582ab0b526c9b49d8c6d5595090eb09003f20a1d3dd90569ca7db195872be985db39aeb0ffb378160dd0f3f1df521ecbb53ac0a82f27889c7e0b65f2114e4620ba02639430e47159c24461db34479f3ff6036c7ae962bed4159d0e58acef2bc58c938fea85103ab",
             "transaction": {
-              "originator_vasp_code": "VASPUSNY1",
-              "originator_addrs": [
-                "3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D"
-              ],
-              "originator_addrs_extra": {
-                "DT": "001"
+              "originator_vasp": {
+                "vasp_code": "VASPJPJT4",
+                "addrs": [
+                  {
+                    "address": "bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4",
+                    "addrs_extra_info": [
+                      {
+                        "memo_text": "634346542"
+                      }
+                    ]
+                  }
+                ]
               },
-              "beneficiary_vasp_code": "VASPUSNY2",
-              "beneficiary_addrs": [
-                "3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf"
-              ],
-              "beneficiary_addrs_extra": {
-                "DT": "002"
+              "beneficiary_vasp": {
+                "vasp_code": "VASPJPJT3",
+                "addrs": [
+                  {
+                    "address": "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce",
+                    "addrs_extra_info": [
+                      {
+                        "memo_text": "Idzl1532434853"
+                      }
+                    ]
+                  }
+                ]
               },
-              "transaction_currency": "0x80000000",
-              "amount": 1
+              "currency_id": "sygna:0x800002ca.bnb1u9j9hkst6gf09dkdvxlj7puk8c7vh68a0kkmht",
+              "amount": "0.1234"
             },
             "data_dt": "2019-07-29T06:29:00.123Z",
             "permission_request_data_signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336",
@@ -815,16 +839,34 @@
           "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1",
           "private_info": "045f5964c9ad8c2e66220996a0d16e34358dfc58d01071424378b3317a4620c6a08d8d0c03d5eb5a0eaa38b8f163eafabf7d1718852c5ab322803eeb20a1c159ff753e47f9968104aae450cf4e46b1f58e1f33b063ec917fec1cf2ce298582ab0b526c9b49d8c6d5595090eb09003f20a1d3dd90569ca7db195872be985db39aeb0ffb378160dd0f3f1df521ecbb53ac0a82f27889c7e0b65f2114e4620ba02639430e47159c24461db34479f3ff6036c7ae962bed4159d0e58acef2bc58c938fea85103ab",
           "transaction": {
-            "originator_addrs": [
-              "3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D"
-            ],
-            "amount": 9,
-            "beneficiary_addrs": [
-              "3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf"
-            ],
-            "beneficiary_vasp_code": "VASPUSNY2",
-            "transaction_currency": "0x80000000",
-            "originator_vasp_code": "VASPUSNY1"
+            "originator_vasp": {
+              "vasp_code": "VASPJPJT4",
+              "addrs": [
+                {
+                  "address": "bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4",
+                  "addrs_extra_info": [
+                    {
+                      "memo_text": "634346542"
+                    }
+                  ]
+                }
+              ]
+            },
+            "beneficiary_vasp": {
+              "vasp_code": "VASPJPJT3",
+              "addrs": [
+                {
+                  "address": "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce",
+                  "addrs_extra_info": [
+                    {
+                      "memo_text": "Idzl1532434853"
+                    }
+                  ]
+                }
+              ]
+            },
+            "currency_id": "sygna:0x800002ca.bnb1u9j9hkst6gf09dkdvxlj7puk8c7vh68a0kkmht",
+            "amount": "0.1234"
           },
           "data_dt": "2019-07-29T06:29:00.123Z",
           "permission_request_data_signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336",
@@ -895,22 +937,34 @@
           "data": {
             "private_info": "04f76bf0372c4d4679a172aaaf7fe4746cb83f2a2e5d6a5afcfe6bba72ad4c540d7940853f5fd1f4928c541c39efae81e9165598bad256fab77f6d5c4bd8d135b0553e61bbaeb6d573c71b23d656ed9e4ac37f40106ebd3aab8839c77409a3890b5f056d4e11aaf87c6d29580869ec5f81d20ecaad266ba69e234a2eb627d5c7b95957d82fd1b69172f6bce480f74d9f4ea7d4d38300669c25723e91c5bce83ec8f29aedd4",
             "transaction": {
-              "originator_vasp_code": "VASPJPJT4",
-              "originator_addrs": [
-                "3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D"
-              ],
-              "originator_addrs_extra": {
-                "DT": "001"
+              "originator_vasp": {
+                "vasp_code": "VASPJPJT4",
+                "addrs": [
+                  {
+                    "address": "bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4",
+                    "addrs_extra_info": [
+                      {
+                        "memo_text": "634346542"
+                      }
+                    ]
+                  }
+                ]
               },
-              "beneficiary_vasp_code": "VASPJPJT3",
-              "beneficiary_addrs": [
-                "3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf"
-              ],
-              "beneficiary_addrs_extra": {
-                "DT": "002"
+              "beneficiary_vasp": {
+                "vasp_code": "VASPJPJT3",
+                "addrs": [
+                  {
+                    "address": "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce",
+                    "addrs_extra_info": [
+                      {
+                        "memo_text": "Idzl1532434853"
+                      }
+                    ]
+                  }
+                ]
               },
-              "transaction_currency": "0x80000000",
-              "amount": 0.1516
+              "currency_id": "sygna:0x800002ca.bnb1u9j9hkst6gf09dkdvxlj7puk8c7vh68a0kkmht",
+              "amount": "0.1234"
             },
             "data_dt": "2019-07-29T06:29:00.123Z",
             "expire_date": 1582218947,
@@ -939,23 +993,35 @@
         "title": "Data",
         "example": {
           "private_info": "04f76bf0372c4d4679a172aaaf7fe4746cb83f2a2e5d6a5afcfe6bba72ad4c540d7940853f5fd1f4928c541c39efae81e9165598bad256fab77f6d5c4bd8d135b0553e61bbaeb6d573c71b23d656ed9e4ac37f40106ebd3aab8839c77409a3890b5f056d4e11aaf87c6d29580869ec5f81d20ecaad266ba69e234a2eb627d5c7b95957d82fd1b69172f6bce480f74d9f4ea7d4d38300669c25723e91c5bce83ec8f29aedd4",
-          "transaction": {
-            "originator_vasp_code": "VASPJPJT4",
-            "originator_addrs": [
-              "3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D"
-            ],
-            "originator_addrs_extra": {
-              "DT": "001"
+          "transaction":{
+            "originator_vasp": {
+              "vasp_code": "VASPJPJT4",
+              "addrs": [
+                {
+                  "address": "bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4",
+                  "addrs_extra_info": [
+                    {
+                      "memo_text": "634346542"
+                    }
+                  ]
+                }
+              ]
             },
-            "beneficiary_vasp_code": "VASPJPJT3",
-            "beneficiary_addrs": [
-              "3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf"
-            ],
-            "beneficiary_addrs_extra": {
-              "DT": "002"
+            "beneficiary_vasp": {
+              "vasp_code": "VASPJPJT3",
+              "addrs": [
+                {
+                  "address": "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce",
+                  "addrs_extra_info": [
+                    {
+                      "memo_text": "Idzl1532434853"
+                    }
+                  ]
+                }
+              ]
             },
-            "transaction_currency": "0x80000000",
-            "amount": 0.1516
+            "currency_id": "sygna:0x800002ca.bnb1u9j9hkst6gf09dkdvxlj7puk8c7vh68a0kkmht",
+            "amount": "0.1234"
           },
           "data_dt": "2019-07-29T06:29:00.123Z",
           "expire_date": 1582218947,
@@ -994,73 +1060,135 @@
         "title": "Transaction",
         "description": "Please see [Transaction](ref:transaction)",
         "example": {
-          "originator_vasp_code": "VASPJPJT4",
-          "originator_addrs": [
-            "3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D"
-          ],
-          "originator_addrs_extra": {
-            "DT": "001"
+          "originator_vasp": {
+            "vasp_code": "VASPJPJT4",
+            "addrs": [
+              {
+                "address": "bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4",
+                "addrs_extra_info": [
+                  {
+                    "memo_text": "634346542"
+                  }
+                ]
+              }
+            ]
           },
-          "beneficiary_vasp_code": "VASPJPJT3",
-          "beneficiary_addrs": [
-            "3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf"
-          ],
-          "beneficiary_addrs_extra": {
-            "DT": "002"
+          "beneficiary_vasp": {
+            "vasp_code": "VASPJPJT3",
+            "addrs": [
+              {
+                "address": "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce",
+                "addrs_extra_info": [
+                  {
+                    "memo_text": "Idzl1532434853"
+                  }
+                ]
+              }
+            ]
           },
-          "transaction_currency": "0x80000000",
-          "amount": 0.1516
+          "currency_id": "sygna:0x800002ca.bnb1u9j9hkst6gf09dkdvxlj7puk8c7vh68a0kkmht",
+          "amount": "0.1234"
         },
         "type": "object",
         "properties": {
-          "originator_vasp_code": {
-            "type": "string"
-          },
-          "originator_addrs": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "originator_addrs_extra": {
+          "originator_vasp": {
             "type": "object",
             "properties": {
-              "DT": {
+              "vasp_code": {
                 "type": "string"
+              },
+              "addrs": {
+                "type": "array",
+                "items":
+                {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string"
+                    },
+                    "addrs_extra_info": {
+                      "type": "array",
+                      "items":
+                      {
+                        "type": "object",
+                        "properties": {
+                          "memo_text": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "memo_text"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "address",
+                    "addrs_extra_info"
+                  ]
+                }
               }
-            }
+            },
+            "required": [
+              "vasp_code",
+              "addrs"
+            ]
           },
-          "beneficiary_vasp_code": {
-            "type": "string"
-          },
-          "beneficiary_addrs": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "beneficiary_addrs_extra": {
+          "beneficiary_vasp": {
             "type": "object",
             "properties": {
-              "DT": {
+              "vasp_code": {
                 "type": "string"
+              },
+              "addrs": {
+                "type": "array",
+                "items":
+                {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string"
+                    },
+                    "addrs_extra_info": {
+                      "type": "array",
+                      "items":
+                      {
+                        "type": "object",
+                        "properties": {
+                          "memo_text": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "memo_text"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "address",
+                    "addrs_extra_info"
+                  ]
+                }
+
               }
-            }
+            },
+            "required": [
+              "vasp_code",
+              "addrs"
+            ]
           },
-          "transaction_currency": {
+          "currency_id": {
             "type": "string"
           },
           "amount": {
-            "type": "number",
-            "format": "double"
+            "type": "string"
           }
         },
         "required": [
-          "originator_vasp_code",
-          "originator_addrs",
-          "beneficiary_vasp_code",
-          "beneficiary_addrs",
-          "transaction_currency",
+          "originator_vasp",
+          "beneficiary_vasp",
+          "currency_id",
           "amount"
         ]
       },
@@ -1220,22 +1348,34 @@
           "data": {
             "private_info": "045f5964c9ad8c2e66220996a0d16e34358dfc58d01071424378b3317a4620c6a08d8d0c03d5eb5a0eaa38b8f163eafabf7d1718852c5ab322803eeb20a1c159ff753e47f9968104aae450cf4e46b1f58e1f33b063ec917fec1cf2ce298582ab0b526c9b49d8c6d5595090eb09003f20a1d3dd90569ca7db195872be985db39aeb0ffb378160dd0f3f1df521ecbb53ac0a82f27889c7e0b65f2114e4620ba02639430e47159c24461db34479f3ff6036c7ae962bed4159d0e58acef2bc58c938fea85103ab",
             "transaction": {
-              "originator_vasp_code": "VASPUSNY1",
-              "originator_addrs": [
-                "3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D"
-              ],
-              "originator_addrs_extra": {
-                "DT": "001"
+              "originator_vasp": {
+                "vasp_code": "VASPJPJT4",
+                "addrs": [
+                  {
+                    "address": "bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4",
+                    "addrs_extra_info": [
+                      {
+                        "memo_text": "634346542"
+                      }
+                    ]
+                  }
+                ]
               },
-              "beneficiary_vasp_code": "VASPUSNY2",
-              "beneficiary_addrs": [
-                "3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf"
-              ],
-              "beneficiary_addrs_extra": {
-                "DT": "002"
+              "beneficiary_vasp": {
+                "vasp_code": "VASPJPJT3",
+                "addrs": [
+                  {
+                    "address": "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce",
+                    "addrs_extra_info": [
+                      {
+                        "memo_text": "Idzl1532434853"
+                      }
+                    ]
+                  }
+                ]
               },
-              "transaction_currency": "0x80000000",
-              "amount": 9
+              "currency_id": "sygna:0x800002ca.bnb1u9j9hkst6gf09dkdvxlj7puk8c7vh68a0kkmht",
+              "amount": "0.1234"
             },
             "data_dt": "2019-07-29T06:29:00.123Z",
             "expire_date": 1582218947,
