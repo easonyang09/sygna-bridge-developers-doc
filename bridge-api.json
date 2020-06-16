@@ -177,6 +177,9 @@
             "description": "",
             "content": {
               "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ref-Status"
+                },
                 "examples": {
                   "response": {
                     "value": {
