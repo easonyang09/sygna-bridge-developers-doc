@@ -1,215 +1,193 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.0",
   "info": {
-    "version": "1.1.0",
+    "version": "2.0",
     "title": "Bridge",
-    "description": "###API Request and Response\n\nREST-like - Simple and predictable URLs to access data.\nThe Bridge APIs uses GET and POST, and HTTP responses are UTF-8 encoded JSON objects.\n\n### Securing the APIs by using HTTPS\n\nHypertext Transfer Protocol Secure (HTTPS) is a variant of the standard web transfer protocol (HTTP) that adds a layer of security on the data in transit through the SSL/TLS protocol connection.\nBridge APIs use HTTPS to provide a stronger guarantee that a VASP is communicating with the real API and receiving back authentic contents. It also enhances privacy for applications and VASPs using the API.\n\n### Callback APIs\n\nVASPs require best-time updates and should avoid busy-waiting for the other party's compliance validation. We use a callback method to work around this issue and flag the VASP so it can proceed.\n\nThe beneficiary server can take as long as it needs to validate the permission request. When it finishes the validation, it will post the permission to Bridge's callback url, and Bridge will then relay the permission to the originator's callback url.\n\n### Authentication\n\nWe implement API Authentication with **API key**. All licensed exchanges must attach a valid **api-key** to every API call.\n\n## Data Confidentiality and Integrity\n\n### ECIES Encryption\n\nWe apply Elliptic Curve Integrated Encryption Scheme (ECIES) to encrypt all sensitive data between communication of VASPs.\n\nThis following diagram shows how ECIES works. ECC public/private key cryptography is used in conjunction with the Diffie-Hellman primitive to allow both sides to independently generate a shared secret key, for one-time use to encrypt data with a symmetric key algorithm.\n\n![](https://coolbitx.gitlab.io/sygna/bridge/api/images/ecies-sygna.png)\n\nWe have provided a JavaScript library on [NPM](https://www.npmjs.com/package/sygna-bridge-util) to handle ECIES encryption and decryption. You can take a look at the sample usage on the right or visit our [Github](https://github.com/CoolBitX-Technology/sygna-bridge-util/blob/master/src/crypto/ecies.js) for more information.\n\n### ECDSA Signature\n\nWe apply an ECDSA signature to ensure data integrity. All API calls must attach a *signature* signed by the requesting VASP's local private key, and every VASP can verify if the message received is valid by checking the signature and the corresponding public key.\n\nThe Digital Signature also provides message authentication (the receiver can verify the originator of the message) and non-repudiation (the sender cannot falsely claim that they have not signed the message).\n\nOur signing algorithm uses **secp256k1** Elliptic Curve with **SHA256** Hash function. The details of the signing process can also be found on our [Github](https://github.com/CoolBitX-Technology/sygna-bridge-util/blob/master/src/crypto/index.js).\n\nWith our library, we provide simple interfaces to deal with input parameters, help you convert them into JSON object strings and then go through the signing process. You will need to use different interfaces to get signatures of different API requests. These interfaces generally return a signed object, which has already inserted the signature for you, and will be ready to put into a request body.",
+    "description": "### API Request and Response\n\nREST-like - Simple and predictable URLs to access data.\nThe Bridge APIs uses GET and POST, and HTTP responses are UTF-8 encoded JSON objects.\n\n### Securing the APIs by using HTTPS\n\nHypertext Transfer Protocol Secure (HTTPS) is a variant of the standard web transfer protocol (HTTP) that adds a layer of security on the data in transit through the SSL/TLS protocol connection.\nBridge APIs use HTTPS to provide a stronger guarantee that a VASP is communicating with the real API and receiving back authentic contents. It also enhances privacy for applications and VASPs using the API.\n\n### Callback APIs\n\nVASPs require best-time updates and should avoid busy-waiting for the other party's compliance validation. We use a callback method to work around this issue and flag the VASP so it can proceed.\n\nThe beneficiary server can take as long as it needs to validate the permission request. When it finishes the validation, it will post the permission to Bridge's callback url, and Bridge will then relay the permission to the originator's callback url.\n\n### Authentication\n\nWe implement API Authentication with **API key**. All licensed exchanges must attach a valid **api-key** to every API call.\n\n## Data Confidentiality and Integrity\n\n### ECIES Encryption\n\nWe apply Elliptic Curve Integrated Encryption Scheme (ECIES) to encrypt all sensitive data between communication of VASPs.\n\nThis following diagram shows how ECIES works. ECC public/private key cryptography is used in conjunction with the Diffie-Hellman primitive to allow both sides to independently generate a shared secret key, for one-time use to encrypt data with a symmetric key algorithm.\n\n![](https://coolbitx.gitlab.io/sygna/bridge/api/images/ecies-sygna.png)\n\nWe have provided a JavaScript library on [NPM](https://www.npmjs.com/package/sygna-bridge-util) to handle ECIES encryption and decryption. You can take a look at the sample usage on the right or visit our [Github](https://github.com/CoolBitX-Technology/sygna-bridge-util/blob/master/src/crypto/ecies.js) for more information.\n\n### ECDSA Signature\n\nWe apply an ECDSA signature to ensure data integrity. All API calls must attach a *signature* signed by the requesting VASP's local private key, and every VASP can verify if the message received is valid by checking the signature and the corresponding public key.\n\nThe Digital Signature also provides message authentication (the receiver can verify the originator of the message) and non-repudiation (the sender cannot falsely claim that they have not signed the message).\n\nOur signing algorithm uses **secp256k1** Elliptic Curve with **SHA256** Hash function. The details of the signing process can also be found on our [Github](https://github.com/CoolBitX-Technology/sygna-bridge-util/blob/master/src/crypto/index.js).\n\nWith our library, we provide simple interfaces to deal with input parameters, help you convert them into JSON object strings and then go through the signing process. You will need to use different interfaces to get signatures of different API requests. These interfaces generally return a signed object, which has already inserted the signature for you, and will be ready to put into a request body.",
     "contact": {}
   },
-  "host": "test-api.sygna.io",
-  "basePath": "/sb/api/v1.1.0",
-  "schemes": [
-    "https"
-  ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
+  "servers": [
+    {
+      "url": "https://test-api.sygna.io/v2",
+      "description": "Bridge Sandbox server"
+    },
+    {
+      "url": "https://{VASP-server}/v2",
+      "description": "VASP Sandbox server"
+    }
   ],
   "paths": {
     "/bridge/vasp": {
       "get": {
-        "description": "Request information of one or more Virtual Assets Service Provider.",
+        "description": "Retrieve information of one or more Virtual Assets Service Provider.",
         "summary": "Bridge/VASP",
         "tags": [
           "Bridge"
         ],
         "operationId": "Bridge/VASP",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
+        "security": [
           {
-            "name": "api-key",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": "64 chars long API key provided by Sygna Bridge."
+            "ApiKeyAuth": []
           }
         ],
+        "deprecated": false,
         "responses": {
           "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/Bridge-VASP"
-            },
-            "examples": {
+            "description": "An arry of object containing information of one or more VASP",
+            "content": {
               "application/json": {
-                "vasp_data": [
-                  {
-                    "vasp_code": "VASPJPJT4",
-                    "vasp_name": "VASP4 in Tokyo, Japan",
-                    "vasp_pubkey": "04670af26edc74b1ae4e4acb6cef65dc0c3914528296aa48a6412f00cf0576d735d99e7cdd9da3daaef6fded244553597be9272d6cd2065a52cc7157264a2a4836"
-                  },
-                  {
-                    "vasp_code": "VASPUSNY1",
-                    "vasp_name": "VASP1 in New York, USA",
-                    "vasp_pubkey": "048709ef46f46c7e89b58987b606dc54eda62f88424517667305d91b3e86b8847f1b44a9659831880a15885ec43a722f76c356ec0ee373a273a0a7900dcd077339"
-                  },
-                  {
-                    "vasp_code": "SVCEJPJT",
-                    "vasp_name": "SBIVC",
-                    "vasp_pubkey": "0480664cd8fd8c93f0220eb0c2bab467608d90a291ea037b9932387f56a656f35e9a976a1623232643f82b1da0cf5b9a3bf2bda2b5cf30e5ee85a0d5a2011ea4f1"
-                  },
-                  {
-                    "vasp_code": "VASPUSNY2",
-                    "vasp_name": "VASP2 in New York, USA",
-                    "vasp_pubkey": "04b1f14590a37c5c5fdcdc4f6d606eb383a79d5f6d72c210ec4fab47c2e9a59b4fd1149d8e8fa31ac1a04a9142cda2a479c642fb606eaac14c874fd7426e379f54"
-                  },
-                  {
-                    "vasp_code": "VASPJPJT3",
-                    "vasp_name": "VASP3 in Tokyo, Japan",
-                    "vasp_pubkey": "04247bc554740852792dee49b8359cb25c74f2335d2c6e2025cd0880a06c8da1d51d461f720046c84da1dab106dfdac0452c92f09de7022a4cef5c4f3f6f3064d5"
+                "schema": {
+                  "$ref": "#/components/schemas/Ref-VASP"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "vasp_data": [
+                        {
+                          "vasp_code": "VASPJPJT4",
+                          "vasp_name": "VASP4 in Tokyo, Japan",
+                          "vasp_pubkey": "04670af26edc74b1ae4e4acb6cef65dc0c3914528296aa48a6412f00cf0576d735d99e7cdd9da3daaef6fded244553597be9272d6cd2065a52cc7157264a2a4836"
+                        },
+                        {
+                          "vasp_code": "VASPUSNY1",
+                          "vasp_name": "VASP1 in New York, USA",
+                          "vasp_pubkey": "048709ef46f46c7e89b58987b606dc54eda62f88424517667305d91b3e86b8847f1b44a9659831880a15885ec43a722f76c356ec0ee373a273a0a7900dcd077339"
+                        },
+                        {
+                          "vasp_code": "SVCEJPJT",
+                          "vasp_name": "SBIVC",
+                          "vasp_pubkey": "0480664cd8fd8c93f0220eb0c2bab467608d90a291ea037b9932387f56a656f35e9a976a1623232643f82b1da0cf5b9a3bf2bda2b5cf30e5ee85a0d5a2011ea4f1"
+                        },
+                        {
+                          "vasp_code": "VASPUSNY2",
+                          "vasp_name": "VASP2 in New York, USA",
+                          "vasp_pubkey": "04b1f14590a37c5c5fdcdc4f6d606eb383a79d5f6d72c210ec4fab47c2e9a59b4fd1149d8e8fa31ac1a04a9142cda2a479c642fb606eaac14c874fd7426e379f54"
+                        },
+                        {
+                          "vasp_code": "VASPJPJT3",
+                          "vasp_name": "VASP3 in Tokyo, Japan",
+                          "vasp_pubkey": "04247bc554740852792dee49b8359cb25c74f2335d2c6e2025cd0880a06c8da1d51d461f720046c84da1dab106dfdac0452c92f09de7022a4cef5c4f3f6f3064d5"
+                        }
+                      ],
+                      "signature": "9fb61c13dc4f74a18413aca7179cd62ad22aa88ea67fe4e9ff6fa5e6ddf5d2706d175d8965c3eadf0c1370b52a2ab211697b520633c74d00d2bfb120e610dae6",
+                      "timestamp": 1584002280274
+                    }
                   }
-                ],
-                "signature": "9fb61c13dc4f74a18413aca7179cd62ad22aa88ea67fe4e9ff6fa5e6ddf5d2706d175d8965c3eadf0c1370b52a2ab211697b520633c74d00d2bfb120e610dae6",
-                "timestamp": 1584002280274
-              }
-            },
-            "headers": {
-              "Content-Length": {
-                "type": "string",
-                "default": "1188"
-              },
-              "Connection": {
-                "type": "string",
-                "default": "keep-alive"
-              },
-              "Date": {
-                "type": "string",
-                "default": "Fri, 23 Aug 2019 06:51:14 GMT"
-              },
-              "x-amzn-RequestId": {
-                "type": "string",
-                "default": "6652b300-c572-11e9-ac20-ddcb42cc31de"
-              },
-              "x-amz-apigw-id": {
-                "type": "string",
-                "default": "e3LzZEoMNjMFtZg="
-              },
-              "X-Amzn-Trace-Id": {
-                "type": "string",
-                "default": "Root=1-5d5f8ce2-16c4d778a314065e37d8f0f5;Sampled=0"
-              },
-              "X-Cache": {
-                "type": "string",
-                "default": "Miss from cloudfront"
-              },
-              "Via": {
-                "type": "string",
-                "default": "1.1 e20d69d2fa2e195b7488aaa53586c336.cloudfront.net (CloudFront)"
-              },
-              "X-Amz-Cf-Pop": {
-                "type": "string",
-                "default": "LHR4"
-              },
-              "X-Amz-Cf-Id": {
-                "type": "string",
-                "default": "rukHYBDr9BHco5IDKl---XVUnNMaT9GmdtGWZ2yrMQvobS0FKNc2fQ=="
+                }
               }
             }
           }
         }
       }
     },
+    "/bridge/currencies" : {
+      "get" : {
+        "summary" : "Bridge/Currencies",
+        "tags": [
+          "Bridge"
+        ],
+        "operationId" : "bridge/currencies",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "description" : "Retrieve Sygna all available cryptocurrencies and its definitions",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "currency_symbol",
+          "description" : "crypto currency symbol",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "BTC"
+          }
+        }, {
+          "in" : "query",
+          "name" : "currency_id",
+          "description" : "crypto currency id",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "sygna:000001"
+          }
+        }, {
+          "in" : "query",
+          "name" : "currency_name",
+          "description" : "crypto currency name",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "Bitcoin"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "get supported currencies successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/CurrencyItem"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
+      }
+    },
     "/bridge/vasp/beneficiary-endpoint-url": {
       "post": {
-        "description": "This allows VASP to update the Beneficiary's callback URL programmatically.",
+        "description": "This allows VASP to update the any of Beneficiary's callback URL programmatically.",
         "summary": "Bridge/VASP/BeneficiaryEndpointUrl",
         "tags": [
           "Bridge"
         ],
         "operationId": "Bridge/BeneficiaryEndpointUrl",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
+        "security": [
           {
-            "name": "api-key",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": "(Required) 64 chars long API key provided by Sygna Bridge."
-          },
-          {
-            "name": "Body",
-            "in": "body",
-            "required": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/Bridge-BeneficiaryEndpointUrlReq"
-            }
+            "ApiKeyAuth": []
           }
         ],
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Ref-BeneficiaryEndpointUrlReq"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Ref-BeneficiaryEndpointUrlTx"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "",
-            "examples": {
+            "content": {
               "application/json": {
-                "status": "OK"
-              }
-            },
-            "headers": {
-              "Content-Length": {
-                "type": "string",
-                "default": "15"
-              },
-              "Connection": {
-                "type": "string",
-                "default": "keep-alive"
-              },
-              "Date": {
-                "type": "string",
-                "default": "Wed, 22 Apr 2020 05:59:44 GMT"
-              },
-              "x-amzn-RequestId": {
-                "type": "string",
-                "default": "a46e950a-64bf-4ed6-9d53-fd7e697112e4"
-              },
-              "x-amz-apigw-id": {
-                "type": "string",
-                "default": "LX-EjFnJtjMFkXw="
-              },
-              "X-Amzn-Trace-Id": {
-                "type": "string",
-                "default": "Root=1-5e9fdd50-cd569d608e14ce8005e932f4;Sampled=0"
-              },
-              "X-Cache": {
-                "type": "string",
-                "default": "Miss from cloudfront"
-              },
-              "Via": {
-                "type": "string",
-                "default": "1.1 d8bc31f1690f46d533b518410accf19f.cloudfront.net (CloudFront)"
-              },
-              "X-Amz-Cf-Pop": {
-                "type": "string",
-                "default": "SIN2-C1"
-              },
-              "X-Amz-Cf-Id": {
-                "type": "string",
-                "default": "XKp1Jy1-SHXUijPKPUkSfq6j6G7JAGeOSObJw3Qk7xnfPpf76QtvxQ=="
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
               }
             }
           }
-        },
-        "security": []
+        }
       }
     },
     "/bridge/transaction/status": {
@@ -220,104 +198,81 @@
           "Bridge"
         ],
         "operationId": "Bridge/Status",
-        "deprecated": false,
-        "produces": [
-          "application/json"
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
         ],
+        "deprecated": false,
         "parameters": [
           {
             "name": "transfer_id",
             "in": "query",
             "required": true,
-            "type": "string",
-            "description": "Unique `transfer_id` from [Bridge/PermissionRequest](ref:bridgepermissionrequest-3)"
-          },
-          {
-            "name": "api-key",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
+            "description": "Unique `transfer_id` from [Bridge/PermissionRequest](ref:bridgepermissionrequest-3)",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "",
-            "schema": {
-              "$ref": "#/definitions/Bridge-Status"
-            },
-            "examples": {
+            "content": {
               "application/json": {
-                "transferData": {
-                  "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1",
-                  "private_info": "045f5964c9ad8c2e66220996a0d16e34358dfc58d01071424378b3317a4620c6a08d8d0c03d5eb5a0eaa38b8f163eafabf7d1718852c5ab322803eeb20a1c159ff753e47f9968104aae450cf4e46b1f58e1f33b063ec917fec1cf2ce298582ab0b526c9b49d8c6d5595090eb09003f20a1d3dd90569ca7db195872be985db39aeb0ffb378160dd0f3f1df521ecbb53ac0a82f27889c7e0b65f2114e4620ba02639430e47159c24461db34479f3ff6036c7ae962bed4159d0e58acef2bc58c938fea85103ab",
-                  "transaction": {
-                    "originator_vasp_code": "VASPUSNY1",
-                    "originator_addrs": [
-                      "3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D"
-                    ],
-                    "originator_addrs_extra": {"DT": "001"},
-                    "beneficiary_vasp_code": "VASPUSNY2",
-                    "beneficiary_addrs": [
-                      "3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf"
-                    ],
-                    "beneficiary_addrs_extra": {"DT": "002"},
-                    "transaction_currency": "0x80000000",
-                    "amount": 1
-                  },
-                  "data_dt": "2019-07-29T06:29:00.123Z",
-                  "expire_date": 1582218947,
-                  "permission_request_data_signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336",
-                  "permission_status": "ACCEPTED",
-                  "permission_signature": "20fe27be0af5f11657a21ab6d9f09b712406cbcbd3be2ffd30ecf7e59dfe135433f6ec14948fddf4e119d318374e02b7e3528dcf3e3b44698b420b97d985300c",
-                  "txid": null,
-                  "txid_signature": null,
-                  "created_at": "2019-09-20T02:08:19.05Z",
-                  "transfer_to_originator_time": "2019-09-20T02:08:25.276Z"
+                "schema": {
+                  "$ref": "#/components/schemas/Ref-PermissionRequestStatus"
                 },
-                "signature": "64ed8fd76816bd32ca033764ac0b1ce6b7987a83714c2abd2ef8ee06628fd1c73e3a8dabe13b344f2701f7d32388270a07b138bd83b5350d75f80d94614d8281"
-              }
-            },
-            "headers": {
-              "Content-Length": {
-                "type": "string",
-                "default": "1425"
-              },
-              "Connection": {
-                "type": "string",
-                "default": "keep-alive"
-              },
-              "Date": {
-                "type": "string",
-                "default": "Fri, 20 Sep 2019 02:11:13 GMT"
-              },
-              "x-amzn-RequestId": {
-                "type": "string",
-                "default": "f695118b-9620-4c92-8952-a39ef99cc136"
-              },
-              "x-amz-apigw-id": {
-                "type": "string",
-                "default": "AS1CLGbMNjMFZxQ="
-              },
-              "X-Amzn-Trace-Id": {
-                "type": "string",
-                "default": "Root=1-5d843541-148a287cc21e1625067ce278;Sampled=0"
-              },
-              "X-Cache": {
-                "type": "string",
-                "default": "Miss from cloudfront"
-              },
-              "Via": {
-                "type": "string",
-                "default": "1.1 02ac86bea963223791833437798adf9f.cloudfront.net (CloudFront)"
-              },
-              "X-Amz-Cf-Pop": {
-                "type": "string",
-                "default": "LHR61-C2"
-              },
-              "X-Amz-Cf-Id": {
-                "type": "string",
-                "default": "xJ2hblRoyXfBEYrmwBP-jFDdsOh1aSQvjdGqyCcMBi3Ud5oM1Gkx1g=="
+                "examples": {
+                  "response": {
+                    "value": {
+                      "transferData": {
+                        "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1",
+                        "private_info": "045f5964c9ad8c2e66220996a0d16e34358dfc58d01071424378b3317a4620c6a08d8d0c03d5eb5a0eaa38b8f163eafabf7d1718852c5ab322803eeb20a1c159ff753e47f9968104aae450cf4e46b1f58e1f33b063ec917fec1cf2ce298582ab0b526c9b49d8c6d5595090eb09003f20a1d3dd90569ca7db195872be985db39aeb0ffb378160dd0f3f1df521ecbb53ac0a82f27889c7e0b65f2114e4620ba02639430e47159c24461db34479f3ff6036c7ae962bed4159d0e58acef2bc58c938fea85103ab",
+                        "transaction": {
+                          "originator_vasp": {
+                            "vasp_code": "VASPJPJT4",
+                            "addrs": [
+                              {
+                                "address": "bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4",
+                                "addrs_extra_info": [
+                                  {
+                                    "memo_text": "634346542"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "beneficiary_vasp": {
+                            "vasp_code": "VASPJPJT3",
+                            "addrs": [
+                              {
+                                "address": "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce",
+                                "addrs_extra_info": [
+                                  {
+                                    "memo_text": "Idzl1532434853"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "currency_id": "sygna:0x800002ca.bnb1u9j9hkst6gf09dkdvxlj7puk8c7vh68a0kkmht",
+                          "amount": "0.1234"
+                        },
+                        "data_dt": "2019-07-29T06:29:00.123Z",
+                        "expire_date": 1582218947,
+                        "permission_request_data_signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336",
+                        "permission_status": "ACCEPTED",
+                        "permission_signature": "20fe27be0af5f11657a21ab6d9f09b712406cbcbd3be2ffd30ecf7e59dfe135433f6ec14948fddf4e119d318374e02b7e3528dcf3e3b44698b420b97d985300c",
+                        "txid": null,
+                        "txid_signature": null,
+                        "created_at": "2019-09-20T02:08:19.050Z",
+                        "transfer_to_originator_time": "2019-09-20T02:08:25.276Z"
+                      },
+                      "signature": "64ed8fd76816bd32ca033764ac0b1ce6b7987a83714c2abd2ef8ee06628fd1c73e3a8dabe13b344f2701f7d32388270a07b138bd83b5350d75f80d94614d8281"
+                    }
+                  }
+                }
               }
             }
           }
@@ -332,86 +287,37 @@
           "Bridge"
         ],
         "operationId": "Bridge/PermissionRequest",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
+        "security": [
           {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          },
-          {
-            "name": "api-key",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          },
-          {
-            "name": "Body",
-            "in": "body",
-            "required": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/Bridge-PermissionRequestRef"
-            }
+            "ApiKeyAuth": []
           }
         ],
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ref-PermissionRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "",
-            "schema": {
-              "$ref": "#/definitions/Bridge-PermissionRequest"
-            },
-            "examples": {
+            "content": {
               "application/json": {
-                "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1"
-              }
-            },
-            "headers": {
-              "Content-Length": {
-                "type": "string",
-                "default": "82"
-              },
-              "Connection": {
-                "type": "string",
-                "default": "keep-alive"
-              },
-              "Date": {
-                "type": "string",
-                "default": "Fri, 20 Sep 2019 02:08:19 GMT"
-              },
-              "x-amzn-RequestId": {
-                "type": "string",
-                "default": "b429b641-da31-45e3-9c3f-ee27f85dc7bf"
-              },
-              "x-amz-apigw-id": {
-                "type": "string",
-                "default": "AS0mkGiYtjMFcnQ="
-              },
-              "X-Amzn-Trace-Id": {
-                "type": "string",
-                "default": "Root=1-5d843490-609b8bababe5263ff8a41e25;Sampled=0"
-              },
-              "X-Cache": {
-                "type": "string",
-                "default": "Miss from cloudfront"
-              },
-              "Via": {
-                "type": "string",
-                "default": "1.1 02ac86bea963223791833437798adf9f.cloudfront.net (CloudFront)"
-              },
-              "X-Amz-Cf-Pop": {
-                "type": "string",
-                "default": "LHR61-C2"
-              },
-              "X-Amz-Cf-Id": {
-                "type": "string",
-                "default": "rdO0DHL7CDAcjQFneLFbsYal7rtkqB9aqhfcc4pfozd_Yx5ZUVdKPg=="
+                "schema": {
+                  "$ref": "#/components/schemas/Ref-PermissionRequestRes"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1"
+                    }
+                  }
+                }
               }
             }
           }
@@ -426,41 +332,37 @@
           "Bridge"
         ],
         "operationId": "Bridge/Permission",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
+        "security": [
           {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          },
-          {
-            "name": "api-key",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          },
-          {
-            "name": "Body",
-            "in": "body",
-            "required": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/Bridge-PermissionRef"
-            }
+            "ApiKeyAuth": []
           }
         ],
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ref-Permission"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "",
-            "examples": {
+            "content": {
               "application/json": {
-                "status":"OK"
+                "schema": {
+                  "$ref": "#/components/schemas/Ref-Status"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
               }
             }
           }
@@ -475,86 +377,37 @@
           "Bridge"
         ],
         "operationId": "Bridge/TransactionID",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
+        "security": [
           {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          },
-          {
-            "name": "api-key",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          },
-          {
-            "name": "Body",
-            "in": "body",
-            "required": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/Bridge-TransactionIDRequest"
-            }
+            "ApiKeyAuth": []
           }
         ],
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ref-TransactionID"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "",
-            "schema": {
-              "$ref": "#/definitions/Bridge-TransactionID"
-            },
-            "examples": {
+            "content": {
               "application/json": {
-                "status": "OK"
-              }
-            },
-            "headers": {
-              "Content-Length": {
-                "type": "string",
-                "default": "15"
-              },
-              "Connection": {
-                "type": "string",
-                "default": "keep-alive"
-              },
-              "Date": {
-                "type": "string",
-                "default": "Fri, 23 Aug 2019 06:59:39 GMT"
-              },
-              "x-amzn-RequestId": {
-                "type": "string",
-                "default": "91ab3ca3-c573-11e9-bce2-6db4d920a2ed"
-              },
-              "x-amz-apigw-id": {
-                "type": "string",
-                "default": "e3NB3FHCNjMFg_Q="
-              },
-              "X-Amzn-Trace-Id": {
-                "type": "string",
-                "default": "Root=1-5d5f8ed8-58fe03efa05a4644b213df0f;Sampled=0"
-              },
-              "X-Cache": {
-                "type": "string",
-                "default": "Miss from cloudfront"
-              },
-              "Via": {
-                "type": "string",
-                "default": "1.1 1277de71b2472d19ca0bfc510db9ec54.cloudfront.net (CloudFront)"
-              },
-              "X-Amz-Cf-Pop": {
-                "type": "string",
-                "default": "FRA6-C1"
-              },
-              "X-Amz-Cf-Id": {
-                "type": "string",
-                "default": "p4dwzw3jEzQeZBzAdN-khTn8UK68HHhWDLJt4mbDkr0pqQl2hcYF7g=="
+                "schema": {
+                  "$ref": "#/components/schemas/Ref-Status"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
               }
             }
           }
@@ -569,78 +422,44 @@
           "Bridge"
         ],
         "operationId": "Bridge/Retry",
-        "deprecated": false,
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
+        "security": [
           {
-            "name": "api-key",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          },
-          {
-            "name": "Body",
-            "in": "body",
-            "required": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/Bridge-RetryRequest"
-            }
+            "ApiKeyAuth": []
           }
         ],
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ref-RetryRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "",
-            "schema": {
-            },
-            "examples": {
+            "content": {
               "application/json": {
-                "retryItems": 2
-              }
-            },
-            "headers": {
-              "Content-Length": {
-                "type": "string",
-                "default": "82"
-              },
-              "Connection": {
-                "type": "string",
-                "default": "keep-alive"
-              },
-              "Date": {
-                "type": "string",
-                "default": "Fri, 20 Sep 2019 02:08:19 GMT"
-              },
-              "x-amzn-RequestId": {
-                "type": "string",
-                "default": "b429b641-da31-45e3-9c3f-ee27f85dc7bf"
-              },
-              "x-amz-apigw-id": {
-                "type": "string",
-                "default": "AS0mkGiYtjMFcnQ="
-              },
-              "X-Amzn-Trace-Id": {
-                "type": "string",
-                "default": "Root=1-5d843490-609b8bababe5263ff8a41e25;Sampled=0"
-              },
-              "X-Cache": {
-                "type": "string",
-                "default": "Miss from cloudfront"
-              },
-              "Via": {
-                "type": "string",
-                "default": "1.1 02ac86bea963223791833437798adf9f.cloudfront.net (CloudFront)"
-              },
-              "X-Amz-Cf-Pop": {
-                "type": "string",
-                "default": "LHR61-C2"
-              },
-              "X-Amz-Cf-Id": {
-                "type": "string",
-                "default": "rdO0DHL7CDAcjQFneLFbsYal7rtkqB9aqhfcc4pfozd_Yx5ZUVdKPg=="
+                "schema": {
+                  "properties": {
+                    "retryItems": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "retryItems"
+                  ]
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "retryItems": 2
+                    }
+                  }
+                }
               }
             }
           }
@@ -656,47 +475,71 @@
         ],
         "operationId": "Beneficiary/PermissionRequest",
         "deprecated": false,
-        "produces": [
-          "application/json; charset=utf-8"
-        ],
-        "parameters": [
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          },
-          {
-            "name": "Body",
-            "in": "body",
-            "required": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/Beneficiary-PermissionRequest"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ref-Beneficiary-PermissionRequest"
+              }
             }
-          }
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "",
-            "examples": {
-              "application/json; charset=utf-8": {
-                "status": "OK"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ref-Status"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
               }
-            },
-            "headers": {
-              "Content-Length": {
-                "type": "string",
-                "default": "1"
-              },
-              "Date": {
-                "type": "string",
-                "default": "Mon, 26 Aug 2019 03:02:02 GMT"
-              },
-              "Connection": {
-                "type": "string",
-                "default": "keep-alive"
+            }
+          }
+        }
+      }
+    },
+    "/beneficiary/transaction/txid": {
+      "post": {
+        "description": "After originator VASP Submit transaction ID on the blockchain and post to Bridge, Bridge will relay the data to corresponding beneficiary server.",
+        "summary": "Beneficiary/TransactionID",
+        "tags": [
+          "VASP API"
+        ],
+        "operationId": "Beneficiary/TransactionID",
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ref-TransactionID"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ref-Status"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
               }
             }
           }
@@ -712,814 +555,36 @@
         ],
         "operationId": "Originator/Permission",
         "deprecated": false,
-        "produces": [
-          "application/json; charset=utf-8"
-        ],
-        "parameters": [
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          },
-          {
-            "name": "Body",
-            "in": "body",
-            "required": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/Originator-PermissionRequest"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ref-Permission"
+              }
             }
-          }
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "",
-            "schema": {
-              "$ref": "#/definitions/Originator-Permission"
-            },
-            "examples": {
-              "application/json; charset=utf-8": {
-                "status": "OK"
-              }
-            },
-            "headers": {
-              "Content-Length": {
-                "type": "string",
-                "default": "21"
-              },
-              "Date": {
-                "type": "string",
-                "default": "Mon, 26 Aug 2019 03:45:50 GMT"
-              },
-              "Connection": {
-                "type": "string",
-                "default": "keep-alive"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ref-Status"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
               }
             }
           }
         }
       }
-    }
-  },
-  "definitions": {
-    "Bridge-VASP": {
-      "title": "Bridge/VASP",
-      "example": {
-        "vasp_data": [
-          {
-            "vasp_code": "VASPJPJT4",
-            "vasp_name": "VASP4 in Tokyo, Japan",
-            "vasp_pubkey": "04670af26edc74b1ae4e4acb6cef65dc0c3914528296aa48a6412f00cf0576d735d99e7cdd9da3daaef6fded244553597be9272d6cd2065a52cc7157264a2a4836"
-          },
-          {
-            "vasp_code": "VASPUSNY1",
-            "vasp_name": "VASP1 in New York, USA",
-            "vasp_pubkey": "048709ef46f46c7e89b58987b606dc54eda62f88424517667305d91b3e86b8847f1b44a9659831880a15885ec43a722f76c356ec0ee373a273a0a7900dcd077339"
-          },
-          {
-            "vasp_code": "SVCEJPJT",
-            "vasp_name": "SBIVC",
-            "vasp_pubkey": "0480664cd8fd8c93f0220eb0c2bab467608d90a291ea037b9932387f56a656f35e9a976a1623232643f82b1da0cf5b9a3bf2bda2b5cf30e5ee85a0d5a2011ea4f1"
-          },
-          {
-            "vasp_code": "VASPUSNY2",
-            "vasp_name": "VASP2 in New York, USA",
-            "vasp_pubkey": "04b1f14590a37c5c5fdcdc4f6d606eb383a79d5f6d72c210ec4fab47c2e9a59b4fd1149d8e8fa31ac1a04a9142cda2a479c642fb606eaac14c874fd7426e379f54"
-          },
-          {
-            "vasp_code": "VASPJPJT3",
-            "vasp_name": "VASP3 in Tokyo, Japan",
-            "vasp_pubkey": "04247bc554740852792dee49b8359cb25c74f2335d2c6e2025cd0880a06c8da1d51d461f720046c84da1dab106dfdac0452c92f09de7022a4cef5c4f3f6f3064d5"
-          }
-        ],
-        "signature": "9fb61c13dc4f74a18413aca7179cd62ad22aa88ea67fe4e9ff6fa5e6ddf5d2706d175d8965c3eadf0c1370b52a2ab211697b520633c74d00d2bfb120e610dae6",
-        "timestamp": 1584002280274
-      },
-      "type": "object",
-      "properties": {
-        "vasp_data": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/VaspDatum"
-          }
-        },
-        "signature": {
-          "type": "string"
-        },
-        "timestamp": {
-          "type": "integer",
-          "format":"int64"
-        }
-      },
-      "required": [
-        "vasp_data",
-        "signature"
-      ]
-    },
-    "VaspDatum": {
-      "title": "VaspDatum",
-      "example": {
-        "vasp_code": "VASPJPJT4",
-        "vasp_name": "VASP4 in Tokyo, Japan",
-        "vasp_pubkey": "04670af26edc74b1ae4e4acb6cef65dc0c3914528296aa48a6412f00cf0576d735d99e7cdd9da3daaef6fded244553597be9272d6cd2065a52cc7157264a2a4836"
-      },
-      "type": "object",
-      "properties": {
-        "vasp_code": {
-          "type": "string"
-        },
-        "vasp_name": {
-          "type": "string"
-        },
-        "vasp_pubkey": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "vasp_code",
-        "vasp_name",
-        "vasp_pubkey"
-      ]
-    },
-    "Bridge-BeneficiaryEndpointUrlReq": {
-      "title": "Body Parameters Of BeneficiaryEndpointUrl",
-      "example": {
-        "vasp_code":"VASPUSNY1",
-        "beneficiary_endpoint_url":"https://api.sygna.io/api/v1.1.0/bridge",
-        "signature":"6aa25cb51b54a9fb651dcebbaf904b2616fcfde5c5fadc984742e133c9af93992489f9979f53c6bd3d3922eaadb192d0187b2a4debe640aa459cfeb29cf8dfd6"
-      },
-      "type": "object",
-      "properties": {
-        "vasp_code": {
-          "type": "string"
-        },
-        "beneficiary_endpoint_url": {
-          "type": "string"
-        },
-        "signature": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "vasp_code",
-        "beneficiary_endpoint_url",
-        "signature"
-      ]
-    },
-    "Bridge-Status": {
-      "title": "Bridge/Status",
-      "example": {
-        "transferData": {
-          "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1",
-          "private_info": "045f5964c9ad8c2e66220996a0d16e34358dfc58d01071424378b3317a4620c6a08d8d0c03d5eb5a0eaa38b8f163eafabf7d1718852c5ab322803eeb20a1c159ff753e47f9968104aae450cf4e46b1f58e1f33b063ec917fec1cf2ce298582ab0b526c9b49d8c6d5595090eb09003f20a1d3dd90569ca7db195872be985db39aeb0ffb378160dd0f3f1df521ecbb53ac0a82f27889c7e0b65f2114e4620ba02639430e47159c24461db34479f3ff6036c7ae962bed4159d0e58acef2bc58c938fea85103ab",
-          "transaction": {
-            "originator_vasp_code": "VASPUSNY1",
-            "originator_addrs": [
-              "3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D"
-            ],
-            "originator_addrs_extra": {"DT": "001"},
-            "beneficiary_vasp_code": "VASPUSNY2",
-            "beneficiary_addrs": [
-              "3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf"
-            ],
-            "beneficiary_addrs_extra": {"DT": "002"},
-            "transaction_currency": "0x80000000",
-            "amount": 1
-          },
-          "data_dt": "2019-07-29T06:29:00.123Z",
-          "permission_request_data_signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336",
-          "permission_status": "ACCEPTED",
-          "permission_signature": "20fe27be0af5f11657a21ab6d9f09b712406cbcbd3be2ffd30ecf7e59dfe135433f6ec14948fddf4e119d318374e02b7e3528dcf3e3b44698b420b97d985300c",
-          "txid": null,
-          "txid_signature": null,
-          "created_at": "2019-09-20T02:08:19.05Z",
-          "transfer_to_originator_time": "2019-09-20T02:08:25.276Z"
-        },
-        "signature": "64ed8fd76816bd32ca033764ac0b1ce6b7987a83714c2abd2ef8ee06628fd1c73e3a8dabe13b344f2701f7d32388270a07b138bd83b5350d75f80d94614d8281"
-      },
-      "type": "object",
-      "properties": {
-        "transferData": {
-          "$ref": "#/definitions/TransferData"
-        },
-        "signature": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "transferData",
-        "signature"
-      ]
-    },
-    "TransferData": {
-      "title": "TransferData",
-      "example": {
-        "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1",
-        "private_info": "045f5964c9ad8c2e66220996a0d16e34358dfc58d01071424378b3317a4620c6a08d8d0c03d5eb5a0eaa38b8f163eafabf7d1718852c5ab322803eeb20a1c159ff753e47f9968104aae450cf4e46b1f58e1f33b063ec917fec1cf2ce298582ab0b526c9b49d8c6d5595090eb09003f20a1d3dd90569ca7db195872be985db39aeb0ffb378160dd0f3f1df521ecbb53ac0a82f27889c7e0b65f2114e4620ba02639430e47159c24461db34479f3ff6036c7ae962bed4159d0e58acef2bc58c938fea85103ab",
-        "transaction": {
-          "originator_addrs": [
-            "3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D"
-          ],
-          "amount": 9,
-          "beneficiary_addrs": [
-            "3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf"
-          ],
-          "beneficiary_vasp_code": "VASPUSNY2",
-          "transaction_currency": "0x80000000",
-          "originator_vasp_code": "VASPUSNY1"
-        },
-        "data_dt": "2019-07-29T06:29:00.123Z",
-        "permission_request_data_signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336",
-        "permission_status": "ACCEPTED",
-        "permission_signature": "20fe27be0af5f11657a21ab6d9f09b712406cbcbd3be2ffd30ecf7e59dfe135433f6ec14948fddf4e119d318374e02b7e3528dcf3e3b44698b420b97d985300c",
-        "txid": null,
-        "txid_signature": null,
-        "created_at": "2019-09-20T02:08:19.05Z",
-        "transfer_to_originator_time": "2019-09-20T02:08:25.276Z"
-      },
-      "type": "object",
-      "properties": {
-        "transfer_id": {
-          "type": "string"
-        },
-        "private_info": {
-          "type": "string"
-        },
-        "transaction": {
-          "$ref": "#/definitions/TransactionRef"
-        },
-        "data_dt": {
-          "type": "string"
-        },
-        "expire_date": {
-          "type": "integer",
-          "format":"int64"
-        },
-        "permission_request_data_signature": {
-          "type": "string"
-        },
-        "permission_status": {
-          "type": "string"
-        },
-        "permission_signature": {
-          "type": "string"
-        },
-        "txid": {
-          "type": "string"
-        },
-        "txid_signature": {
-          "type": "string"
-        },
-        "created_at": {
-          "type": "string"
-        },
-        "transfer_to_originator_time": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "transfer_id",
-        "private_info",
-        "transaction",
-        "data_dt",
-        "permission_request_data_signature",
-        "permission_status",
-        "permission_signature",
-        "txid",
-        "txid_signature",
-        "created_at",
-        "transfer_to_originator_time"
-      ]
-    },
-    "Transaction": {
-      "title": "Transaction",
-      "description":"Please see [Transaction](ref:transaction)",
-      "example": {
-        "originator_vasp_code": "VASPUSNY1",
-        "originator_addrs": [
-          "3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D"
-        ],
-        "originator_addrs_extra": {"DT": "001"},
-        "beneficiary_vasp_code": "VASPUSNY2",
-        "beneficiary_addrs": [
-          "3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf"
-        ],
-        "beneficiary_addrs_extra": {"DT": "002"},
-        "transaction_currency": "0x80000000",
-        "amount": 1
-      },
-      "type": "object",
-      "properties": {
-        "private_info": {
-          "type": "string",
-          "description":"ECIES encoded [Private Information](ref:private-information)"
-        },
-        "transaction": {
-          "$ref": "#/definitions/TransactionRef"
-        },
-        "signature": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "private_info",
-        "transaction",
-        "signature"
-      ]
-    },
-    "Bridge-PermissionRequestRef": {
-      "title": "",
-      "example": {
-        "data": {
-          "private_info": "04f76bf0372c4d4679a172aaaf7fe4746cb83f2a2e5d6a5afcfe6bba72ad4c540d7940853f5fd1f4928c541c39efae81e9165598bad256fab77f6d5c4bd8d135b0553e61bbaeb6d573c71b23d656ed9e4ac37f40106ebd3aab8839c77409a3890b5f056d4e11aaf87c6d29580869ec5f81d20ecaad266ba69e234a2eb627d5c7b95957d82fd1b69172f6bce480f74d9f4ea7d4d38300669c25723e91c5bce83ec8f29aedd4",
-          "transaction": {
-            "originator_vasp_code": "VASPJPJT4",
-            "originator_addrs": [
-              "3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D"
-            ],
-            "originator_addrs_extra": {"DT": "001"},
-            "beneficiary_vasp_code": "VASPJPJT3",
-            "beneficiary_addrs": [
-              "3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf"
-            ],
-            "beneficiary_addrs_extra": {"DT": "002"},
-            "transaction_currency": "0x80000000",
-            "amount": 0.1516
-          },
-          "data_dt": "2019-07-29T06:29:00.123Z",
-          "expire_date": 1582218947,
-          "signature": "ad44461b212b2360469540d4737f378a60ca0c69d802142198ed1f222c0b570c5078931e173d26e0f6600305f97184e3de32d028ffe38fe1d0cc86ead3b01ed8"
-        },
-        "callback": {
-          "callback_url": "http://ec2-3-19-59-48.us-east-2.compute.amazonaws.com:7676/api/v1.1.0/originator/transaction/permission",
-          "signature": "62bfe28b58d0e53b3b4fb0d246d954a4088d7d236769f394af2b4c230cc8093f27644596e695563ed37d0fe004b0c6c8b91873ef96315d32703a998c5e92e603"
-        }
-      },
-      "type": "object",
-      "properties": {
-        "data": {
-          "$ref": "#/definitions/Data"
-        },
-        "callback": {
-          "$ref": "#/definitions/Callback"
-        }
-      },
-      "required": [
-        "data",
-        "callback"
-      ]
-    },
-    "Data": {
-      "title": "Data",
-      "example": {
-        "private_info": "04f76bf0372c4d4679a172aaaf7fe4746cb83f2a2e5d6a5afcfe6bba72ad4c540d7940853f5fd1f4928c541c39efae81e9165598bad256fab77f6d5c4bd8d135b0553e61bbaeb6d573c71b23d656ed9e4ac37f40106ebd3aab8839c77409a3890b5f056d4e11aaf87c6d29580869ec5f81d20ecaad266ba69e234a2eb627d5c7b95957d82fd1b69172f6bce480f74d9f4ea7d4d38300669c25723e91c5bce83ec8f29aedd4",
-        "transaction": {
-          "originator_vasp_code": "VASPJPJT4",
-          "originator_addrs": [
-            "3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D"
-          ],
-          "originator_addrs_extra": {"DT": "001"},
-          "beneficiary_vasp_code": "VASPJPJT3",
-          "beneficiary_addrs": [
-            "3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf"
-          ],
-          "beneficiary_addrs_extra": {"DT": "002"},
-          "transaction_currency": "0x80000000",
-          "amount": 0.1516
-        },
-        "data_dt": "2019-07-29T06:29:00.123Z",
-        "expire_date": 1582218947,
-        "signature": "ad44461b212b2360469540d4737f378a60ca0c69d802142198ed1f222c0b570c5078931e173d26e0f6600305f97184e3de32d028ffe38fe1d0cc86ead3b01ed8"
-      },
-      "type": "object",
-      "properties": {
-        "private_info": {
-          "type": "string",
-          "description":"ECIES encoded [Private Information](ref:private-information)"
-        },
-        "transaction": {
-          "$ref": "#/definitions/TransactionRef"
-        },
-        "data_dt": {
-          "type": "string",
-          "description":"Timestamp when transaction was created in UTC time using ISO 8601 format(yyyy-MM-dd'T'hh:mm:ss.sssZ)"
-        },
-        "expire_date":{
-          "type": "integer",
-          "format": "int64",
-          "description":"Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires."
-        },
-        "signature": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "private_info",
-        "transaction",
-        "data_dt",
-        "signature"
-      ]
-    },
-    "TransactionRef": {
-      "title": "Transaction",
-      "description":"Please see [Transaction](ref:transaction)",
-      "example": {
-        "originator_vasp_code": "VASPJPJT4",
-        "originator_addrs": [
-          "3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D"
-        ],
-        "originator_addrs_extra": {"DT": "001"},
-        "beneficiary_vasp_code": "VASPJPJT3",
-        "beneficiary_addrs": [
-          "3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf"
-        ],
-        "beneficiary_addrs_extra": {"DT": "002"},
-        "transaction_currency": "0x80000000",
-        "amount": 0.1516
-      },
-      "type": "object",
-      "properties": {
-        "originator_vasp_code": {
-          "type": "string"
-        },
-        "originator_addrs": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "originator_addrs_extra": {
-          "type": "object",
-          "properties": {
-            "DT": {
-              "type": "string"
-            }
-          }
-        },
-        "beneficiary_vasp_code": {
-          "type": "string"
-        },
-        "beneficiary_addrs": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "beneficiary_addrs_extra": {
-          "type": "object",
-          "properties": {
-            "DT": {
-              "type": "string"
-            }
-          }
-        },
-        "transaction_currency": {
-          "type": "string"
-        },
-        "amount": {
-          "type": "number",
-          "format": "double"
-        }
-      },
-      "required": [
-        "originator_vasp_code",
-        "originator_addrs",
-        "beneficiary_vasp_code",
-        "beneficiary_addrs",
-        "transaction_currency",
-        "amount"
-      ]
-    },
-    "Callback": {
-      "title": "Callback",
-      "description":"Please see [Callback](ref:callback)",
-      "example": {
-        "callback_url": "http://ec2-3-19-59-48.us-east-2.compute.amazonaws.com:7676/api/v1.1.0/originator/transaction/permission",
-        "signature": "62bfe28b58d0e53b3b4fb0d246d954a4088d7d236769f394af2b4c230cc8093f27644596e695563ed37d0fe004b0c6c8b91873ef96315d32703a998c5e92e603"
-      },
-      "type": "object",
-      "properties": {
-        "callback_url": {
-          "type": "string"
-        },
-        "signature": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "callback_url",
-        "signature"
-      ]
-    },
-    "Bridge-PermissionRequest": {
-      "title": "Bridge/PermissionRequest",
-      "example": {
-        "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1"
-      },
-      "type": "object",
-      "properties": {
-        "transfer_id": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "transfer_id"
-      ]
-    },
-    "Bridge-PermissionRef": {
-      "title": "",
-      "example": {
-        "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
-        "permission_status": "ACCEPTED",
-        "signature": "309f14db5fe4c33e9ebd770d110a89a93c1c9f68b8e1aac18097c1078ffb5a292f4132501ab1e3bf1f9ee3c3f8a9fd9c3f94ac403a5370eb38a6cdece8d7d1cc"
-      },
-      "type": "object",
-      "properties": {
-        "transfer_id": {
-          "type": "string",
-          "description":"Unique transfer Id returned from Bridge/PermissionRequest api call."
-        },
-        "permission_status": {
-          "type": "string",
-          "description":"Status of the transfer permission. Currently available values: ACCEPTED, REJECTED." ,
-          "enum": [
-            "ACCEPTED",
-            "REJECTED"
-          ]
-        },
-        "expire_date": {
-          "type": "integer",
-          "format":"int64",
-          "description": "Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires."
-        },
-         "reject_code": {
-          "type": "string",
-          "description":"Only required when the permission_status is REJECTED, reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
-          "enum": [
-            "BVRC001",
-            "BVRC002",
-            "BVRC003",
-            "BVRC004",
-            "BVRC999"
-          ]
-        },
-         "reject_message": {
-          "type": "string",
-          "description":"Only required when the permission_status is REJECTED and reject_code is 'BVRC999', reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
-          "enum": [
-            "unsupported_currency",
-            "service_downtime",
-            "exceed_trading_volume",
-            "compliance_check_fail",
-            "other"
-          ]
-        },
-        "signature": {
-          "type": "string",
-          "description":"Signature of the object containing the previous 4 fields."
-        }
-      },
-      "required": [
-        "transfer_id",
-        "permission_status",
-        "signature"
-      ]
-    },
-    "Bridge-TransactionIDRequest": {
-      "title": "",
-      "example": {
-        "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
-        "txid": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
-        "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
-      },
-      "type": "object",
-      "properties": {
-        "transfer_id": {
-          "type": "string"
-        },
-        "txid": {
-          "type": "string"
-        },
-        "signature": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "transfer_id",
-        "txid",
-        "signature"
-      ]
-    },
-    "Bridge-TransactionID": {
-      "title": "Bridge/TransactionID",
-      "example": {
-        "status": "OK"
-      },
-      "type": "object",
-      "properties": {
-        "status": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "status"
-      ]
-    },
-    "Bridge-RetryRequest": {
-      "title": "",
-      "example": {
-        "vasp_code": "VASPJPJT3"
-      },
-      "type": "object",
-      "properties": {
-        "vasp_code": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "vasp_code"
-      ]
-    },
-    "Beneficiary-PermissionRequest": {
-      "title": "",
-      "example": {
-        "data": {
-          "private_info": "045f5964c9ad8c2e66220996a0d16e34358dfc58d01071424378b3317a4620c6a08d8d0c03d5eb5a0eaa38b8f163eafabf7d1718852c5ab322803eeb20a1c159ff753e47f9968104aae450cf4e46b1f58e1f33b063ec917fec1cf2ce298582ab0b526c9b49d8c6d5595090eb09003f20a1d3dd90569ca7db195872be985db39aeb0ffb378160dd0f3f1df521ecbb53ac0a82f27889c7e0b65f2114e4620ba02639430e47159c24461db34479f3ff6036c7ae962bed4159d0e58acef2bc58c938fea85103ab",
-          "transaction": {
-            "originator_vasp_code": "VASPUSNY1",
-            "originator_addrs": [
-              "3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D"
-            ],
-            "originator_addrs_extra": {"DT": "001"},
-            "beneficiary_vasp_code": "VASPUSNY2",
-            "beneficiary_addrs": [
-              "3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf"
-            ],
-            "beneficiary_addrs_extra": {"DT": "002"},
-            "transaction_currency": "0x80000000",
-            "amount": 9
-          },
-          "data_dt": "2019-07-29T06:29:00.123Z",
-          "expire_date": 1582218947,
-          "signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336"
-        },
-        "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1"
-      },
-      "type": "object",
-      "properties": {
-        "data": {
-          "$ref": "#/definitions/Data1"
-        },
-        "transfer_id": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "data",
-        "transfer_id"
-      ]
-    },
-    "Data1": {
-      "title": "Data",
-      "example": {
-        "private_info": "045f5964c9ad8c2e66220996a0d16e34358dfc58d01071424378b3317a4620c6a08d8d0c03d5eb5a0eaa38b8f163eafabf7d1718852c5ab322803eeb20a1c159ff753e47f9968104aae450cf4e46b1f58e1f33b063ec917fec1cf2ce298582ab0b526c9b49d8c6d5595090eb09003f20a1d3dd90569ca7db195872be985db39aeb0ffb378160dd0f3f1df521ecbb53ac0a82f27889c7e0b65f2114e4620ba02639430e47159c24461db34479f3ff6036c7ae962bed4159d0e58acef2bc58c938fea85103ab",
-        "transaction": {
-          "originator_vasp_code": "VASPUSNY1",
-          "originator_addrs": [
-            "3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D"
-          ],
-          "originator_addrs_extra": {"DT": "001"},
-          "beneficiary_vasp_code": "VASPUSNY2",
-          "beneficiary_addrs": [
-            "3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf"
-          ],
-          "beneficiary_addrs_extra": {"DT": "002"},
-          "transaction_currency": "0x80000000",
-          "amount": 9
-        },
-        "data_dt": "2019-07-29T06:29:00.123Z",
-        "expire_date": 1582218947,
-        "signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336"
-      },
-      "type": "object",
-      "properties": {
-        "private_info": {
-          "type": "string",
-          "description":"ECIES encoded [Private Information](ref:private-information)"
-        },
-        "transaction": {
-          "$ref": "#/definitions/TransactionRef"
-        },
-        "data_dt": {
-          "type": "string",
-          "description":"Timestamp when transaction was created in UTC time using ISO 8601 format(yyyy-MM-dd'T'hh:mm:ss.sssZ)"
-        },
-        "expire_date":{
-          "type": "integer",
-          "format": "int64",
-          "description":"Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires."
-        },
-        "signature": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "private_info",
-        "transaction",
-        "data_dt",
-        "signature"
-      ]
-    },
-    "Beneficiary-PermissionRequestRequest": {
-      "title": "Beneficiary/PermissionRequest",
-      "example": {
-        "status": "OK"
-      },
-      "type": "object",
-      "properties": {
-        "status": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "status"
-      ]
-    },
-    "Originator-PermissionRequest": {
-      "title": "",
-      "example": {
-        "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1",
-        "permission_status": "ACCEPTED",
-        "signature": "20fe27be0af5f11657a21ab6d9f09b712406cbcbd3be2ffd30ecf7e59dfe135433f6ec14948fddf4e119d318374e02b7e3528dcf3e3b44698b420b97d985300c"
-      },
-      "type": "object",
-      "properties": {
-        "transfer_id": {
-          "type": "string",
-          "description":"Unique transfer Id returned from Bridge/PermissionRequest api call."
-        },
-        "permission_status": {
-          "type": "string",
-          "description":"Status of the transfer permission. Currently available values: ACCEPTED, REJECTED." ,
-          "enum": [
-            "ACCEPTED",
-            "REJECTED"
-          ]
-        },
-        "expire_date": {
-          "type": "integer",
-          "format":"int64",
-          "description": "Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires."
-        },
-         "reject_code": {
-          "type": "string",
-          "description":"Only required when the permission_status is REJECTED, reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
-          "enum": [
-            "BVRC001",
-            "BVRC002",
-            "BVRC003",
-            "BVRC004",
-            "BVRC999"
-          ]
-        },
-         "reject_message": {
-          "type": "string",
-          "description":"Only required when the permission_status is REJECTED and reject_code is 'BVRC999', reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
-          "enum": [
-            "unsupported_currency",
-            "service_downtime",
-            "exceed_trading_volume",
-            "compliance_check_fail",
-            "other"
-          ]
-        },
-        "signature": {
-          "type": "string",
-          "description":"Signature of the object containing the previous fields."
-        }
-      },
-      "required": [
-        "transfer_id",
-        "permission_status",
-        "signature"
-      ]
-    },
-    "Originator-Permission": {
-      "title": "Originator/Permission",
-      "example": {
-        "status": "OK"
-      },
-      "type": "object",
-      "properties": {
-        "status": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "status"
-      ]
     }
   },
   "tags": [
@@ -1531,5 +596,807 @@
       "name": "VASP API",
       "description": "A Vasp **must implement the following 2 endpoints to fully function with Bridge** ecosystem, acting as a beneficiary and an originator accordingly.\n\nWe have provided a sample NodeJS based API on Github so you can take a look at how the two endpoints should process or callback Bridge."
     }
-  ]
+  ],
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "name": "x-api-key",
+        "in": "header"
+      }
+    },
+    "schemas": {
+      "Ref-VaspData": {
+        "title": "Vasp Data",
+        "example": {
+          "vasp_code": "VASPJPJT4",
+          "vasp_name": "VASP4 in Tokyo, Japan",
+          "vasp_pubkey": "04670af26edc74b1ae4e4acb6cef65dc0c3914528296aa48a6412f00cf0576d735d99e7cdd9da3daaef6fded244553597be9272d6cd2065a52cc7157264a2a4836"
+        },
+        "type": "object",
+        "properties": {
+          "vasp_code": {
+            "type": "string"
+          },
+          "vasp_name": {
+            "type": "string"
+          },
+          "vasp_pubkey": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "vasp_code",
+          "vasp_name",
+          "vasp_pubkey"
+        ]
+      },
+      "Ref-VASP": {
+        "title": "VASP",
+        "example": {
+          "vasp_data": [
+            {
+              "vasp_code": "VASPJPJT4",
+              "vasp_name": "VASP4 in Tokyo, Japan",
+              "vasp_pubkey": "04670af26edc74b1ae4e4acb6cef65dc0c3914528296aa48a6412f00cf0576d735d99e7cdd9da3daaef6fded244553597be9272d6cd2065a52cc7157264a2a4836"
+            },
+            {
+              "vasp_code": "VASPUSNY1",
+              "vasp_name": "VASP1 in New York, USA",
+              "vasp_pubkey": "048709ef46f46c7e89b58987b606dc54eda62f88424517667305d91b3e86b8847f1b44a9659831880a15885ec43a722f76c356ec0ee373a273a0a7900dcd077339"
+            },
+            {
+              "vasp_code": "SVCEJPJT",
+              "vasp_name": "SBIVC",
+              "vasp_pubkey": "0480664cd8fd8c93f0220eb0c2bab467608d90a291ea037b9932387f56a656f35e9a976a1623232643f82b1da0cf5b9a3bf2bda2b5cf30e5ee85a0d5a2011ea4f1"
+            },
+            {
+              "vasp_code": "VASPUSNY2",
+              "vasp_name": "VASP2 in New York, USA",
+              "vasp_pubkey": "04b1f14590a37c5c5fdcdc4f6d606eb383a79d5f6d72c210ec4fab47c2e9a59b4fd1149d8e8fa31ac1a04a9142cda2a479c642fb606eaac14c874fd7426e379f54"
+            },
+            {
+              "vasp_code": "VASPJPJT3",
+              "vasp_name": "VASP3 in Tokyo, Japan",
+              "vasp_pubkey": "04247bc554740852792dee49b8359cb25c74f2335d2c6e2025cd0880a06c8da1d51d461f720046c84da1dab106dfdac0452c92f09de7022a4cef5c4f3f6f3064d5"
+            }
+          ],
+          "signature": "9fb61c13dc4f74a18413aca7179cd62ad22aa88ea67fe4e9ff6fa5e6ddf5d2706d175d8965c3eadf0c1370b52a2ab211697b520633c74d00d2bfb120e610dae6",
+          "timestamp": 1584002280274
+        },
+        "type": "object",
+        "properties": {
+          "vasp_data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ref-VaspData"
+            }
+          },
+          "signature": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "required": [
+          "vasp_data",
+          "signature"
+        ]
+      },
+      "CurrencyItem" : {
+        "type" : "object",
+        "required" : [ "currency_id", "currency_name", "currency_symbol", "addr_extra_info" ],
+        "properties" : {
+          "currency_id" : {
+            "type" : "string",
+            "example" : "sygna:0x80000090"
+          },
+          "currency_name" : {
+            "type" : "string",
+            "example" : "XRP"
+          },
+          "currency_symbol" : {
+            "type" : "string",
+            "example" : "XRP"
+          },
+          "addr_extra_info" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "example" : "tag"
+            }
+          }
+        }
+      },
+      "Ref-BeneficiaryEndpointUrlReq": {
+        "title": "BeneficiaryEndpointUrl",
+        "example": {
+          "vasp_code": "VASPUSNY1",
+          "callback_permission_request_url": "https://{VASP-server}/v2/bridge",
+          "signature": "6aa25cb51b54a9fb651dcebbaf904b2616fcfde5c5fadc984742e133c9af93992489f9979f53c6bd3d3922eaadb192d0187b2a4debe640aa459cfeb29cf8dfd6"
+        },
+        "type": "object",
+        "properties": {
+          "vasp_code": {
+            "type": "string",
+            "minLength": 6
+          },
+          "callback_permission_request_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "signature": {
+            "type": "string",
+            "minLength": 128,
+            "maxLength": 128,
+            "pattern": "^[0123456789A-Fa-f]+$"
+          }
+        },
+        "required": [
+          "vasp_code",
+          "callback_permission_request_url",
+          "signature"
+        ],
+        "additionalProperties": false
+      },
+      "Ref-BeneficiaryEndpointUrlTx": {
+        "title": "BeneficiaryEndpointUrl",
+        "example": {
+          "vasp_code": "VASPUSNY1",
+          "callback_txid_url": "https://{VASP-server}/v2/bridge",
+          "signature": "6aa25cb51b54a9fb651dcebbaf904b2616fcfde5c5fadc984742e133c9af93992489f9979f53c6bd3d3922eaadb192d0187b2a4debe640aa459cfeb29cf8dfd6"
+        },
+        "type": "object",
+        "properties": {
+          "vasp_code": {
+            "type": "string",
+            "minLength": 6
+          },
+          "callback_txid_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "signature": {
+            "type": "string",
+            "minLength": 128,
+            "maxLength": 128,
+            "pattern": "^[0123456789A-Fa-f]+$"
+          }
+        },
+        "required": [
+          "vasp_code",
+          "callback_txid_url",
+          "signature"
+        ],
+        "additionalProperties": false
+      },
+      "Ref-PermissionRequestStatus": {
+        "title": "PermissionRequest Status",
+        "example": {
+          "transferData": {
+            "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1",
+            "private_info": "045f5964c9ad8c2e66220996a0d16e34358dfc58d01071424378b3317a4620c6a08d8d0c03d5eb5a0eaa38b8f163eafabf7d1718852c5ab322803eeb20a1c159ff753e47f9968104aae450cf4e46b1f58e1f33b063ec917fec1cf2ce298582ab0b526c9b49d8c6d5595090eb09003f20a1d3dd90569ca7db195872be985db39aeb0ffb378160dd0f3f1df521ecbb53ac0a82f27889c7e0b65f2114e4620ba02639430e47159c24461db34479f3ff6036c7ae962bed4159d0e58acef2bc58c938fea85103ab",
+            "transaction": {
+              "originator_vasp": {
+                "vasp_code": "VASPJPJT4",
+                "addrs": [
+                  {
+                    "address": "bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4",
+                    "addrs_extra_info": [
+                      {
+                        "memo_text": "634346542"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "beneficiary_vasp": {
+                "vasp_code": "VASPJPJT3",
+                "addrs": [
+                  {
+                    "address": "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce",
+                    "addrs_extra_info": [
+                      {
+                        "memo_text": "Idzl1532434853"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "currency_id": "sygna:0x800002ca.bnb1u9j9hkst6gf09dkdvxlj7puk8c7vh68a0kkmht",
+              "amount": "0.1234"
+            },
+            "data_dt": "2019-07-29T06:29:00.123Z",
+            "permission_request_data_signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336",
+            "permission_status": "ACCEPTED",
+            "permission_signature": "20fe27be0af5f11657a21ab6d9f09b712406cbcbd3be2ffd30ecf7e59dfe135433f6ec14948fddf4e119d318374e02b7e3528dcf3e3b44698b420b97d985300c",
+            "txid": null,
+            "txid_signature": null,
+            "created_at": "2019-09-20T02:08:19.050Z",
+            "transfer_to_originator_time": "2019-09-20T02:08:25.276Z"
+          },
+          "signature": "64ed8fd76816bd32ca033764ac0b1ce6b7987a83714c2abd2ef8ee06628fd1c73e3a8dabe13b344f2701f7d32388270a07b138bd83b5350d75f80d94614d8281"
+        },
+        "type": "object",
+        "properties": {
+          "transferData": {
+            "$ref": "#/components/schemas/Ref-TransferData"
+          },
+          "signature": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "transferData",
+          "signature"
+        ]
+      },
+      "Ref-TransferData": {
+        "title": "TransferData",
+        "example": {
+          "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1",
+          "private_info": "045f5964c9ad8c2e66220996a0d16e34358dfc58d01071424378b3317a4620c6a08d8d0c03d5eb5a0eaa38b8f163eafabf7d1718852c5ab322803eeb20a1c159ff753e47f9968104aae450cf4e46b1f58e1f33b063ec917fec1cf2ce298582ab0b526c9b49d8c6d5595090eb09003f20a1d3dd90569ca7db195872be985db39aeb0ffb378160dd0f3f1df521ecbb53ac0a82f27889c7e0b65f2114e4620ba02639430e47159c24461db34479f3ff6036c7ae962bed4159d0e58acef2bc58c938fea85103ab",
+          "transaction": {
+            "originator_vasp": {
+              "vasp_code": "VASPJPJT4",
+              "addrs": [
+                {
+                  "address": "bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4",
+                  "addrs_extra_info": [
+                    {
+                      "memo_text": "634346542"
+                    }
+                  ]
+                }
+              ]
+            },
+            "beneficiary_vasp": {
+              "vasp_code": "VASPJPJT3",
+              "addrs": [
+                {
+                  "address": "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce",
+                  "addrs_extra_info": [
+                    {
+                      "memo_text": "Idzl1532434853"
+                    }
+                  ]
+                }
+              ]
+            },
+            "currency_id": "sygna:0x800002ca.bnb1u9j9hkst6gf09dkdvxlj7puk8c7vh68a0kkmht",
+            "amount": "0.1234"
+          },
+          "data_dt": "2019-07-29T06:29:00.123Z",
+          "permission_request_data_signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336",
+          "permission_status": "ACCEPTED",
+          "permission_signature": "20fe27be0af5f11657a21ab6d9f09b712406cbcbd3be2ffd30ecf7e59dfe135433f6ec14948fddf4e119d318374e02b7e3528dcf3e3b44698b420b97d985300c",
+          "txid": null,
+          "txid_signature": null,
+          "created_at": "2019-09-20T02:08:19.050Z",
+          "transfer_to_originator_time": "2019-09-20T02:08:25.276Z"
+        },
+        "type": "object",
+        "properties": {
+          "transfer_id": {
+            "type": "string"
+          },
+          "private_info": {
+            "type": "string"
+          },
+          "transaction": {
+            "$ref": "#/components/schemas/Ref-Transaction"
+          },
+          "data_dt": {
+            "type": "string"
+          },
+          "expire_date": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "permission_request_data_signature": {
+            "type": "string"
+          },
+          "permission_status": {
+            "type": "string"
+          },
+          "permission_signature": {
+            "type": "string"
+          },
+          "txid": {
+            "type": "string"
+          },
+          "txid_signature": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "transfer_to_originator_time": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "transfer_id",
+          "private_info",
+          "transaction",
+          "data_dt",
+          "permission_request_data_signature",
+          "permission_status",
+          "permission_signature",
+          "txid",
+          "txid_signature",
+          "created_at",
+          "transfer_to_originator_time"
+        ]
+      },
+      "Ref-PermissionRequest": {
+        "title": "PermissionRequest",
+        "example": {
+          "data": {
+            "private_info": "04f76bf0372c4d4679a172aaaf7fe4746cb83f2a2e5d6a5afcfe6bba72ad4c540d7940853f5fd1f4928c541c39efae81e9165598bad256fab77f6d5c4bd8d135b0553e61bbaeb6d573c71b23d656ed9e4ac37f40106ebd3aab8839c77409a3890b5f056d4e11aaf87c6d29580869ec5f81d20ecaad266ba69e234a2eb627d5c7b95957d82fd1b69172f6bce480f74d9f4ea7d4d38300669c25723e91c5bce83ec8f29aedd4",
+            "transaction": {
+              "originator_vasp": {
+                "vasp_code": "VASPJPJT4",
+                "addrs": [
+                  {
+                    "address": "bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4",
+                    "addrs_extra_info": [
+                      {
+                        "memo_text": "634346542"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "beneficiary_vasp": {
+                "vasp_code": "VASPJPJT3",
+                "addrs": [
+                  {
+                    "address": "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce",
+                    "addrs_extra_info": [
+                      {
+                        "memo_text": "Idzl1532434853"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "currency_id": "sygna:0x800002ca.bnb1u9j9hkst6gf09dkdvxlj7puk8c7vh68a0kkmht",
+              "amount": "0.1234"
+            },
+            "data_dt": "2019-07-29T06:29:00.123Z",
+            "expire_date": 1582218947,
+            "signature": "ad44461b212b2360469540d4737f378a60ca0c69d802142198ed1f222c0b570c5078931e173d26e0f6600305f97184e3de32d028ffe38fe1d0cc86ead3b01ed8"
+          },
+          "callback": {
+            "callback_url": "http://ec2-3-19-59-48.us-east-2.compute.amazonaws.com:7676/api/v1.1.0/originator/transaction/permission",
+            "signature": "62bfe28b58d0e53b3b4fb0d246d954a4088d7d236769f394af2b4c230cc8093f27644596e695563ed37d0fe004b0c6c8b91873ef96315d32703a998c5e92e603"
+          }
+        },
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Ref-Data"
+          },
+          "callback": {
+            "$ref": "#/components/schemas/Ref-Callback"
+          }
+        },
+        "required": [
+          "data",
+          "callback"
+        ]
+      },
+      "Ref-Data": {
+        "title": "Data",
+        "example": {
+          "private_info": "04f76bf0372c4d4679a172aaaf7fe4746cb83f2a2e5d6a5afcfe6bba72ad4c540d7940853f5fd1f4928c541c39efae81e9165598bad256fab77f6d5c4bd8d135b0553e61bbaeb6d573c71b23d656ed9e4ac37f40106ebd3aab8839c77409a3890b5f056d4e11aaf87c6d29580869ec5f81d20ecaad266ba69e234a2eb627d5c7b95957d82fd1b69172f6bce480f74d9f4ea7d4d38300669c25723e91c5bce83ec8f29aedd4",
+          "transaction":{
+            "originator_vasp": {
+              "vasp_code": "VASPJPJT4",
+              "addrs": [
+                {
+                  "address": "bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4",
+                  "addrs_extra_info": [
+                    {
+                      "memo_text": "634346542"
+                    }
+                  ]
+                }
+              ]
+            },
+            "beneficiary_vasp": {
+              "vasp_code": "VASPJPJT3",
+              "addrs": [
+                {
+                  "address": "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce",
+                  "addrs_extra_info": [
+                    {
+                      "memo_text": "Idzl1532434853"
+                    }
+                  ]
+                }
+              ]
+            },
+            "currency_id": "sygna:0x800002ca.bnb1u9j9hkst6gf09dkdvxlj7puk8c7vh68a0kkmht",
+            "amount": "0.1234"
+          },
+          "data_dt": "2019-07-29T06:29:00.123Z",
+          "expire_date": 1582218947,
+          "signature": "ad44461b212b2360469540d4737f378a60ca0c69d802142198ed1f222c0b570c5078931e173d26e0f6600305f97184e3de32d028ffe38fe1d0cc86ead3b01ed8"
+        },
+        "type": "object",
+        "properties": {
+          "private_info": {
+            "type": "string",
+            "description": "ECIES encoded [Private Information](ref:private-information)"
+          },
+          "transaction": {
+            "$ref": "#/components/schemas/Ref-Transaction"
+          },
+          "data_dt": {
+            "type": "string",
+            "description": "Timestamp when transaction was created in UTC time using ISO 8601 format(yyyy-MM-dd'T'hh:mm:ss.sssZ)"
+          },
+          "expire_date": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires."
+          },
+          "signature": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "private_info",
+          "transaction",
+          "data_dt",
+          "signature"
+        ]
+      },
+      "Ref-Transaction": {
+        "title": "Transaction",
+        "description": "Please see [Transaction](ref:transaction)",
+        "example": {
+          "originator_vasp": {
+            "vasp_code": "VASPJPJT4",
+            "addrs": [
+              {
+                "address": "bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4",
+                "addrs_extra_info": [
+                  {
+                    "memo_text": "634346542"
+                  }
+                ]
+              }
+            ]
+          },
+          "beneficiary_vasp": {
+            "vasp_code": "VASPJPJT3",
+            "addrs": [
+              {
+                "address": "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce",
+                "addrs_extra_info": [
+                  {
+                    "memo_text": "Idzl1532434853"
+                  }
+                ]
+              }
+            ]
+          },
+          "currency_id": "sygna:0x800002ca.bnb1u9j9hkst6gf09dkdvxlj7puk8c7vh68a0kkmht",
+          "amount": "0.1234"
+        },
+        "type": "object",
+        "properties": {
+          "originator_vasp": {
+            "type": "object",
+            "properties": {
+              "vasp_code": {
+                "type": "string"
+              },
+              "addrs": {
+                "type": "array",
+                "items":
+                {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string"
+                    },
+                    "addrs_extra_info": {
+                      "type": "array",
+                      "items":
+                      {
+                        "type": "object",
+                        "properties": {
+                          "memo_text": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "memo_text"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "address",
+                    "addrs_extra_info"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "vasp_code",
+              "addrs"
+            ]
+          },
+          "beneficiary_vasp": {
+            "type": "object",
+            "properties": {
+              "vasp_code": {
+                "type": "string"
+              },
+              "addrs": {
+                "type": "array",
+                "items":
+                {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string"
+                    },
+                    "addrs_extra_info": {
+                      "type": "array",
+                      "items":
+                      {
+                        "type": "object",
+                        "properties": {
+                          "memo_text": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "memo_text"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "address",
+                    "addrs_extra_info"
+                  ]
+                }
+
+              }
+            },
+            "required": [
+              "vasp_code",
+              "addrs"
+            ]
+          },
+          "currency_id": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "originator_vasp",
+          "beneficiary_vasp",
+          "currency_id",
+          "amount"
+        ]
+      },
+      "Ref-Callback": {
+        "title": "Callback",
+        "description": "Please see [Callback](ref:callback)",
+        "example": {
+          "callback_url": "http://ec2-3-19-59-48.us-east-2.compute.amazonaws.com:7676/api/v1.1.0/originator/transaction/permission",
+          "signature": "62bfe28b58d0e53b3b4fb0d246d954a4088d7d236769f394af2b4c230cc8093f27644596e695563ed37d0fe004b0c6c8b91873ef96315d32703a998c5e92e603"
+        },
+        "type": "object",
+        "properties": {
+          "callback_url": {
+            "type": "string"
+          },
+          "signature": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "callback_url",
+          "signature"
+        ]
+      },
+      "Ref-PermissionRequestRes": {
+        "title": "PermissionRequest Response",
+        "example": {
+          "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1"
+        },
+        "type": "object",
+        "properties": {
+          "transfer_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "transfer_id"
+        ]
+      },
+      "Ref-Permission": {
+        "title": "Permission",
+        "example": {
+          "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+          "permission_status": "ACCEPTED",
+          "signature": "309f14db5fe4c33e9ebd770d110a89a93c1c9f68b8e1aac18097c1078ffb5a292f4132501ab1e3bf1f9ee3c3f8a9fd9c3f94ac403a5370eb38a6cdece8d7d1cc"
+        },
+        "type": "object",
+        "properties": {
+          "transfer_id": {
+            "type": "string",
+            "description": "Unique transfer Id returned from Bridge/PermissionRequest api call."
+          },
+          "permission_status": {
+            "type": "string",
+            "description": "Status of the transfer permission. Currently available values: ACCEPTED, REJECTED.",
+            "enum": [
+              "ACCEPTED",
+              "REJECTED"
+            ]
+          },
+          "expire_date": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires."
+          },
+          "reject_code": {
+            "type": "string",
+            "description": "Only required when the permission_status is REJECTED, reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
+            "enum": [
+              "BVRC001",
+              "BVRC002",
+              "BVRC003",
+              "BVRC004",
+              "BVRC999"
+            ]
+          },
+          "reject_message": {
+            "type": "string",
+            "description": "Only required when the permission_status is REJECTED and reject_code is 'BVRC999', reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
+            "enum": [
+              "unsupported_currency",
+              "service_downtime",
+              "exceed_trading_volume",
+              "compliance_check_fail",
+              "other"
+            ]
+          },
+          "signature": {
+            "type": "string",
+            "description": "Signature of the object containing the previous 4 fields."
+          }
+        },
+        "required": [
+          "transfer_id",
+          "permission_status",
+          "signature"
+        ]
+      },
+      "Ref-TransactionID": {
+        "title": "TransactionID",
+        "example": {
+          "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
+          "txid": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16",
+          "signature": "6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb"
+        },
+        "type": "object",
+        "properties": {
+          "transfer_id": {
+            "type": "string"
+          },
+          "txid": {
+            "type": "string"
+          },
+          "signature": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "transfer_id",
+          "txid",
+          "signature"
+        ]
+      },
+      "Ref-Status": {
+        "title": "Status",
+        "example": {
+          "status": "OK"
+        },
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "Ref-RetryRequest": {
+        "title": "RetryRequest",
+        "example": {
+          "vasp_code": "VASPJPJT3"
+        },
+        "type": "object",
+        "properties": {
+          "vasp_code": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "vasp_code"
+        ]
+      },
+      "Ref-Beneficiary-PermissionRequest": {
+        "title": "Beneficiary/PermissionRequest",
+        "example": {
+          "data": {
+            "private_info": "045f5964c9ad8c2e66220996a0d16e34358dfc58d01071424378b3317a4620c6a08d8d0c03d5eb5a0eaa38b8f163eafabf7d1718852c5ab322803eeb20a1c159ff753e47f9968104aae450cf4e46b1f58e1f33b063ec917fec1cf2ce298582ab0b526c9b49d8c6d5595090eb09003f20a1d3dd90569ca7db195872be985db39aeb0ffb378160dd0f3f1df521ecbb53ac0a82f27889c7e0b65f2114e4620ba02639430e47159c24461db34479f3ff6036c7ae962bed4159d0e58acef2bc58c938fea85103ab",
+            "transaction": {
+              "originator_vasp": {
+                "vasp_code": "VASPJPJT4",
+                "addrs": [
+                  {
+                    "address": "bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4",
+                    "addrs_extra_info": [
+                      {
+                        "memo_text": "634346542"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "beneficiary_vasp": {
+                "vasp_code": "VASPJPJT3",
+                "addrs": [
+                  {
+                    "address": "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce",
+                    "addrs_extra_info": [
+                      {
+                        "memo_text": "Idzl1532434853"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "currency_id": "sygna:0x800002ca.bnb1u9j9hkst6gf09dkdvxlj7puk8c7vh68a0kkmht",
+              "amount": "0.1234"
+            },
+            "data_dt": "2019-07-29T06:29:00.123Z",
+            "expire_date": 1582218947,
+            "signature": "2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336"
+          },
+          "transfer_id": "778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1"
+        },
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Ref-Data"
+          },
+          "transfer_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "transfer_id"
+        ]
+      }
+    }
+  }
 }
