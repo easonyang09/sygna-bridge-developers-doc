@@ -21,9 +21,7 @@
       "get": {
         "description": "Retrieve information of one or more Virtual Assets Service Provider.",
         "summary": "Bridge/VASP",
-        "tags": [
-          "Bridge"
-        ],
+        "tags": ["Bridge"],
         "operationId": "Bridge/VASP",
         "security": [
           {
@@ -37,7 +35,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/bridge.Vasp"
+                  "$ref": "#/components/schemas/bridgeVasp"
                 },
                 "examples": {
                   "response": {
@@ -83,9 +81,7 @@
     "/bridge/currencies": {
       "get": {
         "summary": "Bridge/Currencies",
-        "tags": [
-          "Bridge"
-        ],
+        "tags": ["Bridge"],
         "operationId": "bridge/currencies",
         "security": [
           {
@@ -133,7 +129,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/bridge.CurrencyItem"
+                    "$ref": "#/components/schemas/bridgeCurrencyItem"
                   }
                 },
                 "examples": {
@@ -145,10 +141,7 @@
                           "currency_name": "XRP",
                           "currency_symbol": "XRP",
                           "is_active": true,
-                          "addr_extra_info": [
-                            "tag",
-                            "dt"
-                          ]
+                          "addr_extra_info": ["tag", "dt"]
                         }
                       ]
                     }
@@ -167,9 +160,7 @@
       "post": {
         "description": "This API allows requesting VASPs to update the self's callback URL programmatically, at least one of URL must be specified in the request body.",
         "summary": "Bridge/VASP/BeneficiaryEndpointUrl",
-        "tags": [
-          "Bridge"
-        ],
+        "tags": ["Bridge"],
         "operationId": "Bridge/BeneficiaryEndpointUrl",
         "security": [
           {
@@ -181,7 +172,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/bridge.CallbackUrl"
+                "$ref": "#/components/schemas/bridgeCallbackUrl"
               }
             }
           },
@@ -193,7 +184,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/bridge.ApiResponse"
+                  "$ref": "#/components/schemas/bridgeApiResponse"
                 },
                 "examples": {
                   "response": {
@@ -212,9 +203,7 @@
       "get": {
         "description": "Get status of specific Permission Request.",
         "summary": "Bridge/Status",
-        "tags": [
-          "Bridge"
-        ],
+        "tags": ["Bridge"],
         "operationId": "Bridge/Status",
         "security": [
           {
@@ -239,7 +228,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/bridge.TransferStatus"
+                  "$ref": "#/components/schemas/bridgeTransferStatus"
                 },
                 "examples": {
                   "response": {
@@ -301,9 +290,7 @@
       "post": {
         "description": "The first step of the permission request flow. Should be called by the originator VASP to inform Sygna Bridge about the creation of a compliant transaction.\n\n\n![](https://i.imgur.com/rNzTHD4.png)",
         "summary": "Bridge/PermissionRequest",
-        "tags": [
-          "Bridge"
-        ],
+        "tags": ["Bridge"],
         "operationId": "Bridge/PermissionRequest",
         "security": [
           {
@@ -315,7 +302,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/bridge.PermissionRequest"
+                "$ref": "#/components/schemas/bridgePermissionRequest"
               },
               "example": {
                 "data": {
@@ -375,9 +362,7 @@
                       "type": "string"
                     }
                   },
-                  "required": [
-                    "transfer_id"
-                  ]
+                  "required": ["transfer_id"]
                 },
                 "examples": {
                   "response": {
@@ -396,9 +381,7 @@
       "post": {
         "description": "This request works as a response to Bridge's [Permission Request](ref:bridgepermissionrequest-3). Whenever a beneficiary VASP finishes processing the request from Bridge, it must post a permission request back to Bridge server, containing the confirmation result.\n\n\n![](https://i.imgur.com/yECHJqV.png)",
         "summary": "Bridge/Permission",
-        "tags": [
-          "Bridge"
-        ],
+        "tags": ["Bridge"],
         "operationId": "Bridge/Permission",
         "security": [
           {
@@ -410,7 +393,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/bridge.Permission"
+                "$ref": "#/components/schemas/bridgePermission"
               },
               "example": {
                 "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
@@ -427,7 +410,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/bridge.ApiResponse"
+                  "$ref": "#/components/schemas/bridgeApiResponse"
                 },
                 "examples": {
                   "response": {
@@ -446,9 +429,7 @@
       "post": {
         "description": "Submit broadcasted transaction ID on the blockchain for Bridge to keep as a record.",
         "summary": "Bridge/TransactionID",
-        "tags": [
-          "Bridge"
-        ],
+        "tags": ["Bridge"],
         "operationId": "Bridge/TransactionID",
         "security": [
           {
@@ -460,7 +441,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/bridge.TransactionID"
+                "$ref": "#/components/schemas/bridgeTransactionID"
               },
               "example": {
                 "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
@@ -477,7 +458,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/bridge.ApiResponse"
+                  "$ref": "#/components/schemas/bridgeApiResponse"
                 },
                 "examples": {
                   "response": {
@@ -496,9 +477,7 @@
       "post": {
         "description": "It is a brand new API that will let VASPs to retrieve the lost transfer requests in their server downtime. We will queue up the fail API requests sent to VASPs and resent the request again if Bridge/Retry is trigger. So make sure you make this API request after you restart the server.",
         "summary": "Bridge/Retry",
-        "tags": [
-          "Bridge"
-        ],
+        "tags": ["Bridge"],
         "operationId": "Bridge/Retry",
         "security": [
           {
@@ -516,9 +495,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "vasp_code"
-                ]
+                "required": ["vasp_code"]
               },
               "example": {
                 "vasp_code": "VASPJPJT3"
@@ -537,9 +514,7 @@
                       "type": "integer"
                     }
                   },
-                  "required": [
-                    "retryItems"
-                  ]
+                  "required": ["retryItems"]
                 },
                 "examples": {
                   "response": {
@@ -558,9 +533,7 @@
       "post": {
         "description": "![](https://i.imgur.com/hTU5qyn.png)\n\nWhen Bridge gets a [**Permission Request**](ref:permission-request), it will verify the request first to ensure the data integrity, and then **Relay the request to corresponding beneficiary server**.",
         "summary": "Beneficiary/PermissionRequest",
-        "tags": [
-          "VASP API"
-        ],
+        "tags": ["VASP API"],
         "operationId": "Beneficiary/PermissionRequest",
         "deprecated": false,
         "requestBody": {
@@ -570,7 +543,7 @@
                 "type": "object",
                 "properties": {
                   "data": {
-                    "$ref": "#/components/schemas/bridge.PermissionRequestData"
+                    "$ref": "#/components/schemas/bridgePermissionRequestData"
                   }
                 }
               }
@@ -584,7 +557,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/bridge.ApiResponse"
+                  "$ref": "#/components/schemas/bridgeApiResponse"
                 },
                 "examples": {
                   "response": {
@@ -603,16 +576,14 @@
       "post": {
         "description": "After originator VASP Submit transaction ID on the blockchain and post to Bridge, Bridge will relay the data to corresponding beneficiary server.",
         "summary": "Beneficiary/TransactionID",
-        "tags": [
-          "VASP API"
-        ],
+        "tags": ["VASP API"],
         "operationId": "Beneficiary/TransactionID",
         "deprecated": false,
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/bridge.TransactionID"
+                "$ref": "#/components/schemas/bridgeTransactionID"
               },
               "example": {
                 "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
@@ -629,7 +600,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/bridge.ApiResponse"
+                  "$ref": "#/components/schemas/bridgeApiResponse"
                 },
                 "examples": {
                   "response": {
@@ -646,18 +617,16 @@
     },
     "/originator/transaction/permission": {
       "post": {
-        "description": "![](https://i.imgur.com/6AFWgIm.png)\n\nEach VASP needs to implement a permission endpoint to get a notification from Bridge.\n\nWhen an originator posts a permission request to Bridge, it needs to attach this url in callback_url.",
+        "description": "![](https://i.imgur.com/6AFWgIm.png)\n\nEach VASP needs to implement a permission endpoint to get a notification from bridge\n\nWhen an originator posts a permission request to Bridge, it needs to attach this url in callback_url.",
         "summary": "Originator/Permission",
-        "tags": [
-          "VASP API"
-        ],
+        "tags": ["VASP API"],
         "operationId": "Originator/Permission",
         "deprecated": false,
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/bridge.Permission"
+                "$ref": "#/components/schemas/bridgePermission"
               },
               "example": {
                 "transfer_id": "ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725",
@@ -674,7 +643,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/bridge.ApiResponse"
+                  "$ref": "#/components/schemas/bridgeApiResponse"
                 },
                 "examples": {
                   "response": {
@@ -707,7 +676,7 @@
       }
     },
     "schemas": {
-      "bridge.VaspData": {
+      "bridgeVaspData": {
         "title": "VaspData",
         "type": "object",
         "properties": {
@@ -721,21 +690,17 @@
             "type": "string"
           }
         },
-        "required": [
-          "vasp_code",
-          "vasp_name",
-          "vasp_pubkey"
-        ],
+        "required": ["vasp_code", "vasp_name", "vasp_pubkey"],
         "additionalProperties": false
       },
-      "bridge.Vasp": {
+      "bridgeVasp": {
         "title": "Vasp",
         "type": "object",
         "properties": {
           "vasp_data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/bridge.VaspData"
+              "$ref": "#/components/schemas/bridgeVaspData"
             }
           },
           "timestamp": {
@@ -746,14 +711,10 @@
             "type": "string"
           }
         },
-        "required": [
-          "vasp_data",
-          "timestamp",
-          "signature"
-        ],
+        "required": ["vasp_data", "timestamp", "signature"],
         "additionalProperties": false
       },
-      "bridge.CallbackUrl": {
+      "bridgeCallbackUrl": {
         "title": "CallbackUrl",
         "type": "object",
         "minProperties": 3,
@@ -771,16 +732,13 @@
             "format": "uri"
           },
           "signature": {
-            "$ref": "#/components/schemas/bridge.Signature"
+            "$ref": "#/components/schemas/bridgeSignature"
           }
         },
-        "required": [
-          "vasp_code",
-          "signature"
-        ],
+        "required": ["vasp_code", "signature"],
         "additionalProperties": false
       },
-      "bridge.CurrencyItem": {
+      "bridgeCurrencyItem": {
         "title": "CurrencyItem",
         "type": "object",
         "properties": {
@@ -812,12 +770,12 @@
         ],
         "additionalProperties": false
       },
-      "bridge.PrivateInfo": {
+      "bridgePrivateInfo": {
         "title": "PrivateInfo",
         "type": "string",
         "description": "ECIES encoded [Private Information](ref:private-information)"
       },
-      "bridge.Address": {
+      "bridgeAddress": {
         "title": "Address",
         "type": "object",
         "properties": {
@@ -831,12 +789,9 @@
             }
           }
         },
-        "required": [
-          "address",
-          "addrs_extra_info"
-        ]
+        "required": ["address", "addrs_extra_info"]
       },
-      "bridge.OriginatorVasp": {
+      "bridgeOriginatorVasp": {
         "title": "OriginatorVasp",
         "type": "object",
         "properties": {
@@ -846,16 +801,13 @@
           "addrs": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/bridge.Address"
+              "$ref": "#/components/schemas/bridgeAddress"
             }
           }
         },
-        "required": [
-          "vasp_code",
-          "addrs"
-        ]
+        "required": ["vasp_code", "addrs"]
       },
-      "bridge.BeneficiaryVasp": {
+      "bridgeBeneficiaryVasp": {
         "title": "BeneficiaryVasp",
         "type": "object",
         "properties": {
@@ -865,24 +817,21 @@
           "addrs": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/bridge.Address"
+              "$ref": "#/components/schemas/bridgeAddress"
             }
           }
         },
-        "required": [
-          "vasp_code",
-          "addrs"
-        ]
+        "required": ["vasp_code", "addrs"]
       },
-      "bridge.Transaction": {
+      "bridgeTransaction": {
         "title": "Transaction",
         "type": "object",
         "properties": {
           "originator_vasp": {
-            "$ref": "#/components/schemas/bridge.OriginatorVasp"
+            "$ref": "#/components/schemas/bridgeOriginatorVasp"
           },
           "beneficiary_vasp": {
-            "$ref": "#/components/schemas/bridge.BeneficiaryVasp"
+            "$ref": "#/components/schemas/bridgeBeneficiaryVasp"
           },
           "currency_id": {
             "type": "string"
@@ -892,49 +841,45 @@
           }
         }
       },
-      "bridge.TransferData": {
+      "bridgeTransferData": {
         "title": "TransferData",
         "type": "object",
         "properties": {
           "transfer_id": {
-            "$ref": "#/components/schemas/bridge.TransferID"
+            "$ref": "#/components/schemas/bridgeTransferID"
           },
           "private_info": {
-            "$ref": "#/components/schemas/bridge.PrivateInfo"
+            "$ref": "#/components/schemas/bridgePrivateInfo"
           },
           "transaction": {
-            "$ref": "#/components/schemas/bridge.Transaction"
+            "$ref": "#/components/schemas/bridgeTransaction"
           },
           "data_dt": {
-            "$ref": "#/components/schemas/bridge.Date"
+            "$ref": "#/components/schemas/bridgeDate"
           },
           "expire_date": {
-            "$ref": "#/components/schemas/bridge.ExpireDate"
+            "$ref": "#/components/schemas/bridgeExpireDate"
           },
           "permission_request_data_signature": {
-            "$ref": "#/components/schemas/bridge.NullableSignature"
+            "$ref": "#/components/schemas/bridgeNullableSignature"
           },
           "permission_status": {
             "type": "string",
             "nullable": true,
-            "enum": [
-              "ACCEPTED",
-              "REJECTED",
-              "null"
-            ]
+            "enum": ["ACCEPTED", "REJECTED", "null"]
           },
           "permission_signature": {
-            "$ref": "#/components/schemas/bridge.NullableSignature"
+            "$ref": "#/components/schemas/bridgeNullableSignature"
           },
           "txid": {
             "type": "string",
             "nullable": true
           },
           "txid_signature": {
-            "$ref": "#/components/schemas/bridge.NullableSignature"
+            "$ref": "#/components/schemas/bridgeNullableSignature"
           },
           "created_at": {
-            "$ref": "#/components/schemas/bridge.Date"
+            "$ref": "#/components/schemas/bridgeDate"
           },
           "transfer_to_originator_time": {
             "type": "string",
@@ -969,19 +914,19 @@
         ],
         "additionalProperties": false
       },
-      "bridge.TransferStatus": {
+      "bridgeTransferStatus": {
         "title": "TransferStatus",
         "type": "object",
         "properties": {
           "transferData": {
-            "$ref": "#/components/schemas/bridge.TransferData"
+            "$ref": "#/components/schemas/bridgeTransferData"
           },
           "signature": {
-            "$ref": "#/components/schemas/bridge.Signature"
+            "$ref": "#/components/schemas/bridgeSignature"
           }
         }
       },
-      "bridge.Callback": {
+      "bridgeCallback": {
         "title": "Callback",
         "description": "Please see [Callback](ref:callback)",
         "type": "object",
@@ -993,54 +938,46 @@
             "type": "string"
           }
         },
-        "required": [
-          "callback_url",
-          "signature"
-        ],
+        "required": ["callback_url", "signature"],
         "additionalProperties": false
       },
-      "bridge.PermissionRequestData": {
+      "bridgePermissionRequestData": {
         "title": "PermissionRequestData",
         "type": "object",
         "properties": {
           "private_info": {
-            "$ref": "#/components/schemas/bridge.PrivateInfo"
+            "$ref": "#/components/schemas/bridgePrivateInfo"
           },
           "transaction": {
-            "$ref": "#/components/schemas/bridge.Transaction"
+            "$ref": "#/components/schemas/bridgeTransaction"
           },
           "data_dt": {
-            "$ref": "#/components/schemas/bridge.Date"
+            "$ref": "#/components/schemas/bridgeDate"
           },
           "expire_date": {
-            "$ref": "#/components/schemas/bridge.ExpireDate"
+            "$ref": "#/components/schemas/bridgeExpireDate"
           },
           "signature": {
-            "$ref": "#/components/schemas/bridge.Signature"
+            "$ref": "#/components/schemas/bridgeSignature"
           }
         },
-        "required": [
-          "private_info",
-          "transaction",
-          "data_dt",
-          "signature"
-        ],
+        "required": ["private_info", "transaction", "data_dt", "signature"],
         "additionalProperties": false
       },
-      "bridge.PermissionRequest": {
+      "bridgePermissionRequest": {
         "title": "PermissionRequest",
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/bridge.PermissionRequestData"
+            "$ref": "#/components/schemas/bridgePermissionRequestData"
           },
           "callback": {
-            "$ref": "#/components/schemas/bridge.Callback"
+            "$ref": "#/components/schemas/bridgeCallback"
           }
         },
         "additionalProperties": false
       },
-      "bridge.RejectCode": {
+      "bridgeRejectCode": {
         "title": "RejectCode",
         "description": "Only required when the permission_status is REJECTED, reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
         "type": "string",
@@ -1056,7 +993,7 @@
           "BVRC999"
         ]
       },
-      "bridge.RejectMessage": {
+      "bridgeRejectMessage": {
         "title": "RejectMessage",
         "description": "Only required when the permission_status is REJECTED and reject_code is 'BVRC999', reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
         "type": "string",
@@ -1068,53 +1005,46 @@
           "other"
         ]
       },
-      "bridge.PermissionStatus": {
+      "bridgePermissionStatus": {
         "title": "PermissionStatus",
         "type": "string",
         "minLength": 1,
-        "enum": [
-          "ACCEPTED",
-          "REJECTED"
-        ],
+        "enum": ["ACCEPTED", "REJECTED"],
         "description": "Status of the transfer permission, currently available values: ACCEPTED, REJECTED."
       },
-      "bridge.Permission": {
+      "bridgePermission": {
         "title": "Permission",
         "type": "object",
         "properties": {
           "transfer_id": {
-            "$ref": "#/components/schemas/bridge.TransferID"
+            "$ref": "#/components/schemas/bridgeTransferID"
           },
           "permission_status": {
-            "$ref": "#/components/schemas/bridge.PermissionStatus"
+            "$ref": "#/components/schemas/bridgePermissionStatus"
           },
           "expire_date": {
-            "$ref": "#/components/schemas/bridge.ExpireDate"
+            "$ref": "#/components/schemas/bridgeExpireDate"
           },
           "reject_code": {
-            "$ref": "#/components/schemas/bridge.RejectCode"
+            "$ref": "#/components/schemas/bridgeRejectCode"
           },
           "reject_message": {
-            "$ref": "#/components/schemas/bridge.RejectMessage"
+            "$ref": "#/components/schemas/bridgeRejectMessage"
           },
           "signature": {
-            "$ref": "#/components/schemas/bridge.Signature"
+            "$ref": "#/components/schemas/bridgeSignature"
           }
         },
-        "required": [
-          "transfer_id",
-          "permission_status",
-          "signature"
-        ],
+        "required": ["transfer_id", "permission_status", "signature"],
         "additionalProperties": false
       },
-      "bridge.Date": {
+      "bridgeDate": {
         "title": "Date",
         "description": "Unix timestamp using ISO 8601 format(yyyy-MM-dd'T'hh:mm:ss.sssZ)",
         "type": "string",
         "format": "date-time"
       },
-      "bridge.Signature": {
+      "bridgeSignature": {
         "title": "Signature",
         "description": "Signature of the object that includes the constraint fields.",
         "type": "string",
@@ -1122,7 +1052,7 @@
         "maxLength": 128,
         "pattern": "^[0123456789A-Fa-f]+$"
       },
-      "bridge.NullableSignature": {
+      "bridgeNullableSignature": {
         "title": "NullableSignature",
         "type": "string",
         "nullable": true,
@@ -1130,20 +1060,20 @@
         "maxLength": 128,
         "pattern": "^[0123456789A-Fa-f]+$"
       },
-      "bridge.TransferID": {
+      "bridgeTransferID": {
         "title": "TransferID",
         "description": "Unique Id generated by Bridge",
         "type": "string",
         "minLength": 64,
         "maxLength": 64
       },
-      "bridge.ExpireDate": {
+      "bridgeExpireDate": {
         "title": "ExpireDate",
         "description": "Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires.",
         "type": "integer",
         "format": "int64"
       },
-      "bridge.TransactionID": {
+      "bridgeTransactionID": {
         "title": "TransactionID",
         "type": "object",
         "properties": {
@@ -1157,13 +1087,9 @@
             "type": "string"
           }
         },
-        "required": [
-          "transfer_id",
-          "txid",
-          "signature"
-        ]
+        "required": ["transfer_id", "txid", "signature"]
       },
-      "bridge.ApiResponse": {
+      "bridgeApiResponse": {
         "title": "ApiResponse",
         "description": "Successful operation",
         "type": "object",
@@ -1172,9 +1098,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "status"
-        ]
+        "required": ["status"]
       }
     }
   }
