@@ -911,7 +911,6 @@
           },
           "reject_message": {
             "type": "string",
-            "format": "date-time",
             "nullable": true
           }
         },
