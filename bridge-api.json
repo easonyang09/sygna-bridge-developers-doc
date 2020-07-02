@@ -239,7 +239,7 @@
                             "addrs": [
                               {
                                 "address": "bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4",
-                                "addrs_extra_info": [
+                                "addr_extra_info": [
                                   {
                                     "memo_text": "634346542"
                                   }
@@ -252,7 +252,7 @@
                             "addrs": [
                               {
                                 "address": "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce",
-                                "addrs_extra_info": [
+                                "addr_extra_info": [
                                   {
                                     "memo_text": "Idzl1532434853"
                                   }
@@ -792,14 +792,14 @@
           "address": {
             "type": "string"
           },
-          "addrs_extra_info": {
+          "addr_extra_info": {
             "type": "array",
             "items": {
               "type": "string"
             }
           }
         },
-        "required": ["address", "addrs_extra_info"]
+        "required": ["address", "addr_extra_info"]
       },
       "bridgeOriginatorVasp": {
         "title": "OriginatorVasp",
