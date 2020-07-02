@@ -876,7 +876,7 @@
           "permission_status": {
             "type": "string",
             "nullable": true,
-            "enum": ["ACCEPTED", "REJECTED", "null"]
+            "enum": ["ACCEPTED", "REJECTED", null]
           },
           "permission_signature": {
             "$ref": "#/components/schemas/bridgeNullableSignature"
@@ -906,7 +906,8 @@
               "BVRC005",
               "BVRC006",
               "BVRC007",
-              "BVRC999"
+              "BVRC999",
+              null
             ]
           },
           "reject_message": {
