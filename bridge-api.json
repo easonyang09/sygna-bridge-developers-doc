@@ -702,7 +702,7 @@
           },
           "timestamp": {
             "type": "integer",
-            "format": "int64"
+            "minimum": 0
           },
           "signature": {
             "type": "string"
@@ -1081,7 +1081,7 @@
         "title": "ExpireDate",
         "description": "Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires.",
         "type": "integer",
-        "format": "int64"
+        "minimum": 0
       },
       "bridgeTransactionID": {
         "title": "TransactionID",
