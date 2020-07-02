@@ -78,7 +78,50 @@
         }
       }
     },
-    "/bridge/currencies": {
+    "/bridge/vasp/beneficiary-endpoint-url": {
+      "post": {
+        "description": "This API allows requesting VASPs to update the self's callback URL programmatically, at least one of URL must be specified in the request body.",
+        "summary": "Bridge/VASP/BeneficiaryEndpointUrl",
+        "tags": ["Bridge"],
+        "operationId": "Bridge/BeneficiaryEndpointUrl",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bridgeCallbackUrl"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bridgeApiResponse"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bridge/transaction/currencies": {
       "get": {
         "summary": "Bridge/Currencies",
         "tags": ["Bridge"],
@@ -152,49 +195,6 @@
           },
           "400": {
             "description": "bad input parameter"
-          }
-        }
-      }
-    },
-    "/bridge/vasp/beneficiary-endpoint-url": {
-      "post": {
-        "description": "This API allows requesting VASPs to update the self's callback URL programmatically, at least one of URL must be specified in the request body.",
-        "summary": "Bridge/VASP/BeneficiaryEndpointUrl",
-        "tags": ["Bridge"],
-        "operationId": "Bridge/BeneficiaryEndpointUrl",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
-        "deprecated": false,
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/bridgeCallbackUrl"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/bridgeApiResponse"
-                },
-                "examples": {
-                  "response": {
-                    "value": {
-                      "status": "OK"
-                    }
-                  }
-                }
-              }
-            }
           }
         }
       }
