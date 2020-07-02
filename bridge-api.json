@@ -1006,14 +1006,7 @@
       "bridgeRejectMessage": {
         "title": "RejectMessage",
         "description": "Only required when the permission_status is REJECTED and reject_code is 'BVRC999', reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
-        "type": "string",
-        "enum": [
-          "unsupported_currency",
-          "service_downtime",
-          "exceed_trading_volume",
-          "compliance_check_fail",
-          "other"
-        ]
+        "type": "string"
       },
       "bridgePermissionStatus": {
         "title": "PermissionStatus",
