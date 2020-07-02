@@ -170,10 +170,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/bridgeCurrencyItem"
-                  }
+                  "$ref": "#/components/schemas/bridgeSupportedCoins"
                 },
                 "examples": {
                   "response": {
@@ -769,6 +766,19 @@
           "addr_extra_info"
         ],
         "additionalProperties": false
+      },
+      "bridgeSupportedCoins": {
+        "title": "SupportedCoins",
+        "type": "object",
+        "properties": {
+          "supported_coins": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/bridgeCurrencyItem"
+            }
+          }
+        },
+        "required": ["supported_coins"]
       },
       "bridgePrivateInfo": {
         "title": "PrivateInfo",
