@@ -799,7 +799,7 @@
           "addr_extra_info": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "object"
             }
           }
         },
@@ -853,7 +853,13 @@
           "amount": {
             "type": "string"
           }
-        }
+        },
+        "required": [
+          "originator_vasp",
+          "beneficiary_vasp",
+          "currency_id",
+          "amount"
+        ]
       },
       "bridgeTransferData": {
         "title": "TransferData",
