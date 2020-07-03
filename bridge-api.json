@@ -728,6 +728,10 @@
             "type": "string",
             "format": "uri"
           },
+          "callback_validate_addr_url": {
+            "type": "string",
+            "format": "uri"
+          },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
           }
@@ -966,6 +970,9 @@
           },
           "expire_date": {
             "$ref": "#/components/schemas/bridgeExpireDate"
+          },
+          "need_validate_addr": {
+            "type": "boolean"
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
