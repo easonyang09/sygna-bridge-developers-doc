@@ -758,7 +758,7 @@
           "addr_extra_info": {
             "type": "array",
             "items": {
-              "type": "object"
+              "type": "string"
             }
           }
         },
