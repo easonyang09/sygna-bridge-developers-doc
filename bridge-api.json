@@ -758,7 +758,7 @@
           "addr_extra_info": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "object"
             }
           }
         },
@@ -803,7 +803,7 @@
             }
           }
         },
-        "required": ["address", "addr_extra_info"]
+        "required": ["address"]
       },
       "bridgeOriginatorVasp": {
         "title": "OriginatorVasp",
