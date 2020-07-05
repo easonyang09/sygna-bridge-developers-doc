@@ -978,7 +978,8 @@
             "$ref": "#/components/schemas/bridgeExpireDate"
           },
           "need_validate_addr": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "need validate beneficary address"
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
