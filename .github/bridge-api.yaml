@@ -501,7 +501,7 @@ components:
           type: string
         timestamp:
           type: integer
-          format: int64
+          minimum: 0
       required:
         - vasp_data
         - signature
@@ -646,7 +646,7 @@ components:
           type: string
         expire_date:
           type: integer
-          format: int64
+          minimum: 0
         permission_request_data_signature:
           type: string
         permission_status:
@@ -735,10 +735,10 @@ components:
           $ref: '#/components/schemas/Ref-Transaction'
         data_dt:
           type: string
-          description: 'Timestamp when transaction was created in UTC time using ISO 8601 format(yyyy-MM-dd''T''hh:mm:ss.sssZ)'
+          description: "Timestamp when transaction was created in UTC time using ISO 8601 format(yyyy-MM-dd'T'hh:mm:ss.sssZ)"
         expire_date:
           type: integer
-          format: int64
+          minimum: 0
           description: Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires.
         signature:
           type: string
@@ -843,7 +843,7 @@ components:
             - REJECTED
         expire_date:
           type: integer
-          format: int64
+          minimum: 0
           description: Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires.
         reject_code:
           type: string
@@ -856,7 +856,7 @@ components:
             - BVRC999
         reject_message:
           type: string
-          description: 'Only required when the permission_status is REJECTED and reject_code is ''BVRC999'', reply with [BVRC](ref:beneficiary-vasp-rejected-code).'
+          description: "Only required when the permission_status is REJECTED and reject_code is 'BVRC999', reply with [BVRC](ref:beneficiary-vasp-rejected-code)."
           enum:
             - unsupported_currency
             - service_downtime

@@ -78,7 +78,50 @@
         }
       }
     },
-    "/bridge/currencies": {
+    "/bridge/vasp/beneficiary-endpoint-url": {
+      "post": {
+        "description": "This API allows requesting VASPs to update the self's callback URL programmatically, at least one of URL must be specified in the request body.",
+        "summary": "Bridge/VASP/BeneficiaryEndpointUrl",
+        "tags": ["Bridge"],
+        "operationId": "Bridge/BeneficiaryEndpointUrl",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bridgeCallbackUrl"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bridgeApiResponse"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "status": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bridge/transaction/currencies": {
       "get": {
         "summary": "Bridge/Currencies",
         "tags": ["Bridge"],
@@ -127,10 +170,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/bridgeCurrencyItem"
-                  }
+                  "$ref": "#/components/schemas/bridgeSupportedCoins"
                 },
                 "examples": {
                   "response": {
@@ -152,49 +192,6 @@
           },
           "400": {
             "description": "bad input parameter"
-          }
-        }
-      }
-    },
-    "/bridge/vasp/beneficiary-endpoint-url": {
-      "post": {
-        "description": "This API allows requesting VASPs to update the self's callback URL programmatically, at least one of URL must be specified in the request body.",
-        "summary": "Bridge/VASP/BeneficiaryEndpointUrl",
-        "tags": ["Bridge"],
-        "operationId": "Bridge/BeneficiaryEndpointUrl",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
-        "deprecated": false,
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/bridgeCallbackUrl"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/bridgeApiResponse"
-                },
-                "examples": {
-                  "response": {
-                    "value": {
-                      "status": "OK"
-                    }
-                  }
-                }
-              }
-            }
           }
         }
       }
@@ -242,7 +239,7 @@
                             "addrs": [
                               {
                                 "address": "bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4",
-                                "addrs_extra_info": [
+                                "addr_extra_info": [
                                   {
                                     "memo_text": "634346542"
                                   }
@@ -255,7 +252,7 @@
                             "addrs": [
                               {
                                 "address": "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce",
-                                "addrs_extra_info": [
+                                "addr_extra_info": [
                                   {
                                     "memo_text": "Idzl1532434853"
                                   }
@@ -705,7 +702,7 @@
           },
           "timestamp": {
             "type": "integer",
-            "format": "int64"
+            "minimum": 0
           },
           "signature": {
             "type": "string"
@@ -728,6 +725,10 @@
             "format": "uri"
           },
           "callback_txid_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "callback_validate_addr_url": {
             "type": "string",
             "format": "uri"
           },
@@ -770,6 +771,19 @@
         ],
         "additionalProperties": false
       },
+      "bridgeSupportedCoins": {
+        "title": "SupportedCoins",
+        "type": "object",
+        "properties": {
+          "supported_coins": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/bridgeCurrencyItem"
+            }
+          }
+        },
+        "required": ["supported_coins"]
+      },
       "bridgePrivateInfo": {
         "title": "PrivateInfo",
         "type": "string",
@@ -782,14 +796,14 @@
           "address": {
             "type": "string"
           },
-          "addrs_extra_info": {
+          "addr_extra_info": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "object"
             }
           }
         },
-        "required": ["address", "addrs_extra_info"]
+        "required": ["address"]
       },
       "bridgeOriginatorVasp": {
         "title": "OriginatorVasp",
@@ -839,7 +853,13 @@
           "amount": {
             "type": "string"
           }
-        }
+        },
+        "required": [
+          "originator_vasp",
+          "beneficiary_vasp",
+          "currency_id",
+          "amount"
+        ]
       },
       "bridgeTransferData": {
         "title": "TransferData",
@@ -866,7 +886,7 @@
           "permission_status": {
             "type": "string",
             "nullable": true,
-            "enum": ["ACCEPTED", "REJECTED", "null"]
+            "enum": ["ACCEPTED", "REJECTED", null]
           },
           "permission_signature": {
             "$ref": "#/components/schemas/bridgeNullableSignature"
@@ -896,12 +916,12 @@
               "BVRC005",
               "BVRC006",
               "BVRC007",
-              "BVRC999"
+              "BVRC999",
+              null
             ]
           },
           "reject_message": {
             "type": "string",
-            "format": "date-time",
             "nullable": true
           }
         },
@@ -957,6 +977,10 @@
           "expire_date": {
             "$ref": "#/components/schemas/bridgeExpireDate"
           },
+          "need_validate_addr": {
+            "type": "boolean",
+            "description": "need validate beneficary address"
+          },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
           }
@@ -996,14 +1020,7 @@
       "bridgeRejectMessage": {
         "title": "RejectMessage",
         "description": "Only required when the permission_status is REJECTED and reject_code is 'BVRC999', reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
-        "type": "string",
-        "enum": [
-          "unsupported_currency",
-          "service_downtime",
-          "exceed_trading_volume",
-          "compliance_check_fail",
-          "other"
-        ]
+        "type": "string"
       },
       "bridgePermissionStatus": {
         "title": "PermissionStatus",
@@ -1071,7 +1088,7 @@
         "title": "ExpireDate",
         "description": "Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires.",
         "type": "integer",
-        "format": "int64"
+        "minimum": 0
       },
       "bridgeTransactionID": {
         "title": "TransactionID",
