@@ -1,54 +1,13 @@
 openapi: 3.0.0
 info:
   version: '2.0'
-  title: Bridge
-  description: |-
-    ### API Request and Response
-
-    REST-like - Simple and predictable URLs to access data.
-    The Bridge APIs uses GET and POST, and HTTP responses are UTF-8 encoded JSON objects.
-
-    ### Securing the APIs by using HTTPS
-
-    Hypertext Transfer Protocol Secure (HTTPS) is a variant of the standard web transfer protocol (HTTP) that adds a layer of security on the data in transit through the SSL/TLS protocol connection.
-    Bridge APIs use HTTPS to provide a stronger guarantee that a VASP is communicating with the real API and receiving back authentic contents. It also enhances privacy for applications and VASPs using the API.
-
-    ### Callback APIs
-
-    VASPs require best-time updates and should avoid busy-waiting for the other party's compliance validation. We use a callback method to work around this issue and flag the VASP so it can proceed.
-
-    The beneficiary server can take as long as it needs to validate the permission request. When it finishes the validation, it will post the permission to Bridge's callback url, and Bridge will then relay the permission to the originator's callback url.
-
-    ### Authentication
-
-    We implement API Authentication with **API key**. All licensed exchanges must attach a valid **api-key** to every API call.
-
-    ## Data Confidentiality and Integrity
-
-    ### ECIES Encryption
-
-    We apply Elliptic Curve Integrated Encryption Scheme (ECIES) to encrypt all sensitive data between communication of VASPs.
-
-    This following diagram shows how ECIES works. ECC public/private key cryptography is used in conjunction with the Diffie-Hellman primitive to allow both sides to independently generate a shared secret key, for one-time use to encrypt data with a symmetric key algorithm.
-
-    ![](https://coolbitx.gitlab.io/sygna/bridge/api/images/ecies-sygna.png)
-
-    We have provided a JavaScript library on [NPM](https://www.npmjs.com/package/sygna-bridge-util) to handle ECIES encryption and decryption. You can take a look at the sample usage on the right or visit our [Github](https://github.com/CoolBitX-Technology/sygna-bridge-util/blob/master/src/crypto/ecies.js) for more information.
-
-    ### ECDSA Signature
-
-    We apply an ECDSA signature to ensure data integrity. All API calls must attach a *signature* signed by the requesting VASP's local private key, and every VASP can verify if the message received is valid by checking the signature and the corresponding public key.
-
-    The Digital Signature also provides message authentication (the receiver can verify the originator of the message) and non-repudiation (the sender cannot falsely claim that they have not signed the message).
-
-    Our signing algorithm uses **secp256k1** Elliptic Curve with **SHA256** Hash function. The details of the signing process can also be found on our [Github](https://github.com/CoolBitX-Technology/sygna-bridge-util/blob/master/src/crypto/index.js).
-
-    With our library, we provide simple interfaces to deal with input parameters, help you convert them into JSON object strings and then go through the signing process. You will need to use different interfaces to get signatures of different API requests. These interfaces generally return a signed object, which has already inserted the signature for you, and will be ready to put into a request body.
+  title: Bridge API
+  description: ''
   contact: {}
 servers:
-  - url: 'https://test-api.sygna.io/v2/bridge'
+  - url: 'https://test-api.sygna.io/v2'
     description: Bridge Sandbox server
-  - url: 'https://{VASP-server}/v2/bridge'
+  - url: 'https://{VASP-server}/v2'
     description: VASP Sandbox server
 paths:
   /bridge/vasp:
@@ -67,7 +26,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ref-VASP'
+                $ref: '#/components/schemas/bridgeVasp'
               examples:
                 response:
                   value:
@@ -89,7 +48,34 @@ paths:
                         vasp_pubkey: 04247bc554740852792dee49b8359cb25c74f2335d2c6e2025cd0880a06c8da1d51d461f720046c84da1dab106dfdac0452c92f09de7022a4cef5c4f3f6f3064d5
                     signature: 9fb61c13dc4f74a18413aca7179cd62ad22aa88ea67fe4e9ff6fa5e6ddf5d2706d175d8965c3eadf0c1370b52a2ab211697b520633c74d00d2bfb120e610dae6
                     timestamp: 1584002280274
-  /bridge/currencies:
+  /bridge/vasp/beneficiary-endpoint-url:
+    post:
+      description: 'This API allows requesting VASPs to update the self''s callback URL programmatically, at least one of URL must be specified in the request body.'
+      summary: Bridge/VASP/BeneficiaryEndpointUrl
+      tags:
+        - Bridge
+      operationId: Bridge/BeneficiaryEndpointUrl
+      security:
+        - ApiKeyAuth: []
+      deprecated: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/bridgeCallbackUrl'
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/bridgeApiResponse'
+              examples:
+                response:
+                  value:
+                    status: OK
+  /bridge/transaction/currencies:
     get:
       summary: Bridge/Currencies
       tags:
@@ -97,8 +83,7 @@ paths:
       operationId: bridge/currencies
       security:
         - ApiKeyAuth: []
-      description: |
-        Retrieve Sygna all available cryptocurrencies and its definitions
+      description: Retrieve Sygna all available cryptocurrencies and its definitions
       parameters:
         - in: query
           name: currency_symbol
@@ -127,38 +112,20 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CurrencyItem'
-        '400':
-          description: bad input parameter
-  /bridge/vasp/beneficiary-endpoint-url:
-    post:
-      description: This allows VASP to update the any of Beneficiary's callback URL programmatically.
-      summary: Bridge/VASP/BeneficiaryEndpointUrl
-      tags:
-        - Bridge
-      operationId: Bridge/BeneficiaryEndpointUrl
-      security:
-        - ApiKeyAuth: []
-      deprecated: false
-      requestBody:
-        content:
-          application/json:
-            schema:
-              anyOf:
-                - $ref: '#/components/schemas/Ref-BeneficiaryEndpointUrlReq'
-                - $ref: '#/components/schemas/Ref-BeneficiaryEndpointUrlTx'
-        required: true
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
+                $ref: '#/components/schemas/bridgeSupportedCoins'
               examples:
                 response:
                   value:
-                    status: OK
+                    supported_coins:
+                      - currency_id: 'sygna:0x80000090'
+                        currency_name: XRP
+                        currency_symbol: XRP
+                        is_active: true
+                        addr_extra_info:
+                          - tag
+                          - dt
+        '400':
+          description: bad input parameter
   /bridge/transaction/status:
     get:
       description: Get status of specific Permission Request.
@@ -182,7 +149,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ref-PermissionRequestStatus'
+                $ref: '#/components/schemas/bridgeTransferStatus'
               examples:
                 response:
                   value:
@@ -190,18 +157,20 @@ paths:
                       transfer_id: 778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1
                       private_info: 045f5964c9ad8c2e66220996a0d16e34358dfc58d01071424378b3317a4620c6a08d8d0c03d5eb5a0eaa38b8f163eafabf7d1718852c5ab322803eeb20a1c159ff753e47f9968104aae450cf4e46b1f58e1f33b063ec917fec1cf2ce298582ab0b526c9b49d8c6d5595090eb09003f20a1d3dd90569ca7db195872be985db39aeb0ffb378160dd0f3f1df521ecbb53ac0a82f27889c7e0b65f2114e4620ba02639430e47159c24461db34479f3ff6036c7ae962bed4159d0e58acef2bc58c938fea85103ab
                       transaction:
-                        originator_vasp_code: VASPUSNY1
-                        originator_addrs:
-                          - 3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D
-                        originator_addrs_extra:
-                          DT: '001'
-                        beneficiary_vasp_code: VASPUSNY2
-                        beneficiary_addrs:
-                          - 3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf
-                        beneficiary_addrs_extra:
-                          DT: '002'
-                        transaction_currency: '0x80000000'
-                        amount: 1
+                        originator_vasp:
+                          vasp_code: VASPJPJT4
+                          addrs:
+                            - address: bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4
+                              addr_extra_info:
+                                - memo_text: '634346542'
+                        beneficiary_vasp:
+                          vasp_code: VASPJPJT3
+                          addrs:
+                            - address: bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce
+                              addr_extra_info:
+                                - memo_text: Idzl1532434853
+                        currency_id: 'sygna:0x800002ca.bnb1u9j9hkst6gf09dkdvxlj7puk8c7vh68a0kkmht'
+                        amount: '0.1234'
                       data_dt: '2019-07-29T06:29:00.123Z'
                       expire_date: 1582218947
                       permission_request_data_signature: 2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336
@@ -230,7 +199,31 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Ref-PermissionRequest'
+              $ref: '#/components/schemas/bridgePermissionRequest'
+            example:
+              data:
+                private_info: 04f76bf0372c4d4679a172aaaf7fe4746cb83f2a2e5d6a5afcfe6bba72ad4c540d7940853f5fd1f4928c541c39efae81e9165598bad256fab77f6d5c4bd8d135b0553e61bbaeb6d573c71b23d656ed9e4ac37f40106ebd3aab8839c77409a3890b5f056d4e11aaf87c6d29580869ec5f81d20ecaad266ba69e234a2eb627d5c7b95957d82fd1b69172f6bce480f74d9f4ea7d4d38300669c25723e91c5bce83ec8f29aedd4
+                transaction:
+                  originator_vasp:
+                    vasp_code: VASPJPJT4
+                    addrs:
+                      - address: bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4
+                        addr_extra_info:
+                          - memo_text: '634346542'
+                  beneficiary_vasp:
+                    vasp_code: VASPJPJT3
+                    addrs:
+                      - address: bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce
+                        addr_extra_info:
+                          - memo_text: Idzl1532434853
+                  currency_id: 'sygna:0x800002ca.bnb1u9j9hkst6gf09dkdvxlj7puk8c7vh68a0kkmht'
+                  amount: '0.1234'
+                data_dt: '2019-07-29T06:29:00.123Z'
+                expire_date: 1582218947
+                signature: ad44461b212b2360469540d4737f378a60ca0c69d802142198ed1f222c0b570c5078931e173d26e0f6600305f97184e3de32d028ffe38fe1d0cc86ead3b01ed8
+              callback:
+                callback_url: 'http://ec2-3-19-59-48.us-east-2.compute.amazonaws.com:7676/api/v1.1.0/originator/transaction/permission'
+                signature: 62bfe28b58d0e53b3b4fb0d246d954a4088d7d236769f394af2b4c230cc8093f27644596e695563ed37d0fe004b0c6c8b91873ef96315d32703a998c5e92e603
         required: true
       responses:
         '200':
@@ -238,7 +231,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ref-PermissionRequestRes'
+                type: object
+                properties:
+                  transfer_id:
+                    type: string
+                required:
+                  - transfer_id
               examples:
                 response:
                   value:
@@ -261,7 +259,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Ref-Permission'
+              $ref: '#/components/schemas/bridgePermission'
+            example:
+              transfer_id: ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725
+              permission_status: ACCEPTED
+              signature: 309f14db5fe4c33e9ebd770d110a89a93c1c9f68b8e1aac18097c1078ffb5a292f4132501ab1e3bf1f9ee3c3f8a9fd9c3f94ac403a5370eb38a6cdece8d7d1cc
         required: true
       responses:
         '200':
@@ -269,7 +271,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ref-Status'
+                $ref: '#/components/schemas/bridgeApiResponse'
               examples:
                 response:
                   value:
@@ -288,7 +290,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Ref-TransactionID'
+              $ref: '#/components/schemas/bridgeTransactionID'
+            example:
+              transfer_id: ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725
+              txid: f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16
+              signature: 6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb
         required: true
       responses:
         '200':
@@ -296,7 +302,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ref-Status'
+                $ref: '#/components/schemas/bridgeApiResponse'
               examples:
                 response:
                   value:
@@ -315,8 +321,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Ref-RetryRequest'
-        required: true
+              type: object
+              properties:
+                vasp_code:
+                  type: string
+              required:
+                - vasp_code
+            example:
+              vasp_code: VASPJPJT3
       responses:
         '200':
           description: ''
@@ -332,6 +344,39 @@ paths:
                 response:
                   value:
                     retryItems: 2
+  /beneficiary/transaction/address-validation:
+    post:
+      description: |-
+        A new option for Originator VASP to check if the beneficiary has the wallet address before the personal information is sent to beneficiary VASPs. You can activate this function In the Bridge/PermissionRequest API with need_validate_addr parameter to truth.
+      summary: Beneficiary/AddressValidation
+      tags:
+        - VASP API
+      operationId: Beneficiary/AddressValidation
+      deprecated: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addressValidationReq'
+            example:
+              vasp_code: VASPUSNY2
+              address:
+                - bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce
+              signature: 2fef986cae387df247eb3556de8e0d26737907304424e35da47686e40eb3919b462da47e0701fdb26e7657d732b384937df41adcd227ea3c542b5053fd8d198d
+        required: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/addressValidationRes'
+              example:
+                vasp_code: VASPUSNY2
+                address:
+                  - bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce
+                is_valid: true
+                signature: 117a6532f9de8e2274cf5302b3d66efb1c9e3830a53e920cc89e02ae34c70d2111d31f41b17d43c8644cd1d04c55e21ba8e88a81b71a4836a1332809a2c5f0b5
   /beneficiary/transaction/permission-request:
     post:
       description: |-
@@ -347,7 +392,35 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Ref-Beneficiary-PermissionRequest'
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/bridgePermissionRequestData'
+                transfer_id:
+                  type: string
+            example:
+              data:
+                private_info: 04a939a2c1f47d5d5f1a17148c7ac53b3d16b13adc9adc373abaab765fd09d0983a4b32729db6cdc8c2328a6ad577daee2c7c6a430ad746c11f760eb426c688143d44349895e355d1b9b80fe19ea677b63d4382849ee6d1b3219941717e4672f3da5c5104baf45486fde3d1e5973d3de13704a4b64a5e67fe07c9fa4efa5c02cdc292e22c683f1c59f81c40d39a70a46221af9faf85aef1604745b965104c04e88431a1f025d1a4e981d0b94f94cc3dfacffd7432a97314931be5b0b90d99ba1b9544eb001
+                transaction:
+                  originator_vasp:
+                    vasp_code: VASPUSNY1
+                    addrs:
+                    - address: bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4
+                      addr_extra_info:
+                      - tag: '123'
+                    - address: bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl5
+                      addr_extra_info: []
+                  beneficiary_vasp:
+                    vasp_code: VASPUSNY2
+                    addrs:
+                    - address: bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce
+                  currency_id: sygna:0x80000090
+                  amount: '1.235'
+                data_dt: '2019-07-29T06:29:00.123Z'
+                expire_date: 4107667801000
+                need_validate_addr: false
+                signature: 7050e1f4e9ceb01161a62e22219a31891c2d4e1bb50b889ceea1c12e5a63d02d3e60624383db0f423fe0941fc72af5233dd33fd7b5c02546690fe641b683acc5
+              transfer_id: abf3fa77c999b1f29cf242240faf27f4f493eab7a19a7a6ad56f040f39e81c6b
         required: true
       responses:
         '200':
@@ -355,7 +428,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ref-Status'
+                $ref: '#/components/schemas/bridgeApiResponse'
               examples:
                 response:
                   value:
@@ -372,7 +445,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Ref-TransactionID'
+              $ref: '#/components/schemas/bridgeTransactionID'
+            example:
+              transfer_id: ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725
+              txid: f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16
+              signature: 6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb
         required: true
       responses:
         '200':
@@ -380,7 +457,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ref-Status'
+                $ref: '#/components/schemas/bridgeApiResponse'
               examples:
                 response:
                   value:
@@ -390,7 +467,7 @@ paths:
       description: |-
         ![](https://i.imgur.com/6AFWgIm.png)
 
-        Each VASP needs to implement a permission endpoint to get a notification from Bridge.
+        Each VASP needs to implement a permission endpoint to get a notification from bridge
 
         When an originator posts a permission request to Bridge, it needs to attach this url in callback_url.
       summary: Originator/Permission
@@ -402,7 +479,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Ref-Permission'
+              $ref: '#/components/schemas/bridgePermission'
+            example:
+              transfer_id: ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725
+              permission_status: ACCEPTED
+              signature: 309f14db5fe4c33e9ebd770d110a89a93c1c9f68b8e1aac18097c1078ffb5a292f4132501ab1e3bf1f9ee3c3f8a9fd9c3f94ac403a5370eb38a6cdece8d7d1cc
         required: true
       responses:
         '200':
@@ -410,41 +491,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ref-Status'
+                $ref: '#/components/schemas/bridgeApiResponse'
               examples:
                 response:
                   value:
                     status: OK
 tags:
   - name: Bridge
-    description: |-
-      # API Flow
-
-      Bridge API helps VASP to exchange required compliance informations and obtain a cryptographically signed compliance record (we call it **permission**) before broadcasting anything to the blockchain. The complete flow works as follows:
-
-      ### VASP Registration and Verification
-
-      In order to use our API, you will need to contact us to request an API key.
-      After you successfully register as a verified VASP in the Bridge Ecosystem, we will publish your public key associate with a `vasp_code` for any other VASP to query.
-
-      Before you start a permission request, you will need to know the transaction beneficiary's corresponding VASP and the public key of that VASP.
-
-      ### Main Permission Request Flow
-
-      During the main process of Signa Bridge's **Permission Request**, the originator of a cryptocurrency transaction first starts a [permissionRequest](#b1485553-958b-424b-90bf-b265dea428c7), and posts it to Bridge central server. The server will relay the request to the beneficiary VASP and wait for the callback of the validation result.
-
-      Whenever the beneficiary finishes the request validation, they will post a [permission](#5ed92213-e845-4091-9d2d-0684bd5b877c) back to Bridge. The server will store the data and relay the message to the originator VASP's server and complete the process.
-
-      ![flow](https://i.imgur.com/lKA3bzj.png)
-
-      ### Submit Transaction ID
-
-      After the originator VASP has successfully received the permission and a signature from the beneficiary VASP, the originator VASP can proceed with the transaction and broadcast it to the blockchain. After the transaction has been confirmed by the network, the originator should submit the on-chain transaction ID to Bridge for future query.
   - name: VASP API
-    description: |-
-      A Vasp **must implement the following 2 endpoints to fully function with Bridge** ecosystem, acting as a beneficiary and an originator accordingly.
-
-      We have provided a sample NodeJS based API on Github so you can take a look at how the two endpoints should process or callback Bridge.
 components:
   securitySchemes:
     ApiKeyAuth:
@@ -452,12 +506,8 @@ components:
       name: x-api-key
       in: header
   schemas:
-    Ref-VaspData:
-      title: Vasp Data
-      example:
-        vasp_code: VASPJPJT4
-        vasp_name: 'VASP4 in Tokyo, Japan'
-        vasp_pubkey: 04670af26edc74b1ae4e4acb6cef65dc0c3914528296aa48a6412f00cf0576d735d99e7cdd9da3daaef6fded244553597be9272d6cd2065a52cc7157264a2a4836
+    bridgeVaspData:
+      title: VaspData
       type: object
       properties:
         vasp_code:
@@ -470,341 +520,209 @@ components:
         - vasp_code
         - vasp_name
         - vasp_pubkey
-    Ref-VASP:
-      title: VASP
-      example:
-        vasp_data:
-          - vasp_code: VASPJPJT4
-            vasp_name: 'VASP4 in Tokyo, Japan'
-            vasp_pubkey: 04670af26edc74b1ae4e4acb6cef65dc0c3914528296aa48a6412f00cf0576d735d99e7cdd9da3daaef6fded244553597be9272d6cd2065a52cc7157264a2a4836
-          - vasp_code: VASPUSNY1
-            vasp_name: 'VASP1 in New York, USA'
-            vasp_pubkey: 048709ef46f46c7e89b58987b606dc54eda62f88424517667305d91b3e86b8847f1b44a9659831880a15885ec43a722f76c356ec0ee373a273a0a7900dcd077339
-          - vasp_code: SVCEJPJT
-            vasp_name: SBIVC
-            vasp_pubkey: 0480664cd8fd8c93f0220eb0c2bab467608d90a291ea037b9932387f56a656f35e9a976a1623232643f82b1da0cf5b9a3bf2bda2b5cf30e5ee85a0d5a2011ea4f1
-          - vasp_code: VASPUSNY2
-            vasp_name: 'VASP2 in New York, USA'
-            vasp_pubkey: 04b1f14590a37c5c5fdcdc4f6d606eb383a79d5f6d72c210ec4fab47c2e9a59b4fd1149d8e8fa31ac1a04a9142cda2a479c642fb606eaac14c874fd7426e379f54
-          - vasp_code: VASPJPJT3
-            vasp_name: 'VASP3 in Tokyo, Japan'
-            vasp_pubkey: 04247bc554740852792dee49b8359cb25c74f2335d2c6e2025cd0880a06c8da1d51d461f720046c84da1dab106dfdac0452c92f09de7022a4cef5c4f3f6f3064d5
-        signature: 9fb61c13dc4f74a18413aca7179cd62ad22aa88ea67fe4e9ff6fa5e6ddf5d2706d175d8965c3eadf0c1370b52a2ab211697b520633c74d00d2bfb120e610dae6
-        timestamp: 1584002280274
+      additionalProperties: false
+    bridgeVasp:
+      title: Vasp
       type: object
       properties:
         vasp_data:
           type: array
           items:
-            $ref: '#/components/schemas/Ref-VaspData'
-        signature:
-          type: string
+            $ref: '#/components/schemas/bridgeVaspData'
         timestamp:
           type: integer
           minimum: 0
+        signature:
+          type: string
       required:
         - vasp_data
+        - timestamp
         - signature
-    CurrencyItem:
+      additionalProperties: false
+    bridgeCallbackUrl:
+      title: CallbackUrl
       type: object
+      minProperties: 3
+      properties:
+        vasp_code:
+          type: string
+          minLength: 1
+        callback_permission_request_url:
+          type: string
+          format: uri
+        callback_txid_url:
+          type: string
+          format: uri
+        callback_validate_addr_url:
+          type: string
+          format: uri
+        signature:
+          $ref: '#/components/schemas/bridgeSignature'
       required:
-        - currency_id
-        - currency_name
-        - currency_symbol
-        - addr_extra_info
+        - vasp_code
+        - signature
+      additionalProperties: false
+    bridgeCurrencyItem:
+      title: CurrencyItem
+      type: object
       properties:
         currency_id:
           type: string
-          example: 'sygna:0x80000090'
         currency_name:
           type: string
-          example: XRP
         currency_symbol:
           type: string
-          example: XRP
+        is_active:
+          type: boolean
         addr_extra_info:
           type: array
           items:
             type: string
-            example: tag
-    Ref-BeneficiaryEndpointUrlReq:
-      title: BeneficiaryEndpointUrl
-      example:
-        vasp_code: VASPUSNY1
-        callback_permission_request_url: 'https://{VASP-server}/v2/bridge'
-        signature: 6aa25cb51b54a9fb651dcebbaf904b2616fcfde5c5fadc984742e133c9af93992489f9979f53c6bd3d3922eaadb192d0187b2a4debe640aa459cfeb29cf8dfd6
+      required:
+        - currency_id
+        - currency_name
+        - currency_symbol
+        - is_active
+        - addr_extra_info
+      additionalProperties: false
+    bridgeSupportedCoins:
+      title: SupportedCoins
+      type: object
+      properties:
+        supported_coins:
+          type: array
+          items:
+            $ref: '#/components/schemas/bridgeCurrencyItem'
+      required:
+        - supported_coins
+    bridgePrivateInfo:
+      title: PrivateInfo
+      type: string
+      description: 'ECIES encoded [Private Information](ref:private-information)'
+    bridgeAddress:
+      title: Address
+      type: object
+      properties:
+        address:
+          type: string
+        addr_extra_info:
+          type: array
+          items:
+            type: object
+      required:
+        - address
+    bridgeOriginatorVasp:
+      title: OriginatorVasp
       type: object
       properties:
         vasp_code:
           type: string
-          minLength: 6
-        callback_permission_request_url:
-          type: string
-          format: uri
-        signature:
-          type: string
-          minLength: 128
-          maxLength: 128
-          pattern: '^[0123456789A-Fa-f]+$'
+        addrs:
+          type: array
+          items:
+            $ref: '#/components/schemas/bridgeAddress'
       required:
         - vasp_code
-        - callback_permission_request_url
-        - signature
-      additionalProperties: false
-    Ref-BeneficiaryEndpointUrlTx:
-      title: BeneficiaryEndpointUrl
-      example:
-        vasp_code: VASPUSNY1
-        callback_txid_url: 'https://{VASP-server}/v2/bridge'
-        signature: 6aa25cb51b54a9fb651dcebbaf904b2616fcfde5c5fadc984742e133c9af93992489f9979f53c6bd3d3922eaadb192d0187b2a4debe640aa459cfeb29cf8dfd6
+        - addrs
+    bridgeBeneficiaryVasp:
+      title: BeneficiaryVasp
       type: object
       properties:
         vasp_code:
           type: string
-          minLength: 6
-        callback_txid_url:
-          type: string
-          format: uri
-        signature:
-          type: string
-          minLength: 128
-          maxLength: 128
-          pattern: '^[0123456789A-Fa-f]+$'
+        addrs:
+          type: array
+          items:
+            $ref: '#/components/schemas/bridgeAddress'
       required:
         - vasp_code
-        - callback_txid_url
-        - signature
-      additionalProperties: false
-    Ref-PermissionRequestStatus:
-      title: PermissionRequest Status
-      example:
-        transferData:
-          transfer_id: 778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1
-          private_info: 045f5964c9ad8c2e66220996a0d16e34358dfc58d01071424378b3317a4620c6a08d8d0c03d5eb5a0eaa38b8f163eafabf7d1718852c5ab322803eeb20a1c159ff753e47f9968104aae450cf4e46b1f58e1f33b063ec917fec1cf2ce298582ab0b526c9b49d8c6d5595090eb09003f20a1d3dd90569ca7db195872be985db39aeb0ffb378160dd0f3f1df521ecbb53ac0a82f27889c7e0b65f2114e4620ba02639430e47159c24461db34479f3ff6036c7ae962bed4159d0e58acef2bc58c938fea85103ab
-          transaction:
-            originator_vasp_code: VASPUSNY1
-            originator_addrs:
-              - 3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D
-            originator_addrs_extra:
-              DT: '001'
-            beneficiary_vasp_code: VASPUSNY2
-            beneficiary_addrs:
-              - 3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf
-            beneficiary_addrs_extra:
-              DT: '002'
-            transaction_currency: '0x80000000'
-            amount: 1
-          data_dt: '2019-07-29T06:29:00.123Z'
-          permission_request_data_signature: 2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336
-          permission_status: ACCEPTED
-          permission_signature: 20fe27be0af5f11657a21ab6d9f09b712406cbcbd3be2ffd30ecf7e59dfe135433f6ec14948fddf4e119d318374e02b7e3528dcf3e3b44698b420b97d985300c
-          txid: null
-          txid_signature: null
-          created_at: '2019-09-20T02:08:19.050Z'
-          transfer_to_originator_time: '2019-09-20T02:08:25.276Z'
-        signature: 64ed8fd76816bd32ca033764ac0b1ce6b7987a83714c2abd2ef8ee06628fd1c73e3a8dabe13b344f2701f7d32388270a07b138bd83b5350d75f80d94614d8281
+        - addrs
+    bridgeTransaction:
+      title: Transaction
       type: object
       properties:
-        transferData:
-          $ref: '#/components/schemas/Ref-TransferData'
-        signature:
+        originator_vasp:
+          $ref: '#/components/schemas/bridgeOriginatorVasp'
+        beneficiary_vasp:
+          $ref: '#/components/schemas/bridgeBeneficiaryVasp'
+        currency_id:
+          type: string
+        amount:
           type: string
       required:
-        - transferData
-        - signature
-    Ref-TransferData:
+        - originator_vasp
+        - beneficiary_vasp
+        - currency_id
+        - amount
+    bridgeTransferData:
       title: TransferData
-      example:
-        transfer_id: 778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1
-        private_info: 045f5964c9ad8c2e66220996a0d16e34358dfc58d01071424378b3317a4620c6a08d8d0c03d5eb5a0eaa38b8f163eafabf7d1718852c5ab322803eeb20a1c159ff753e47f9968104aae450cf4e46b1f58e1f33b063ec917fec1cf2ce298582ab0b526c9b49d8c6d5595090eb09003f20a1d3dd90569ca7db195872be985db39aeb0ffb378160dd0f3f1df521ecbb53ac0a82f27889c7e0b65f2114e4620ba02639430e47159c24461db34479f3ff6036c7ae962bed4159d0e58acef2bc58c938fea85103ab
-        transaction:
-          originator_addrs:
-            - 3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D
-          amount: 9
-          beneficiary_addrs:
-            - 3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf
-          beneficiary_vasp_code: VASPUSNY2
-          transaction_currency: '0x80000000'
-          originator_vasp_code: VASPUSNY1
-        data_dt: '2019-07-29T06:29:00.123Z'
-        permission_request_data_signature: 2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336
-        permission_status: ACCEPTED
-        permission_signature: 20fe27be0af5f11657a21ab6d9f09b712406cbcbd3be2ffd30ecf7e59dfe135433f6ec14948fddf4e119d318374e02b7e3528dcf3e3b44698b420b97d985300c
-        txid: null
-        txid_signature: null
-        created_at: '2019-09-20T02:08:19.050Z'
-        transfer_to_originator_time: '2019-09-20T02:08:25.276Z'
       type: object
       properties:
         transfer_id:
-          type: string
+          $ref: '#/components/schemas/bridgeTransferID'
         private_info:
-          type: string
+          $ref: '#/components/schemas/bridgePrivateInfo'
         transaction:
-          $ref: '#/components/schemas/Ref-Transaction'
+          $ref: '#/components/schemas/bridgeTransaction'
         data_dt:
-          type: string
+          $ref: '#/components/schemas/bridgeDate'
         expire_date:
-          type: integer
-          minimum: 0
+          $ref: '#/components/schemas/bridgeExpireDate'
         permission_request_data_signature:
-          type: string
+          $ref: '#/components/schemas/bridgeNullableSignature'
         permission_status:
           type: string
+          nullable: true
+          enum:
+            - ACCEPTED
+            - REJECTED
+            - null
         permission_signature:
-          type: string
+          $ref: '#/components/schemas/bridgeNullableSignature'
         txid:
           type: string
+          nullable: true
         txid_signature:
-          type: string
+          $ref: '#/components/schemas/bridgeNullableSignature'
         created_at:
-          type: string
+          $ref: '#/components/schemas/bridgeDate'
         transfer_to_originator_time:
           type: string
+          nullable: true
+        reject_code:
+          type: string
+          nullable: true
+          enum:
+            - BVRC001
+            - BVRC002
+            - BVRC003
+            - BVRC004
+            - BVRC005
+            - BVRC006
+            - BVRC007
+            - BVRC999
+            - null
+        reject_message:
+          type: string
+          nullable: true
       required:
         - transfer_id
         - private_info
         - transaction
         - data_dt
-        - permission_request_data_signature
-        - permission_status
-        - permission_signature
-        - txid
-        - txid_signature
         - created_at
-        - transfer_to_originator_time
-    Ref-PermissionRequest:
-      title: PermissionRequest
-      example:
-        data:
-          private_info: 04f76bf0372c4d4679a172aaaf7fe4746cb83f2a2e5d6a5afcfe6bba72ad4c540d7940853f5fd1f4928c541c39efae81e9165598bad256fab77f6d5c4bd8d135b0553e61bbaeb6d573c71b23d656ed9e4ac37f40106ebd3aab8839c77409a3890b5f056d4e11aaf87c6d29580869ec5f81d20ecaad266ba69e234a2eb627d5c7b95957d82fd1b69172f6bce480f74d9f4ea7d4d38300669c25723e91c5bce83ec8f29aedd4
-          transaction:
-            originator_vasp_code: VASPJPJT4
-            originator_addrs:
-              - 3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D
-            originator_addrs_extra:
-              DT: '001'
-            beneficiary_vasp_code: VASPJPJT3
-            beneficiary_addrs:
-              - 3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf
-            beneficiary_addrs_extra:
-              DT: '002'
-            transaction_currency: '0x80000000'
-            amount: 0.1516
-          data_dt: '2019-07-29T06:29:00.123Z'
-          expire_date: 1582218947
-          signature: ad44461b212b2360469540d4737f378a60ca0c69d802142198ed1f222c0b570c5078931e173d26e0f6600305f97184e3de32d028ffe38fe1d0cc86ead3b01ed8
-        callback:
-          callback_url: 'http://ec2-3-19-59-48.us-east-2.compute.amazonaws.com:7676/api/v1.1.0/originator/transaction/permission'
-          signature: 62bfe28b58d0e53b3b4fb0d246d954a4088d7d236769f394af2b4c230cc8093f27644596e695563ed37d0fe004b0c6c8b91873ef96315d32703a998c5e92e603
+      additionalProperties: false
+    bridgeTransferStatus:
+      title: TransferStatus
       type: object
       properties:
-        data:
-          $ref: '#/components/schemas/Ref-Data'
-        callback:
-          $ref: '#/components/schemas/Ref-Callback'
-      required:
-        - data
-        - callback
-    Ref-Data:
-      title: Data
-      example:
-        private_info: 04f76bf0372c4d4679a172aaaf7fe4746cb83f2a2e5d6a5afcfe6bba72ad4c540d7940853f5fd1f4928c541c39efae81e9165598bad256fab77f6d5c4bd8d135b0553e61bbaeb6d573c71b23d656ed9e4ac37f40106ebd3aab8839c77409a3890b5f056d4e11aaf87c6d29580869ec5f81d20ecaad266ba69e234a2eb627d5c7b95957d82fd1b69172f6bce480f74d9f4ea7d4d38300669c25723e91c5bce83ec8f29aedd4
-        transaction:
-          originator_vasp_code: VASPJPJT4
-          originator_addrs:
-            - 3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D
-          originator_addrs_extra:
-            DT: '001'
-          beneficiary_vasp_code: VASPJPJT3
-          beneficiary_addrs:
-            - 3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf
-          beneficiary_addrs_extra:
-            DT: '002'
-          transaction_currency: '0x80000000'
-          amount: 0.1516
-        data_dt: '2019-07-29T06:29:00.123Z'
-        expire_date: 1582218947
-        signature: ad44461b212b2360469540d4737f378a60ca0c69d802142198ed1f222c0b570c5078931e173d26e0f6600305f97184e3de32d028ffe38fe1d0cc86ead3b01ed8
-      type: object
-      properties:
-        private_info:
-          type: string
-          description: 'ECIES encoded [Private Information](ref:private-information)'
-        transaction:
-          $ref: '#/components/schemas/Ref-Transaction'
-        data_dt:
-          type: string
-          description: "Timestamp when transaction was created in UTC time using ISO 8601 format(yyyy-MM-dd'T'hh:mm:ss.sssZ)"
-        expire_date:
-          type: integer
-          minimum: 0
-          description: Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires.
+        transferData:
+          $ref: '#/components/schemas/bridgeTransferData'
         signature:
-          type: string
-      required:
-        - private_info
-        - transaction
-        - data_dt
-        - signature
-    Ref-Transaction:
-      title: Transaction
-      description: 'Please see [Transaction](ref:transaction)'
-      example:
-        originator_vasp_code: VASPJPJT4
-        originator_addrs:
-          - 3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D
-        originator_addrs_extra:
-          DT: '001'
-        beneficiary_vasp_code: VASPJPJT3
-        beneficiary_addrs:
-          - 3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf
-        beneficiary_addrs_extra:
-          DT: '002'
-        transaction_currency: '0x80000000'
-        amount: 0.1516
-      type: object
-      properties:
-        originator_vasp_code:
-          type: string
-        originator_addrs:
-          type: array
-          items:
-            type: string
-        originator_addrs_extra:
-          type: object
-          properties:
-            DT:
-              type: string
-        beneficiary_vasp_code:
-          type: string
-        beneficiary_addrs:
-          type: array
-          items:
-            type: string
-        beneficiary_addrs_extra:
-          type: object
-          properties:
-            DT:
-              type: string
-        transaction_currency:
-          type: string
-        amount:
-          type: number
-          format: double
-      required:
-        - originator_vasp_code
-        - originator_addrs
-        - beneficiary_vasp_code
-        - beneficiary_addrs
-        - transaction_currency
-        - amount
-    Ref-Callback:
+          $ref: '#/components/schemas/bridgeSignature'
+    bridgeCallback:
       title: Callback
       description: 'Please see [Callback](ref:callback)'
-      example:
-        callback_url: 'http://ec2-3-19-59-48.us-east-2.compute.amazonaws.com:7676/api/v1.1.0/originator/transaction/permission'
-        signature: 62bfe28b58d0e53b3b4fb0d246d954a4088d7d236769f394af2b4c230cc8093f27644596e695563ed37d0fe004b0c6c8b91873ef96315d32703a998c5e92e603
       type: object
       properties:
         callback_url:
@@ -814,68 +732,118 @@ components:
       required:
         - callback_url
         - signature
-    Ref-PermissionRequestRes:
-      title: PermissionRequest Response
-      example:
-        transfer_id: 778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1
+      additionalProperties: false
+    bridgePermissionRequestData:
+      title: PermissionRequestData
       type: object
       properties:
-        transfer_id:
-          type: string
-      required:
-        - transfer_id
-    Ref-Permission:
-      title: Permission
-      example:
-        transfer_id: ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725
-        permission_status: ACCEPTED
-        signature: 309f14db5fe4c33e9ebd770d110a89a93c1c9f68b8e1aac18097c1078ffb5a292f4132501ab1e3bf1f9ee3c3f8a9fd9c3f94ac403a5370eb38a6cdece8d7d1cc
-      type: object
-      properties:
-        transfer_id:
-          type: string
-          description: Unique transfer Id returned from Bridge/PermissionRequest api call.
-        permission_status:
-          type: string
-          description: 'Status of the transfer permission. Currently available values: ACCEPTED, REJECTED.'
-          enum:
-            - ACCEPTED
-            - REJECTED
+        private_info:
+          $ref: '#/components/schemas/bridgePrivateInfo'
+        transaction:
+          $ref: '#/components/schemas/bridgeTransaction'
+        data_dt:
+          $ref: '#/components/schemas/bridgeDate'
         expire_date:
-          type: integer
-          minimum: 0
-          description: Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires.
-        reject_code:
-          type: string
-          description: 'Only required when the permission_status is REJECTED, reply with [BVRC](ref:beneficiary-vasp-rejected-code).'
-          enum:
-            - BVRC001
-            - BVRC002
-            - BVRC003
-            - BVRC004
-            - BVRC999
-        reject_message:
-          type: string
-          description: "Only required when the permission_status is REJECTED and reject_code is 'BVRC999', reply with [BVRC](ref:beneficiary-vasp-rejected-code)."
-          enum:
-            - unsupported_currency
-            - service_downtime
-            - exceed_trading_volume
-            - compliance_check_fail
-            - other
+          $ref: '#/components/schemas/bridgeExpireDate'
+        need_validate_addr:
+          type: boolean
+          description: need validate beneficary address
         signature:
-          type: string
-          description: Signature of the object containing the previous 4 fields.
+          $ref: '#/components/schemas/bridgeSignature'
+      required:
+        - private_info
+        - transaction
+        - data_dt
+        - signature
+      additionalProperties: false
+    bridgePermissionRequest:
+      title: PermissionRequest
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/bridgePermissionRequestData'
+        callback:
+          $ref: '#/components/schemas/bridgeCallback'
+      additionalProperties: false
+    bridgeRejectCode:
+      title: RejectCode
+      description: 'Only required when the permission_status is REJECTED, reply with [BVRC](ref:beneficiary-vasp-rejected-code).'
+      type: string
+      minLength: 1
+      enum:
+        - BVRC001
+        - BVRC002
+        - BVRC003
+        - BVRC004
+        - BVRC005
+        - BVRC006
+        - BVRC007
+        - BVRC999
+    bridgeRejectMessage:
+      title: RejectMessage
+      description: 'Only required when the permission_status is REJECTED and reject_code is ''BVRC999'', reply with [BVRC](ref:beneficiary-vasp-rejected-code).'
+      type: string
+    bridgePermissionStatus:
+      title: PermissionStatus
+      type: string
+      minLength: 1
+      enum:
+        - ACCEPTED
+        - REJECTED
+      description: 'Status of the transfer permission, currently available values: ACCEPTED, REJECTED.'
+    bridgePermission:
+      title: Permission
+      type: object
+      properties:
+        transfer_id:
+          $ref: '#/components/schemas/bridgeTransferID'
+        permission_status:
+          $ref: '#/components/schemas/bridgePermissionStatus'
+        expire_date:
+          $ref: '#/components/schemas/bridgeExpireDate'
+        reject_code:
+          $ref: '#/components/schemas/bridgeRejectCode'
+        reject_message:
+          $ref: '#/components/schemas/bridgeRejectMessage'
+        signature:
+          $ref: '#/components/schemas/bridgeSignature'
       required:
         - transfer_id
         - permission_status
         - signature
-    Ref-TransactionID:
+      additionalProperties: false
+    bridgeDate:
+      title: Date
+      description: 'Unix timestamp using ISO 8601 format(yyyy-MM-dd''T''hh:mm:ss.sssZ)'
+      type: string
+      format: date-time
+    bridgeSignature:
+      title: Signature
+      description: Signature of the object that includes the constraint fields.
+      type: string
+      minLength: 128
+      maxLength: 128
+      pattern: '^[0123456789A-Fa-f]+$'
+    bridgeNullableSignature:
+      title: NullableSignature
+      type: string
+      nullable: true
+      minLength: 128
+      maxLength: 128
+      pattern: '^[0123456789A-Fa-f]+$'
+    bridgeTransferID:
+      title: TransferID
+      description: Unique Id generated by Bridge
+      type: string
+      minLength: 64
+      maxLength: 64
+    bridgeExpireDate:
+      title: ExpireDate
+      description: Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires.
+      type: integer
+      minimum: 0
+    bridgeTransactionID:
       title: TransactionID
-      example:
-        transfer_id: ad468f326ebcc2242c32aa6bf7084c44135a068d939e52c08b6d2e86eb9ef725
-        txid: f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16
-        signature: 6e8e259319f22df4dcb1a03cf701baf2d7fbd668fe3250f60ed12bb5c462fb712e9b68069ec0893042188a81a384da1fec5eb06173fadd327318db8430e606eb
       type: object
       properties:
         transfer_id:
@@ -888,54 +856,48 @@ components:
         - transfer_id
         - txid
         - signature
-    Ref-Status:
-      title: Status
-      example:
-        status: OK
+    addressValidationReq:
+      title: AddressValidationReq
+      description: Request to verify beneficiary address
+      type: object
+      properties:
+        vasp_code:
+          type: string
+        address:
+          type: array
+          items:
+            type: string
+        signature:
+          type: string
+      required:
+        - vasp_code
+        - address
+        - signature
+    addressValidationRes:
+      title: AddressValidationRes
+      description: This response ("is_valid") means the beneficairy address is valid.
+      type: object
+      properties:
+        vasp_code:
+          type: string
+        address:
+          type: array
+          items:
+            type: string
+        is_valid:
+          type: boolean
+        signature:
+          type: string
+      required:
+        - vasp_code
+        - address
+        - signature
+    bridgeApiResponse:
+      title: ApiResponse
+      description: Successful operation
       type: object
       properties:
         status:
           type: string
       required:
         - status
-    Ref-RetryRequest:
-      title: RetryRequest
-      example:
-        vasp_code: VASPJPJT3
-      type: object
-      properties:
-        vasp_code:
-          type: string
-      required:
-        - vasp_code
-    Ref-Beneficiary-PermissionRequest:
-      title: Beneficiary/PermissionRequest
-      example:
-        data:
-          private_info: 045f5964c9ad8c2e66220996a0d16e34358dfc58d01071424378b3317a4620c6a08d8d0c03d5eb5a0eaa38b8f163eafabf7d1718852c5ab322803eeb20a1c159ff753e47f9968104aae450cf4e46b1f58e1f33b063ec917fec1cf2ce298582ab0b526c9b49d8c6d5595090eb09003f20a1d3dd90569ca7db195872be985db39aeb0ffb378160dd0f3f1df521ecbb53ac0a82f27889c7e0b65f2114e4620ba02639430e47159c24461db34479f3ff6036c7ae962bed4159d0e58acef2bc58c938fea85103ab
-          transaction:
-            originator_vasp_code: VASPUSNY1
-            originator_addrs:
-              - 3KvJ1uHPShhEAWyqsBEzhfXyeh1TXKAd7D
-            originator_addrs_extra:
-              DT: '001'
-            beneficiary_vasp_code: VASPUSNY2
-            beneficiary_addrs:
-              - 3F4ReDwiMLu8LrAiXwwD2DhH8U9xMrUzUf
-            beneficiary_addrs_extra:
-              DT: '002'
-            transaction_currency: '0x80000000'
-            amount: 9
-          data_dt: '2019-07-29T06:29:00.123Z'
-          expire_date: 1582218947
-          signature: 2e31c7a2bb0db4ad1fb3aff20b3939ae0fb80267a5eb24beebaa8c66fe33c933443902e84cbd3369d657eb0bf69596cebf5b21c1e36517ea186466f4d73bc336
-        transfer_id: 778c0befbb99b21e398c545455622198b14ce403afa13f2b371349ff93da78a1
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/Ref-Data'
-        transfer_id:
-          type: string
-      required:
-        - data
-        - transfer_id

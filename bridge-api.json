@@ -21,7 +21,9 @@
       "get": {
         "description": "Retrieve information of one or more Virtual Assets Service Provider.",
         "summary": "Bridge/VASP",
-        "tags": ["Bridge"],
+        "tags": [
+          "Bridge"
+        ],
         "operationId": "Bridge/VASP",
         "security": [
           {
@@ -82,7 +84,9 @@
       "post": {
         "description": "This API allows requesting VASPs to update the self's callback URL programmatically, at least one of URL must be specified in the request body.",
         "summary": "Bridge/VASP/BeneficiaryEndpointUrl",
-        "tags": ["Bridge"],
+        "tags": [
+          "Bridge"
+        ],
         "operationId": "Bridge/BeneficiaryEndpointUrl",
         "security": [
           {
@@ -124,7 +128,9 @@
     "/bridge/transaction/currencies": {
       "get": {
         "summary": "Bridge/Currencies",
-        "tags": ["Bridge"],
+        "tags": [
+          "Bridge"
+        ],
         "operationId": "bridge/currencies",
         "security": [
           {
@@ -181,7 +187,10 @@
                           "currency_name": "XRP",
                           "currency_symbol": "XRP",
                           "is_active": true,
-                          "addr_extra_info": ["tag", "dt"]
+                          "addr_extra_info": [
+                            "tag",
+                            "dt"
+                          ]
                         }
                       ]
                     }
@@ -200,7 +209,9 @@
       "get": {
         "description": "Get status of specific Permission Request.",
         "summary": "Bridge/Status",
-        "tags": ["Bridge"],
+        "tags": [
+          "Bridge"
+        ],
         "operationId": "Bridge/Status",
         "security": [
           {
@@ -287,7 +298,9 @@
       "post": {
         "description": "The first step of the permission request flow. Should be called by the originator VASP to inform Sygna Bridge about the creation of a compliant transaction.\n\n\n![](https://i.imgur.com/rNzTHD4.png)",
         "summary": "Bridge/PermissionRequest",
-        "tags": ["Bridge"],
+        "tags": [
+          "Bridge"
+        ],
         "operationId": "Bridge/PermissionRequest",
         "security": [
           {
@@ -359,7 +372,9 @@
                       "type": "string"
                     }
                   },
-                  "required": ["transfer_id"]
+                  "required": [
+                    "transfer_id"
+                  ]
                 },
                 "examples": {
                   "response": {
@@ -378,7 +393,9 @@
       "post": {
         "description": "This request works as a response to Bridge's [Permission Request](ref:bridgepermissionrequest-3). Whenever a beneficiary VASP finishes processing the request from Bridge, it must post a permission request back to Bridge server, containing the confirmation result.\n\n\n![](https://i.imgur.com/yECHJqV.png)",
         "summary": "Bridge/Permission",
-        "tags": ["Bridge"],
+        "tags": [
+          "Bridge"
+        ],
         "operationId": "Bridge/Permission",
         "security": [
           {
@@ -426,7 +443,9 @@
       "post": {
         "description": "Submit broadcasted transaction ID on the blockchain for Bridge to keep as a record.",
         "summary": "Bridge/TransactionID",
-        "tags": ["Bridge"],
+        "tags": [
+          "Bridge"
+        ],
         "operationId": "Bridge/TransactionID",
         "security": [
           {
@@ -474,7 +493,9 @@
       "post": {
         "description": "It is a brand new API that will let VASPs to retrieve the lost transfer requests in their server downtime. We will queue up the fail API requests sent to VASPs and resent the request again if Bridge/Retry is trigger. So make sure you make this API request after you restart the server.",
         "summary": "Bridge/Retry",
-        "tags": ["Bridge"],
+        "tags": [
+          "Bridge"
+        ],
         "operationId": "Bridge/Retry",
         "security": [
           {
@@ -492,7 +513,9 @@
                     "type": "string"
                   }
                 },
-                "required": ["vasp_code"]
+                "required": [
+                  "vasp_code"
+                ]
               },
               "example": {
                 "vasp_code": "VASPJPJT3"
@@ -511,7 +534,9 @@
                       "type": "integer"
                     }
                   },
-                  "required": ["retryItems"]
+                  "required": [
+                    "retryItems"
+                  ]
                 },
                 "examples": {
                   "response": {
@@ -526,11 +551,61 @@
         }
       }
     },
+    "/beneficiary/transaction/address-validation": {
+      "post": {
+        "description": "A new option for Originator VASP to check if the beneficiary has the wallet address before the personal information is sent to beneficiary VASPs. You can activate this function In the Bridge/PermissionRequest API with need_validate_addr parameter to truth.",
+        "summary": "Beneficiary/AddressValidation",
+        "tags": [
+          "VASP API"
+        ],
+        "operationId": "Beneficiary/AddressValidation",
+        "deprecated": false,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/addressValidationReq"
+              },
+              "example": {
+                "vasp_code": "VASPUSNY2",
+                "address": [
+                  "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce"
+                ],
+                "signature": "2fef986cae387df247eb3556de8e0d26737907304424e35da47686e40eb3919b462da47e0701fdb26e7657d732b384937df41adcd227ea3c542b5053fd8d198d"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/addressValidationRes"
+                },
+                "example": {
+                  "vasp_code": "VASPUSNY2",
+                  "address": [
+                    "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce"
+                  ],
+                  "is_valid": true,
+                  "signature": "117a6532f9de8e2274cf5302b3d66efb1c9e3830a53e920cc89e02ae34c70d2111d31f41b17d43c8644cd1d04c55e21ba8e88a81b71a4836a1332809a2c5f0b5"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/beneficiary/transaction/permission-request": {
       "post": {
         "description": "![](https://i.imgur.com/hTU5qyn.png)\n\nWhen Bridge gets a [**Permission Request**](ref:permission-request), it will verify the request first to ensure the data integrity, and then **Relay the request to corresponding beneficiary server**.",
         "summary": "Beneficiary/PermissionRequest",
-        "tags": ["VASP API"],
+        "tags": [
+          "VASP API"
+        ],
         "operationId": "Beneficiary/PermissionRequest",
         "deprecated": false,
         "requestBody": {
@@ -541,8 +616,50 @@
                 "properties": {
                   "data": {
                     "$ref": "#/components/schemas/bridgePermissionRequestData"
+                  },
+                  "transfer_id": {
+                    "type": "string"
                   }
                 }
+              },
+              "example": {
+                "data": {
+                  "private_info": "04a939a2c1f47d5d5f1a17148c7ac53b3d16b13adc9adc373abaab765fd09d0983a4b32729db6cdc8c2328a6ad577daee2c7c6a430ad746c11f760eb426c688143d44349895e355d1b9b80fe19ea677b63d4382849ee6d1b3219941717e4672f3da5c5104baf45486fde3d1e5973d3de13704a4b64a5e67fe07c9fa4efa5c02cdc292e22c683f1c59f81c40d39a70a46221af9faf85aef1604745b965104c04e88431a1f025d1a4e981d0b94f94cc3dfacffd7432a97314931be5b0b90d99ba1b9544eb001",
+                  "transaction": {
+                    "originator_vasp": {
+                      "vasp_code": "VASPUSNY1",
+                      "addrs": [
+                        {
+                          "address": "bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl4",
+                          "addr_extra_info": [
+                            {
+                              "tag": "123"
+                            }
+                          ]
+                        },
+                        {
+                          "address": "bnb1vynn9hamtqg9me7y6frja0rvfva9saprl55gl5",
+                          "addr_extra_info": []
+                        }
+                      ]
+                    },
+                    "beneficiary_vasp": {
+                      "vasp_code": "VASPUSNY2",
+                      "addrs": [
+                        {
+                          "address": "bnb1hj767k8nlf0jn6p3c3wvl0r0qfwfrvuxrqlxce"
+                        }
+                      ]
+                    },
+                    "currency_id": "sygna:0x80000090",
+                    "amount": "1.235"
+                  },
+                  "data_dt": "2019-07-29T06:29:00.123Z",
+                  "expire_date": 4107667801000,
+                  "need_validate_addr": false,
+                  "signature": "7050e1f4e9ceb01161a62e22219a31891c2d4e1bb50b889ceea1c12e5a63d02d3e60624383db0f423fe0941fc72af5233dd33fd7b5c02546690fe641b683acc5"
+                },
+                "transfer_id": "abf3fa77c999b1f29cf242240faf27f4f493eab7a19a7a6ad56f040f39e81c6b"
               }
             }
           },
@@ -573,7 +690,9 @@
       "post": {
         "description": "After originator VASP Submit transaction ID on the blockchain and post to Bridge, Bridge will relay the data to corresponding beneficiary server.",
         "summary": "Beneficiary/TransactionID",
-        "tags": ["VASP API"],
+        "tags": [
+          "VASP API"
+        ],
         "operationId": "Beneficiary/TransactionID",
         "deprecated": false,
         "requestBody": {
@@ -616,7 +735,9 @@
       "post": {
         "description": "![](https://i.imgur.com/6AFWgIm.png)\n\nEach VASP needs to implement a permission endpoint to get a notification from bridge\n\nWhen an originator posts a permission request to Bridge, it needs to attach this url in callback_url.",
         "summary": "Originator/Permission",
-        "tags": ["VASP API"],
+        "tags": [
+          "VASP API"
+        ],
         "operationId": "Originator/Permission",
         "deprecated": false,
         "requestBody": {
@@ -687,7 +808,11 @@
             "type": "string"
           }
         },
-        "required": ["vasp_code", "vasp_name", "vasp_pubkey"],
+        "required": [
+          "vasp_code",
+          "vasp_name",
+          "vasp_pubkey"
+        ],
         "additionalProperties": false
       },
       "bridgeVasp": {
@@ -708,7 +833,11 @@
             "type": "string"
           }
         },
-        "required": ["vasp_data", "timestamp", "signature"],
+        "required": [
+          "vasp_data",
+          "timestamp",
+          "signature"
+        ],
         "additionalProperties": false
       },
       "bridgeCallbackUrl": {
@@ -736,7 +865,10 @@
             "$ref": "#/components/schemas/bridgeSignature"
           }
         },
-        "required": ["vasp_code", "signature"],
+        "required": [
+          "vasp_code",
+          "signature"
+        ],
         "additionalProperties": false
       },
       "bridgeCurrencyItem": {
@@ -782,7 +914,9 @@
             }
           }
         },
-        "required": ["supported_coins"]
+        "required": [
+          "supported_coins"
+        ]
       },
       "bridgePrivateInfo": {
         "title": "PrivateInfo",
@@ -803,7 +937,9 @@
             }
           }
         },
-        "required": ["address"]
+        "required": [
+          "address"
+        ]
       },
       "bridgeOriginatorVasp": {
         "title": "OriginatorVasp",
@@ -819,7 +955,10 @@
             }
           }
         },
-        "required": ["vasp_code", "addrs"]
+        "required": [
+          "vasp_code",
+          "addrs"
+        ]
       },
       "bridgeBeneficiaryVasp": {
         "title": "BeneficiaryVasp",
@@ -835,7 +974,10 @@
             }
           }
         },
-        "required": ["vasp_code", "addrs"]
+        "required": [
+          "vasp_code",
+          "addrs"
+        ]
       },
       "bridgeTransaction": {
         "title": "Transaction",
@@ -886,7 +1028,11 @@
           "permission_status": {
             "type": "string",
             "nullable": true,
-            "enum": ["ACCEPTED", "REJECTED", null]
+            "enum": [
+              "ACCEPTED",
+              "REJECTED",
+              null
+            ]
           },
           "permission_signature": {
             "$ref": "#/components/schemas/bridgeNullableSignature"
@@ -958,7 +1104,10 @@
             "type": "string"
           }
         },
-        "required": ["callback_url", "signature"],
+        "required": [
+          "callback_url",
+          "signature"
+        ],
         "additionalProperties": false
       },
       "bridgePermissionRequestData": {
@@ -985,7 +1134,12 @@
             "$ref": "#/components/schemas/bridgeSignature"
           }
         },
-        "required": ["private_info", "transaction", "data_dt", "signature"],
+        "required": [
+          "private_info",
+          "transaction",
+          "data_dt",
+          "signature"
+        ],
         "additionalProperties": false
       },
       "bridgePermissionRequest": {
@@ -1026,7 +1180,10 @@
         "title": "PermissionStatus",
         "type": "string",
         "minLength": 1,
-        "enum": ["ACCEPTED", "REJECTED"],
+        "enum": [
+          "ACCEPTED",
+          "REJECTED"
+        ],
         "description": "Status of the transfer permission, currently available values: ACCEPTED, REJECTED."
       },
       "bridgePermission": {
@@ -1052,7 +1209,11 @@
             "$ref": "#/components/schemas/bridgeSignature"
           }
         },
-        "required": ["transfer_id", "permission_status", "signature"],
+        "required": [
+          "transfer_id",
+          "permission_status",
+          "signature"
+        ],
         "additionalProperties": false
       },
       "bridgeDate": {
@@ -1104,7 +1265,62 @@
             "type": "string"
           }
         },
-        "required": ["transfer_id", "txid", "signature"]
+        "required": [
+          "transfer_id",
+          "txid",
+          "signature"
+        ]
+      },
+      "addressValidationReq": {
+        "title": "AddressValidationReq",
+        "description": "Request to verify beneficiary address",
+        "type": "object",
+        "properties": {
+          "vasp_code": {
+            "type": "string"
+          },
+          "address": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "signature": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "vasp_code",
+          "address",
+          "signature"
+        ]
+      },
+      "addressValidationRes": {
+        "title": "AddressValidationRes",
+        "description": "This response (\"is_valid\") means the beneficairy address is valid.",
+        "type": "object",
+        "properties": {
+          "vasp_code": {
+            "type": "string"
+          },
+          "address": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "is_valid": {
+            "type": "boolean"
+          },
+          "signature": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "vasp_code",
+          "address",
+          "signature"
+        ]
       },
       "bridgeApiResponse": {
         "title": "ApiResponse",
@@ -1115,7 +1331,9 @@
             "type": "string"
           }
         },
-        "required": ["status"]
+        "required": [
+          "status"
+        ]
       }
     }
   }
