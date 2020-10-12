@@ -1268,7 +1268,10 @@
             "type": "string"
           },
           "signature": {
-            "type": "string"
+            "type": "string",
+            "minLength": 128,
+            "maxLength": 128,
+            "pattern": "^[0123456789A-Fa-f]+$"
           }
         },
         "required": [
