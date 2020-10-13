@@ -226,7 +226,7 @@
             "required": true,
             "description": "Unique `transfer_id` from [Bridge/PermissionRequest](ref:bridgepermissionrequest-3)",
             "schema": {
-              "type": "string"
+              "$ref": "#/components/schemas/bridgeTransferID"
             }
           }
         ],
@@ -366,7 +366,7 @@
                   "type": "object",
                   "properties": {
                     "transfer_id": {
-                      "type": "string"
+                      "$ref": "#/components/schemas/bridgeTransferID"
                     }
                   },
                   "required": [
@@ -507,7 +507,7 @@
                 "type": "object",
                 "properties": {
                   "vasp_code": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/bridgeVaspData/properties/vasp_code"
                   }
                 },
                 "required": [
@@ -615,7 +615,7 @@
                     "$ref": "#/components/schemas/bridgePermissionRequestData"
                   },
                   "transfer_id": {
-                    "type": "string"
+                    "$ref": "#/components/schemas/bridgeTransferID"
                   }
                 }
               },
@@ -796,13 +796,16 @@
         "type": "object",
         "properties": {
           "vasp_code": {
-            "type": "string"
+            "type": "string",
+            "minLength": 8
           },
           "vasp_name": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "vasp_pubkey": {
-            "type": "string"
+            "type": "string",
+            "minLength": 130
           }
         },
         "required": [
@@ -827,7 +830,7 @@
             "minimum": 0
           },
           "signature": {
-            "type": "string"
+            "$ref": "#/components/schemas/bridgeSignature"
           }
         },
         "required": [
@@ -843,8 +846,7 @@
         "minProperties": 3,
         "properties": {
           "vasp_code": {
-            "type": "string",
-            "minLength": 1
+            "$ref": "#/components/schemas/bridgeVaspData/properties/vasp_code"
           },
           "callback_permission_request_url": {
             "type": "string",
@@ -943,7 +945,7 @@
         "type": "object",
         "properties": {
           "vasp_code": {
-            "type": "string"
+            "$ref": "#/components/schemas/bridgeVaspData/properties/vasp_code"
           },
           "addrs": {
             "type": "array",
@@ -962,7 +964,7 @@
         "type": "object",
         "properties": {
           "vasp_code": {
-            "type": "string"
+            "$ref": "#/components/schemas/bridgeVaspData/properties/vasp_code"
           },
           "addrs": {
             "type": "array",
@@ -1107,7 +1109,7 @@
             "type": "string"
           },
           "signature": {
-            "type": "string"
+            "$ref": "#/components/schemas/bridgeSignature"
           }
         },
         "required": [
@@ -1262,16 +1264,15 @@
         "type": "object",
         "properties": {
           "transfer_id": {
-            "type": "string"
+            "$ref": "#/components/schemas/bridgeTransferID"
           },
           "txid": {
-            "type": "string"
+            "type": "string",
+            "minLength": 64,
+            "maxLength": 64
           },
           "signature": {
-            "type": "string",
-            "minLength": 128,
-            "maxLength": 128,
-            "pattern": "^[0123456789A-Fa-f]+$"
+            "$ref": "#/components/schemas/bridgeSignature"
           }
         },
         "required": [
@@ -1286,7 +1287,7 @@
         "type": "object",
         "properties": {
           "vasp_code": {
-            "type": "string"
+            "$ref": "#/components/schemas/bridgeVaspData/properties/vasp_code"
           },
           "address": {
             "type": "array",
@@ -1295,7 +1296,7 @@
             }
           },
           "signature": {
-            "type": "string"
+            "$ref": "#/components/schemas/bridgeSignature"
           }
         },
         "required": [
@@ -1310,7 +1311,7 @@
         "type": "object",
         "properties": {
           "vasp_code": {
-            "type": "string"
+            "$ref": "#/components/schemas/bridgeVaspData/properties/vasp_code"
           },
           "address": {
             "type": "array",
@@ -1322,7 +1323,7 @@
             "type": "boolean"
           },
           "signature": {
-            "type": "string"
+            "$ref": "#/components/schemas/bridgeSignature"
           }
         },
         "required": [
