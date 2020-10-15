@@ -507,7 +507,7 @@
                 "type": "object",
                 "properties": {
                   "vasp_code": {
-                    "$ref": "#/components/schemas/bridgeVaspData/properties/vasp_code"
+                    "$ref": "#/components/schemas/bridgeVaspCode"
                   }
                 },
                 "required": [
@@ -796,8 +796,7 @@
         "type": "object",
         "properties": {
           "vasp_code": {
-            "type": "string",
-            "minLength": 8
+            "$ref": "#/components/schemas/bridgeVaspCode"
           },
           "vasp_name": {
             "type": "string",
@@ -814,6 +813,11 @@
           "vasp_pubkey"
         ],
         "additionalProperties": false
+      },
+      "bridgeVaspCode": {
+        "title": "VaspCode",
+        "type": "string",
+        "minLength": 8
       },
       "bridgeVasp": {
         "title": "Vasp",
@@ -846,7 +850,7 @@
         "minProperties": 3,
         "properties": {
           "vasp_code": {
-            "$ref": "#/components/schemas/bridgeVaspData/properties/vasp_code"
+            "$ref": "#/components/schemas/bridgeVaspCode"
           },
           "callback_permission_request_url": {
             "type": "string",
@@ -945,7 +949,7 @@
         "type": "object",
         "properties": {
           "vasp_code": {
-            "$ref": "#/components/schemas/bridgeVaspData/properties/vasp_code"
+            "$ref": "#/components/schemas/bridgeVaspCode"
           },
           "addrs": {
             "type": "array",
@@ -964,7 +968,7 @@
         "type": "object",
         "properties": {
           "vasp_code": {
-            "$ref": "#/components/schemas/bridgeVaspData/properties/vasp_code"
+            "$ref": "#/components/schemas/bridgeVaspCode"
           },
           "addrs": {
             "type": "array",
@@ -1287,7 +1291,7 @@
         "type": "object",
         "properties": {
           "vasp_code": {
-            "$ref": "#/components/schemas/bridgeVaspData/properties/vasp_code"
+            "$ref": "#/components/schemas/bridgeVaspCode"
           },
           "address": {
             "type": "array",
@@ -1311,7 +1315,7 @@
         "type": "object",
         "properties": {
           "vasp_code": {
-            "$ref": "#/components/schemas/bridgeVaspData/properties/vasp_code"
+            "$ref": "#/components/schemas/bridgeVaspCode"
           },
           "address": {
             "type": "array",
