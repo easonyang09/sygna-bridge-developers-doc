@@ -550,7 +550,7 @@
     },
     "/beneficiary/transaction/address-validation": {
       "post": {
-        "description": "A new option for Originator VASP to check if the beneficiary has the wallet address before the personal information is sent to beneficiary VASPs. You can activate this function In the Bridge/PermissionRequest API with need_validate_addr parameter to truth.",
+        "description": "Originator VASP can check if the beneficiary VASP owns the wallet address before originator personal information is sent. You can activate this function In the Bridge/PermissionRequest API with need_validate_addr parameter to truth.",
         "summary": "Beneficiary/AddressValidation",
         "tags": [
           "VASP API"
