@@ -1082,6 +1082,10 @@
           "reject_message": {
             "type": "string",
             "nullable": true
+          },
+          "protocol": {
+            "type": "string",
+            "nullable": true
           }
         },
         "required": [
@@ -1144,6 +1148,9 @@
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
+          },
+          "protocol": {
+            "$ref": "#/components/schemas/bridgeProtocol"
           }
         },
         "required": [
@@ -1347,6 +1354,15 @@
         },
         "required": [
           "status"
+        ]
+      },
+      "bridgeProtocol": {
+        "title": "Protocol",
+        "description": "use which protocol to transfer with beneficiary vasp",
+        "type": "string",
+        "minLength": 1,
+        "enum": [
+          "Netki"
         ]
       }
     }
