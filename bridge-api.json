@@ -19,7 +19,7 @@
   "paths": {
     "/bridge/vasp": {
       "get": {
-        "description": "Retrieve information of one or more Virtual Assets Service Provider.",
+        "description": "Retrieve information of one or more Virtual Assets Service Provider.  \nThe signature in Response is from Sygna Bridge,and it can be verified by the Bridge public key.  \nVASPs can get Bridge's public key from their own registration email.",
         "summary": "Bridge/VASP",
         "tags": [
           "Bridge"
@@ -82,7 +82,7 @@
     },
     "/bridge/vasp/beneficiary-endpoint-url": {
       "post": {
-        "description": "This API allows requesting VASPs to update the self's callback URL programmatically, at least one of URL must be specified in the request body.",
+        "description": "This API allows requesting VASPs to update the self's callback URL programmatically, and at least one of the URLs must be specified in the request body.  \nThe requesting VASP needs to sign the body parameters with its private key to generate the signature in this API.",
         "summary": "Bridge/VASP/BeneficiaryEndpointUrl",
         "tags": [
           "Bridge"
@@ -137,7 +137,7 @@
             "ApiKeyAuth": []
           }
         ],
-        "description": "Retrieve Sygna all available cryptocurrencies and its definitions",
+        "description": "Retrieve all available cryptocurrencies in Sygna and their information.",
         "parameters": [
           {
             "in": "query",
@@ -207,7 +207,7 @@
     },
     "/bridge/transaction/status": {
       "get": {
-        "description": "Get status of specific Permission Request.",
+        "description": "Get status of specific Permission Request.  \nThe signature in Response is from Sygna Bridge,and it can be verified by the Bridge public key.  \nVASPs can get Bridge's public key from their own registration email.",
         "summary": "Bridge/Status",
         "tags": [
           "Bridge"
@@ -293,7 +293,7 @@
     },
     "/bridge/transaction/permission-request": {
       "post": {
-        "description": "The first step of the permission request flow. Should be called by the originator VASP to inform Sygna Bridge about the creation of a compliant transaction.\n\n\n![](https://i.imgur.com/zI8TwAL.png)",
+        "description": "The first step of the permission request flow. Should be called by the originator VASP to inform Sygna Bridge about the creation of a compliant transaction.\n\n\n![](https://i.imgur.com/zI8TwAL.png)  \nThe originator VASP should use its private key to construct a signature that includes the encrypted  private_info and other body parameters.  \nThe originator VASP uses its private key and the callback_url to construct the signature in callback.",
         "summary": "Bridge/PermissionRequest",
         "tags": [
           "Bridge"
@@ -388,7 +388,7 @@
     },
     "/bridge/transaction/permission": {
       "post": {
-        "description": "This request works as a response to Bridge's [Permission Request](ref:bridgepermissionrequest-3). Whenever a beneficiary VASP finishes processing the request from Bridge, it must post a permission request back to Bridge server, containing the confirmation result.\n\n\n![](https://i.imgur.com/ozJ6or4.png)",
+        "description": "This request works as a response to Bridge's [Permission Request](ref:bridgepermissionrequest-3). Whenever a beneficiary VASP finishes processing the request from Bridge, it must post a permission request back to Bridge server, containing the confirmation result.\n\n\n![](https://i.imgur.com/ozJ6or4.png)  \nThe Beneficiary VASP signs the body parameters with its private key to construct the signature.",
         "summary": "Bridge/Permission",
         "tags": [
           "Bridge"
@@ -438,7 +438,7 @@
     },
     "/bridge/transaction/txid": {
       "post": {
-        "description": "Submit broadcasted transaction ID on the blockchain for Bridge to keep as a record.",
+        "description": "Submit broadcasted transaction ID on the blockchain for Bridge to keep as a record.  \nThe Originator VASP uses its private key to construct the signature that includes the body parameters.",
         "summary": "Bridge/TransactionID",
         "tags": [
           "Bridge"
@@ -550,7 +550,7 @@
     },
     "/beneficiary/transaction/address-validation": {
       "post": {
-        "description": "Originator VASP can check if the beneficiary VASP owns the wallet address before originator personal information is sent. You can activate this function In the Bridge/PermissionRequest API with need_validate_addr parameter to truth.",
+        "description": "Originator VASP can check if the beneficiary VASP owns the wallet address before originator personal information is sent. You can activate this function In the Bridge/PermissionRequest API with need_validate_addr parameter to truth.  \nSygna Bridge uses its private key to construct the signature that includes the body parameters.",
         "summary": "Beneficiary/AddressValidation",
         "tags": [
           "VASP API"
@@ -598,7 +598,7 @@
     },
     "/beneficiary/transaction/permission-request": {
       "post": {
-        "description": "![](https://i.imgur.com/olaT2wV.png)\n\nWhen Bridge gets a [**Permission Request**](ref:permission-request), it will verify the request first to ensure the data integrity, and then **Relay the request to corresponding beneficiary server**.",
+        "description": "![](https://i.imgur.com/olaT2wV.png)\n\nWhen Bridge gets a [**Permission Request**](ref:permission-request), it will verify the request first to ensure the data integrity, and then **Relay the request to corresponding beneficiary server**.  \nThe Originator VASP should use its private key to construct a signature that includes the body parameters.",
         "summary": "Beneficiary/PermissionRequest",
         "tags": [
           "VASP API"
@@ -685,7 +685,7 @@
     },
     "/beneficiary/transaction/txid": {
       "post": {
-        "description": "After originator VASP Submit transaction ID on the blockchain and post to Bridge, Bridge will relay the data to corresponding beneficiary server.",
+        "description": "After originator VASP submit transaction ID on the blockchain and post to Bridge, Bridge will relay the data to corresponding beneficiary server.  \nThe Originator VASP uses its private key to construct the signature that includes the body parameters.",
         "summary": "Beneficiary/TransactionID",
         "tags": [
           "VASP API"
@@ -730,7 +730,7 @@
     },
     "/originator/transaction/permission": {
       "post": {
-        "description": "![](https://i.imgur.com/15ZJKFt.png)\n\nEach VASP needs to implement a permission endpoint to get a notification from bridge\n\nWhen an originator posts a permission request to Bridge, it needs to attach this url in callback_url.",
+        "description": "![](https://i.imgur.com/15ZJKFt.png)\n\nEach VASP needs to implement a permission endpoint to get a notification from bridge\n\nWhen an originator posts a permission request to Bridge, it needs to attach this url in callback_url.  \nThe Beneficiary VASP signs the body parameters with its private key to construct the signature.",
         "summary": "Originator/Permission",
         "tags": [
           "VASP API"
@@ -792,7 +792,7 @@
     },
     "schemas": {
       "bridgeVaspData": {
-        "title": "VaspData",
+        "title": "vasp_data",
         "type": "object",
         "properties": {
           "vasp_code": {
@@ -815,7 +815,7 @@
         "additionalProperties": false
       },
       "bridgeVaspCode": {
-        "title": "VaspCode",
+        "title": "vasp_code",
         "type": "string",
         "minLength": 8
       },
@@ -907,7 +907,7 @@
         "additionalProperties": false
       },
       "bridgeSupportedCoins": {
-        "title": "SupportedCoins",
+        "title": "supported_coins",
         "type": "object",
         "properties": {
           "supported_coins": {
@@ -922,12 +922,12 @@
         ]
       },
       "bridgePrivateInfo": {
-        "title": "PrivateInfo",
+        "title": "private_info",
         "type": "string",
         "description": "ECIES encoded [Private Information](ref:private-information)"
       },
       "bridgeAddress": {
-        "title": "Address",
+        "title": "addrs",
         "type": "object",
         "properties": {
           "address": {
@@ -945,7 +945,7 @@
         ]
       },
       "bridgeOriginatorVasp": {
-        "title": "OriginatorVasp",
+        "title": "originator_vasp",
         "type": "object",
         "properties": {
           "vasp_code": {
@@ -964,7 +964,7 @@
         ]
       },
       "bridgeBeneficiaryVasp": {
-        "title": "BeneficiaryVasp",
+        "title": "beneficiary_vasp",
         "type": "object",
         "properties": {
           "vasp_code": {
@@ -983,7 +983,7 @@
         ]
       },
       "bridgeTransaction": {
-        "title": "Transaction",
+        "title": "transaction",
         "type": "object",
         "properties": {
           "originator_vasp": {
@@ -1007,7 +1007,7 @@
         ]
       },
       "bridgeTransferData": {
-        "title": "TransferData",
+        "title": "transferData",
         "type": "object",
         "properties": {
           "transfer_id": {
@@ -1105,7 +1105,7 @@
         }
       },
       "bridgeCallback": {
-        "title": "Callback",
+        "title": "callback",
         "description": "Please see [Callback](ref:callback)",
         "type": "object",
         "properties": {
@@ -1168,7 +1168,7 @@
         "additionalProperties": false
       },
       "bridgeRejectCode": {
-        "title": "RejectCode",
+        "title": "reject_code",
         "description": "Only required when the permission_status is REJECTED, reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
         "type": "string",
         "minLength": 1,
@@ -1184,12 +1184,12 @@
         ]
       },
       "bridgeRejectMessage": {
-        "title": "RejectMessage",
+        "title": "reject_message",
         "description": "Only required when the permission_status is REJECTED and reject_code is 'BVRC999', reply with [BVRC](ref:beneficiary-vasp-rejected-code).",
         "type": "string"
       },
       "bridgePermissionStatus": {
-        "title": "PermissionStatus",
+        "title": "permission_status",
         "type": "string",
         "minLength": 1,
         "enum": [
@@ -1229,13 +1229,13 @@
         "additionalProperties": false
       },
       "bridgeDate": {
-        "title": "Date",
+        "title": "data_dt",
         "description": "Unix timestamp using ISO 8601 format(yyyy-MM-dd'T'hh:mm:ss.sssZ)",
         "type": "string",
         "format": "date-time"
       },
       "bridgeSignature": {
-        "title": "Signature",
+        "title": "signature",
         "description": "Signature of the object that includes the constraint fields.",
         "type": "string",
         "minLength": 128,
@@ -1251,14 +1251,14 @@
         "pattern": "^[0123456789A-Fa-f]+$"
       },
       "bridgeTransferID": {
-        "title": "TransferID",
+        "title": "transfer_id",
         "description": "Unique Id generated by Bridge",
         "type": "string",
         "minLength": 64,
         "maxLength": 64
       },
       "bridgeExpireDate": {
-        "title": "ExpireDate",
+        "title": "expire_date",
         "description": "Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires.",
         "type": "integer",
         "minimum": 0
