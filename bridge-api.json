@@ -190,7 +190,21 @@
                           "addr_extra_info": [
                             "tag",
                             "dt"
-                          ]
+                          ],
+                          "platform": null
+                        },
+                        {
+                          "currency_id": "sygna:0x8000003c.0xde1e0ae6101b46520cf66fdc0b1059c5cc3d106c",
+                          "currency_name": "DeltaChain",
+                          "currency_symbol": "DELTA",
+                          "is_active": true,
+                          "addr_extra_info": [],
+                          "platform": {
+                            "id": "sygna:0x8000003c",
+                            "name": "Ethereum",
+                            "symbol": "ETH",
+                            "token_address": "0xde1e0ae6101b46520cf66fdc0b1059c5cc3d106c"
+                          }
                         }
                       ]
                     }
@@ -895,6 +909,30 @@
             "items": {
               "type": "string"
             }
+          },
+          "platform": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "symbol": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "token_address": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "symbol",
+              "name",
+              "token_address"
+            ],
+            "nullable": true
           }
         },
         "required": [
@@ -902,7 +940,8 @@
           "currency_name",
           "currency_symbol",
           "is_active",
-          "addr_extra_info"
+          "addr_extra_info",
+          "platform"
         ],
         "additionalProperties": false
       },
