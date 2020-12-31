@@ -562,6 +562,97 @@
         }
       }
     },
+    "/bridge/kyt": {
+      "post": {
+        "description": "",
+        "summary": "Bridge/KYT",
+        "tags": [
+          "Bridge"
+        ],
+        "operationId": "Bridge/kyt",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "deprecated": false,
+        "requestBody":{
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bridgeKyt"
+              },
+              "example":{
+                "currency_id": "sygna:0x80000000",
+                "addrs": [
+                    "3AA9WEizEB5yNmiUCWq6SkCjf3tZc8q3Yn", 
+                    "1KFHE7w8BhaENAswwryaoccDb6qcT6DbYY", 
+                    "35hK24tcLEWcgNA4JxpvbkNkoAcDGqQPsP",
+                    "1My95vMmr8DCQoddSckCKGGCTfjMYmepLj"
+                ]
+              }
+            }
+          },
+          "required": false
+        },        
+        "responses": {
+          "200": {
+            "description": "Succeed",
+            "content": {
+              "application/json":{
+                "schema":{
+                  "$ref": "#/components/schemas/bridgeKytRes"
+                },
+                "example":
+                [
+                  {
+                      "type": "SYGNA_VASP",
+                      "address": "1KFHE7w8BhaENAswwryaoccDb6qcT6DbYY",
+                      "currency_id": "sygna:0x80000000"
+                  },
+                  {
+                      "type": "OTHER_VASP",
+                      "address": "3AA9WEizEB5yNmiUCWq6SkCjf3tZc8q3Yn",
+                      "currency_id": "sygna:0x80000000",
+                      "extra_data": {
+                          "risk_score": -1,
+                          "asset": "BTC",
+                          "hash": "3AA9WEizEB5yNmiUCWq6SkCjf3tZc8q3Yn",
+                          "triggered_rules": "Exchange",
+                          "usd_worth": 7570011.56
+                      }
+                  },
+                  {
+                      "type": "OTHER_VASP",
+                      "address": "35hK24tcLEWcgNA4JxpvbkNkoAcDGqQPsP",
+                      "currency_id": "sygna:0x80000000",
+                      "extra_data": {
+                          "risk_score": -1,
+                          "asset": "BTC",
+                          "hash": "35hK24tcLEWcgNA4JxpvbkNkoAcDGqQPsP",
+                          "triggered_rules": "Exchange",
+                          "usd_worth": 70365261387.35
+                      }
+                  },
+                  {
+                      "type": "PRIVATE_WALLET",
+                      "address": "1My95vMmr8DCQoddSckCKGGCTfjMYmepLj",
+                      "currency_id": "sygna:0x80000000",
+                      "extra_data": {
+                          "risk_score": 0,
+                          "asset": "BTC",
+                          "hash": "1My95vMmr8DCQoddSckCKGGCTfjMYmepLj",
+                          "triggered_rules": "Ponzi Scheme",
+                          "usd_worth": 118066.19
+                      }
+                  }
+              ]
+              }
+            }
+          }
+        }
+      }
+    },
     "/beneficiary/transaction/address-validation": {
       "post": {
         "description": "Originator VASP can check if the beneficiary VASP owns the wallet address before originator personal information is sent. You can activate this function In the Bridge/PermissionRequest API with need_validate_addr parameter to truth.  \nSygna Bridge uses its private key to construct the signature that includes the body parameters.",
@@ -1387,6 +1478,72 @@
         "required": [
           "status"
         ]
+      },
+      "bridgeKyt":{
+        "title": "KYT",
+        "description": "Know-Your-Customer",
+        "type": "object",
+        "properties": {
+          "currency_id":{
+            "type": "string"
+          },
+          "addrs":{
+            "type":"array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "currency_id",
+          "addrs"
+        ]
+      },
+      "bridgeKytRes":{
+        "title": "KYTResponse",
+        "description": "the response of Kyt Api",
+        "type": "object",
+        "properties": {
+          "type":{
+            "type": "string"
+          },
+          "address":{
+            "type": "string"
+          },
+          "currency_id":{
+            "type": "string"
+          },
+          "extra_data":{
+            "$ref": "#/components/schemas/KytExtraData"
+          }
+        },
+        "required": [
+          "type",
+          "address",
+          "currency_id"
+        ]
+      },
+      "KytExtraData":{
+        "title": "KYTExtraData",
+        "description": "",
+        "type": "object",
+        "properties": {
+          "risk_score":{
+            "type":"number"
+          },
+          "asset":{
+            "type":"string"
+          },
+          "hash":{
+            "type":"string"
+          },
+          "triggered_rules":{
+            "type": "string"
+          },
+          "usd_worth":{
+            "type":"number"
+          }
+        }
       }
     }
   }
