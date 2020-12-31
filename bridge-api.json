@@ -564,7 +564,7 @@
     },
     "/bridge/kyt": {
       "post": {
-        "description": "",
+        "description": "To identify the specific wallet address that belongs to a VASP or an un-hosted wallet. A transacting risk score of the wallet address will be returned if the wallet address belongs to an un-hosted wallet by your selected blockchain analytics vendor. If you have not collaborated with any blockchain analytics vendor, please contact services@sygna.io.",
         "summary": "Bridge/KYT",
         "tags": [
           "Bridge"
