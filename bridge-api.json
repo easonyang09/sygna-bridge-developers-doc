@@ -909,12 +909,37 @@
           "vasp_pubkey": {
             "type": "string",
             "minLength": 130
+          },
+          "vaspOtherName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "supervisoryAuthority": {
+            "type": "string",
+            "minLength": 1
+          },
+          "countryCode": {
+            "type": "string",
+            "minLength": 1
+          },
+          "licenseRegistrationId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "regulatoryStatus": {
+            "type": "string",
+            "minLength": 1,
+            "enum": [
+              "Regulated",
+              "Not Regulated Yet"
+            ]
           }
         },
         "required": [
           "vasp_code",
           "vasp_name",
-          "vasp_pubkey"
+          "vasp_pubkey",
+          "regulatoryStatus"
         ],
         "additionalProperties": false
       },
