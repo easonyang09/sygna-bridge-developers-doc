@@ -1085,7 +1085,8 @@
         "type": "object",
         "properties": {
           "address": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "addr_extra_info": {
             "type": "array",
@@ -1109,7 +1110,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/bridgeAddress"
-            }
+            },
+            "minItems": 1
           }
         },
         "required": [
@@ -1128,7 +1130,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/bridgeAddress"
-            }
+            },
+            "minItems": 1
           }
         },
         "required": [
