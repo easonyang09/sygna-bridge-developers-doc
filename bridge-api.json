@@ -928,11 +928,7 @@
           },
           "regulatoryStatus": {
             "type": "string",
-            "minLength": 1,
-            "enum": [
-              "Regulated",
-              "Not Regulated Yet"
-            ]
+            "minLength": 1
           }
         },
         "required": [
