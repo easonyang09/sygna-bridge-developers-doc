@@ -606,11 +606,13 @@
                 "example": [
                   {
                     "type": "SYGNA_VASP",
+                    "is_vasp": true,
                     "address": "1KFHE7w8BhaENAswwryaoccDb6qcT6DbYY",
                     "currency_id": "sygna:0x80000000"
                   },
                   {
                     "type": "OTHER_VASP",
+                    "is_vasp": true,
                     "address": "3AA9WEizEB5yNmiUCWq6SkCjf3tZc8q3Yn",
                     "currency_id": "sygna:0x80000000",
                     "extra_data": {
@@ -623,6 +625,7 @@
                   },
                   {
                     "type": "OTHER_VASP",
+                    "is_vasp": true,
                     "address": "35hK24tcLEWcgNA4JxpvbkNkoAcDGqQPsP",
                     "currency_id": "sygna:0x80000000",
                     "extra_data": {
@@ -635,6 +638,7 @@
                   },
                   {
                     "type": "PRIVATE_WALLET",
+                    "is_vasp": false,
                     "address": "1My95vMmr8DCQoddSckCKGGCTfjMYmepLj",
                     "currency_id": "sygna:0x80000000",
                     "extra_data": {
@@ -1529,6 +1533,9 @@
         "properties": {
           "type": {
             "type": "string"
+          },
+          "is_vasp": {
+            "type": "boolean"
           },
           "address": {
             "type": "string"
