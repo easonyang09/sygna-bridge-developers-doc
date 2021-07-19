@@ -1389,7 +1389,7 @@
         "title": "data_dt",
         "description": "Unix timestamp using ISO 8601 format(yyyy-MM-dd'T'hh:mm:ss.sssZ)",
         "type": "string",
-        "format": "date-time"
+        "pattern": "^[1-9][0-9]{3}-[0-1][1-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9].[0-9]{3}Z$"
       },
       "bridgeSignature": {
         "title": "signature",
