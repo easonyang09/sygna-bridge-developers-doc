@@ -1572,6 +1572,14 @@
           },
           "usd_worth": {
             "type": "number"
+          },
+          "notification_receivers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1
           }
         }
       }
