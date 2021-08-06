@@ -575,6 +575,18 @@
             "ApiKeyAuth": []
           }
         ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "ignore-kyt",
+            "description": "retrieve address information which is only from Sygna database if ignore-kyt is true",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "example": "true"
+            }
+          }
+        ],
         "deprecated": false,
         "requestBody": {
           "content": {
