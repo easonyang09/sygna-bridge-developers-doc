@@ -1401,7 +1401,7 @@
         "title": "data_dt",
         "description": "Unix timestamp using ISO 8601 format(yyyy-MM-dd'T'hh:mm:ss.sssZ)",
         "type": "string",
-        "pattern": "^[1-9][0-9]{3}-[0-1][1-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9].[0-9]{3}Z$"
+        "pattern": "^[1-9][0-9]{3}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9].[0-9]{3}Z$"
       },
       "bridgeSignature": {
         "title": "signature",
@@ -1584,6 +1584,10 @@
           },
           "usd_worth": {
             "type": "number"
+          },
+          "vasp_code": {
+            "type": "string",
+            "minLength": 1
           },
           "notification_receivers": {
             "type": "array",
