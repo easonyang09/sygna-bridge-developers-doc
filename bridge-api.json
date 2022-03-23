@@ -1162,10 +1162,12 @@
             "$ref": "#/components/schemas/bridgeBeneficiaryVasp"
           },
           "currency_id": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "amount": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           }
         },
         "required": [
