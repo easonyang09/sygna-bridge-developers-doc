@@ -1005,6 +1005,10 @@
             "type": "string",
             "format": "uri"
           },
+          "callback_vasp_server_health_check_url": {
+            "type": "string",
+            "format": "uri"
+          },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
           }
