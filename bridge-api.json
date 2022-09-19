@@ -1317,6 +1317,10 @@
             "type": "boolean",
             "description": "need validate beneficary address"
           },
+          "forced_sending_when_VASP_is_not_healthy": {
+            "type": "boolean",
+            "description": "check vasp status or not"
+          },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
           }
@@ -1391,6 +1395,10 @@
           },
           "reject_message": {
             "$ref": "#/components/schemas/bridgeRejectMessage"
+          },
+          "forced_sending_when_VASP_is_not_healthy": {
+            "type": "boolean",
+            "description": "check vasp status or not"
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
