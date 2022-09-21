@@ -945,6 +945,17 @@
           "regulatoryStatus": {
             "type": "string",
             "minLength": 1
+          },
+          "vasp_server_status": {
+            "type": "string",
+            "enum": [
+              "healthy",
+              "unhealthy",
+              "unknown"
+            ]
+          },
+          "last_server_checked_at": {
+            "$ref": "#/components/schemas/bridgeDate"
           }
         },
         "required": [
