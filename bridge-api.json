@@ -945,6 +945,17 @@
           "regulatoryStatus": {
             "type": "string",
             "minLength": 1
+          },
+          "vasp_server_status": {
+            "type": "string",
+            "enum": [
+              "healthy",
+              "unhealthy",
+              "unknown"
+            ]
+          },
+          "last_server_checked_at": {
+            "$ref": "#/components/schemas/bridgeDate"
           }
         },
         "required": [
@@ -1002,6 +1013,10 @@
             "format": "uri"
           },
           "callback_validate_addr_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "callback_vasp_server_health_check_url": {
             "type": "string",
             "format": "uri"
           },
@@ -1313,6 +1328,10 @@
             "type": "boolean",
             "description": "need validate beneficary address"
           },
+          "forced_sending_when_VASP_is_not_healthy": {
+            "type": "boolean",
+            "description": "check vasp status or not"
+          },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
           }
@@ -1387,6 +1406,10 @@
           },
           "reject_message": {
             "$ref": "#/components/schemas/bridgeRejectMessage"
+          },
+          "forced_sending_when_VASP_is_not_healthy": {
+            "type": "boolean",
+            "description": "check vasp status or not"
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
