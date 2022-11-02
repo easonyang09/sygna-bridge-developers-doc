@@ -521,6 +521,7 @@
                 "type": "object",
                 "properties": {
                   "vasp_code": {
+                    "description": "Please input your own VASP code only to retrieve the API request toward your VASP code.",
                     "$ref": "#/components/schemas/bridgeVaspCode"
                   }
                 },
