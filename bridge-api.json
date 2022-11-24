@@ -1007,19 +1007,19 @@
           },
           "callback_permission_request_url": {
             "type": "string",
-            "format": "uri"
+            "format": "url"
           },
           "callback_txid_url": {
             "type": "string",
-            "format": "uri"
+            "format": "url"
           },
           "callback_validate_addr_url": {
             "type": "string",
-            "format": "uri"
+            "format": "url"
           },
           "callback_vasp_server_health_check_url": {
             "type": "string",
-            "format": "uri"
+            "format": "url"
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
