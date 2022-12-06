@@ -40,8 +40,8 @@ jobs:
           echo "Invalid branch"
           exit 1
         fi
-
+    - uses: actions/checkout@v3
     - uses: readmeio/rdme@v8
       with:
         repo-token: '${{ secrets.GITHUB_TOKEN }}' # DON'T MODIFY--Allows us to get the contents of your spec file
-        rdme: openapi ./bridge-api.json --key=${{ secrets.READ_ME_API_KEY }} --id=${{ steps.get_env.outputs.readme_api_id }}
+        rdme: openapi bridge-api.json --key=${{ secrets.READ_ME_API_KEY }} --id=${{ steps.get_env.outputs.readme_api_id }}
