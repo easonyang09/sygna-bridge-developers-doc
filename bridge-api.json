@@ -137,7 +137,7 @@
             "ApiKeyAuth": []
           }
         ],
-        "description": "Retrieve all available cryptocurrencies in Sygna and their information.",
+        "description": "Retrieve all available cryptocurrencies in Sygna and their information.  \nPlease refer to the GET /currencies API response body for the \"key\" in each coin/token's extra information (addr_extra_info).",
         "parameters": [
           {
             "in": "query",
