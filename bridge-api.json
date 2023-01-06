@@ -137,7 +137,7 @@
             "ApiKeyAuth": []
           }
         ],
-        "description": "Retrieve all available cryptocurrencies in Sygna and their information.",
+        "description": "Retrieve all available cryptocurrencies in Sygna and their information.  \nPlease refer to the GET /currencies API response body for the \"key\" in each coin/token's extra information (addr_extra_info).",
         "parameters": [
           {
             "in": "query",
@@ -396,6 +396,12 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -521,6 +527,7 @@
                 "type": "object",
                 "properties": {
                   "vasp_code": {
+                    "description": "Please input your own VASP code only to retrieve the API request toward your VASP code.",
                     "$ref": "#/components/schemas/bridgeVaspCode"
                   }
                 },
@@ -948,7 +955,11 @@
           },
           "vasp_server_status": {
             "type": "string",
-            "minLength": 1
+            "enum": [
+              "healthy",
+              "unhealthy",
+              "unknown"
+            ]
           },
           "last_server_checked_at": {
             "$ref": "#/components/schemas/bridgeDate"
@@ -1002,19 +1013,19 @@
           },
           "callback_permission_request_url": {
             "type": "string",
-            "format": "uri"
+            "format": "url"
           },
           "callback_txid_url": {
             "type": "string",
-            "format": "uri"
+            "format": "url"
           },
           "callback_validate_addr_url": {
             "type": "string",
-            "format": "uri"
+            "format": "url"
           },
           "callback_vasp_server_health_check_url": {
             "type": "string",
-            "format": "uri"
+            "format": "url"
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
