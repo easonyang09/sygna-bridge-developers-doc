@@ -963,6 +963,15 @@
           },
           "last_server_checked_at": {
             "$ref": "#/components/schemas/bridgeDate"
+          },
+          "vasp_sygna_registration_type": {
+            "type": "string",
+            "enum": [
+              "Sygna_Bridge",
+              "Sygna_Gate",
+              "Sygna_Hub",
+              "Sygna_EmailProtocol"
+            ]
           }
         },
         "required": [
