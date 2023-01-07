@@ -965,20 +965,15 @@
             "$ref": "#/components/schemas/bridgeDate"
           },
           "vasp_sygna_registration_type": {
-            "type": "string",
-            "enum": [
-              "Sygna_Bridge",
-              "Sygna_Gate",
-              "Sygna_Hub",
-              "Sygna_EmailProtocol"
-            ]
+            "type": "string"
           }
         },
         "required": [
           "vasp_code",
           "vasp_name",
           "vasp_pubkey",
-          "regulatoryStatus"
+          "regulatoryStatus",
+          "vasp_sygna_registration_type"
         ],
         "additionalProperties": false
       },
