@@ -396,6 +396,12 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -957,13 +963,17 @@
           },
           "last_server_checked_at": {
             "$ref": "#/components/schemas/bridgeDate"
+          },
+          "vasp_sygna_registration_type": {
+            "type": "string"
           }
         },
         "required": [
           "vasp_code",
           "vasp_name",
           "vasp_pubkey",
-          "regulatoryStatus"
+          "regulatoryStatus",
+          "vasp_sygna_registration_type"
         ],
         "additionalProperties": false
       },
