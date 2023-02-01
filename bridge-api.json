@@ -397,11 +397,158 @@
               }
             }
           },
+          "400": {
+            "description": "Incorrect column (eg. \"tag\" ➝ \"Tag\") when hitting the API with the currency type having extra_info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "err_code": {
+                      "type": "string"
+                    },
+                    "err_message": {
+                      "type": "string"
+                    },
+                    "err_code_stacks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "x-examples": {
+                    "Example 1": {
+                      "status": 400,
+                      "err_code": "010364",
+                      "err_message": "The addr_extra_info of sygna:0x80000090 is [\"tag\"], but the following address have invalid addr_extra_info : {\"1BYJxAZNVcSeSbtKCHRXxokX31yjWaZczb\":[\"Tag\"]}",
+                      "err_code_stacks": [
+                        "010202",
+                        "010364"
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "status": 400,
+                      "err_code": "010364",
+                      "err_message": "The addr_extra_info of sygna:0x80000090 is [\"tag\"], but the following address have invalid addr_extra_info : {\"1BYJxAZNVcSeSbtKCHRXxokX31yjWaZczb\":[\"Tag\"]}",
+                      "err_code_stacks": [
+                        "010202",
+                        "010364"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
           "403": {
-            "description": "Forbidden"
+            "description": "Use an incorrenct private key to sign the API request body.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "err_code": {
+                      "type": "string"
+                    },
+                    "err_message": {
+                      "type": "string"
+                    },
+                    "err_code_stacks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "x-examples": {
+                    "Example 1": {
+                      "status": 403,
+                      "err_code": "010205",
+                      "err_message": "Verify originator's data signature failed.",
+                      "err_code_stacks": [
+                        "010202",
+                        "010205"
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "status": 403,
+                      "err_code": "010205",
+                      "err_message": "Verify originator's data signature failed.",
+                      "err_code_stacks": [
+                        "010202",
+                        "010205"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Input a \"Not supported currency_id\" in the API request body.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "err_code": {
+                      "type": "string"
+                    },
+                    "err_message": {
+                      "type": "string"
+                    },
+                    "err_code_stacks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "x-examples": {
+                    "Example 1": {
+                      "status": 404,
+                      "err_code": "010362",
+                      "err_message": "The currency_id(sygna:0x???) is not supported by Sygna Bridge.",
+                      "err_code_stacks": [
+                        "010202",
+                        "010362"
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "status": 404,
+                      "err_code": "010362",
+                      "err_message": "The currency_id(sygna:0x???) is not supported by Sygna Bridge.",
+                      "err_code_stacks": [
+                        "010202",
+                        "010362"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
