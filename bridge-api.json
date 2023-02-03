@@ -1158,25 +1158,30 @@
         "title": "CallbackUrl",
         "type": "object",
         "minProperties": 3,
+        "additionalProperties": false,
         "properties": {
           "vasp_code": {
             "$ref": "#/components/schemas/bridgeVaspCode"
           },
           "callback_permission_request_url": {
             "type": "string",
-            "format": "url"
+            "format": "url",
+            "description": "#Example: https://<domain>/v1/callbacks/permission-request"
           },
           "callback_txid_url": {
             "type": "string",
-            "format": "url"
+            "format": "url",
+            "description": "#Example: https://<domain>/v1/callbacks/txid"
           },
           "callback_validate_addr_url": {
             "type": "string",
-            "format": "url"
+            "format": "url",
+            "description": "#Example: https://<domain>/v1/callbacks/address-validation"
           },
           "callback_vasp_server_health_check_url": {
             "type": "string",
-            "format": "url"
+            "format": "url",
+            "description": "#Example: https://<domain>/v1/vasp-server-status"
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
@@ -1185,8 +1190,7 @@
         "required": [
           "vasp_code",
           "signature"
-        ],
-        "additionalProperties": false
+        ]
       },
       "bridgeCurrencyItem": {
         "title": "CurrencyItem",
