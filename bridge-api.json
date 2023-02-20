@@ -835,7 +835,52 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/addressValidationReq"
+                "type": "object",
+                "properties": {
+                  "vasp_code": {
+                    "type": "string"
+                  },
+                  "currency_id": {
+                    "type": "string"
+                  },
+                  "currency_symbol": {
+                    "type": "string"
+                  },
+                  "currency_name": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "addr_extra_info": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  },
+                  "signature": {
+                    "type": "string"
+                  }
+                },
+                "x-examples": {
+                  "Example 1": {
+                    "vasp_code": "KLEETWBG",
+                    "currency_id": "sygna:0x80000000",
+                    "currency_symbol": "BTC",
+                    "currency_name": "Bitcoin",
+                    "address": [
+                      "1LrxsRd7zNuxPJcL5rttnoeJFy1y4AffYY"
+                    ],
+                    "addr_extra_info": [
+                      []
+                    ],
+                    "signature": "0f54d97b5027aa0bb6c4120a248a3529a3e21bbef9c41b904dc7c8d2e751b6674e41c61caaed0bcec02e7306820d69f4906230ca51f9626571dade81ca23aed4"
+                  }
+                }
               },
               "example": {
                 "vasp_code": "VASPUSNY2",
