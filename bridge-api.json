@@ -19,7 +19,7 @@
   "paths": {
     "/bridge/vasp": {
       "get": {
-        "description": "Retrieve information of one or more Virtual Assets Service Provider.  \nThe signature in Response is from Sygna Bridge,and it can be verified by the Bridge public key.  \nVASPs can get Bridge's public key from their own registration email.",
+        "description": "Retrieve information of one or more Virtual Assets Service Provider.  \nThe signature in Response is from Sygna Bridge,and it can be verified by the Bridge public key.  \nVASPs can get Bridge's public key from their own registration email.\n\nThere are no available filters or search criteria when making a request to <GET /vasp>.",
         "summary": "Bridge/VASP",
         "tags": [
           "Bridge"
