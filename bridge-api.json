@@ -565,7 +565,7 @@
     },
     "/bridge/wallet-address-filter": {
       "post": {
-        "description": "To identify the specific wallet address that belongs to a VASP or an un-hosted wallet. A transacting risk score of the wallet address will be returned if the wallet address belongs to an un-hosted wallet by your selected blockchain analytics vendor. If you have not collaborated with any blockchain analytics vendor, please contact services@sygna.io.",
+        "description": "The Sygna Wallet Address Filter (WAF) API is a key feature that enables you to determine whether a specific wallet address belongs to a VASP or an unhosted wallet based on the Sygna server's directory and your selected blockchain analytics (KYT) vendor. If the wallet address is associated with an un-hosted wallet, your KYT vendor will return a risk score for the address. If you have not yet collaborated with a blockchain analytics vendor, please contact services@sygna.io",
         "summary": "Bridge/Wallet Address Filter",
         "tags": [
           "Bridge"
@@ -1565,31 +1565,67 @@
         ]
       },
       "bridgeWalletAddressFilterRes": {
-        "title": "WalletAddressFilterResponse",
-        "description": "the response of WalletAddressFilter Api",
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string"
-          },
-          "is_vasp": {
-            "type": "boolean"
-          },
-          "address": {
-            "type": "string"
-          },
-          "currency_id": {
-            "type": "string"
-          },
-          "extra_data": {
-            "$ref": "#/components/schemas/WalletAddressFilterExtraData"
-          }
+        "type": "array",
+        "x-examples": {
+          "Example 1": [
+            {
+              "is_vasp": false,
+              "type": "PRIVATE_WALLET",
+              "address": "bc1pl3qy0g03vj0lgmpvvxv36ysp0vymnfet9mq05lu6pslpfjdg9tyqlf5zsj",
+              "currency_id": "sygna:0x80000000",
+              "extra_data": {
+                "risk_score": -1,
+                "asset": "BTC",
+                "hash": "bc1pl3qy0g03vj0lgmpvvxv36ysp0vymnfet9mq05lu6pslpfjdg9tyqlf5zsj",
+                "triggered_rules": "Unknown",
+                "usd_worth": 0,
+                "blockchain_analytics_vendor": "Elliptic"
+              }
+            }
+          ]
         },
-        "required": [
-          "type",
-          "address",
-          "currency_id"
-        ]
+        "items": {
+          "type": "object",
+          "properties": {
+            "is_vasp": {
+              "type": "boolean"
+            },
+            "type": {
+              "type": "string",
+              "description": "- SYGNA_VASP: This category is determined based on the data in the Sygna server's wallet address directory. If the sending and receiving addresses are listed in the API Bridge </permission-request> or API Hub </transactions>, they will be classified under this category. \n- EMAIL_PROTOCOL: This category is determined based on the data in the Sygna server's wallet address directory. If the wallet address has been onboarded during the Sygna Email Protocol VASP account registration, it will be classified under this category. \n- OTHER_VASP: This category is determined based on the data returned by the selected Blockchain Analytics (KYT) service provider. \n- PRIVATE_WALLET: This category is determined based on the data returned by the selected Blockchain Analytics (KYT) service provider.\n- FAILED: This category is displayed when the selected Blockchain Analytics (KYT) service is currently unavailable."
+            },
+            "address": {
+              "type": "string"
+            },
+            "currency_id": {
+              "type": "string"
+            },
+            "extra_data": {
+              "type": "object",
+              "description": "will be returend based on the response from your Blockchain Analytics service provider if \"type\" is not SYGNA_VASP.",
+              "properties": {
+                "risk_score": {
+                  "type": "integer"
+                },
+                "asset": {
+                  "type": "string"
+                },
+                "hash": {
+                  "type": "string"
+                },
+                "triggered_rules": {
+                  "type": "string"
+                },
+                "usd_worth": {
+                  "type": "integer"
+                },
+                "blockchain_analytics_vendor": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       },
       "WalletAddressFilterExtraData": {
         "title": "WalletAddressFilterExtraData",
