@@ -1623,7 +1623,7 @@
       },
       "bridgeExpireDate": {
         "title": "expire_date",
-        "description": "Use a Unix timestamp with milliseconds for expire_date and avoid setting it to a past time. The Sygna Bridge protocol stops relaying transfer requests after the expiration date.",
+        "description": "Use a Unix timestamp with milliseconds for expire_date and avoid setting it to a past time. The Sygna Bridge protocol stops relaying transfer requests after the expiration date.\nDefault “30 days of expire date” if “expire_date” is not specified.",
         "type": "integer",
         "minimum": 0
       },
@@ -1727,6 +1727,14 @@
             "items": {
               "type": "string"
             }
+          },
+          "elliptic_holistic_wallet_analysis": {
+            "type": "boolean",
+            "x-stoplight": {
+              "id": "daoct0wjahr5a"
+            },
+            "default": false,
+            "description": "Support Elliptic Holistic Screening.\nVASPs must opt-in for Elliptic Holistic searching to avoid errors."
           }
         },
         "required": [
