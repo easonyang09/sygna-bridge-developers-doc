@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "version": "2.0",
-    "title": "Sygna Bridge API",
+    "title": "Sygna Bridge API V2",
     "description": "Only for Sygna Bridge VASPs. For Sygna Hub VASPs, please refer to https://github.com/CoolBitX-Technology/sygna-hub-api-doc",
     "contact": {}
   },
@@ -1350,9 +1350,9 @@
             "type": "string",
             "pattern": "^[0123456789A-Za-z]+$",
             "x-stoplight": {
-              "id": "zukffrz7rpfmm"
+              "id": "9rr4xxm9jry3s"
             },
-            "description": "(After the new version est. May 2023) Allow Sygna Bridge VASP to send txid (=transaction ID =transaction hash) at the first place by hitting <POST /permission-request> and at any point by hitting <POST /txid> during the data transfer."
+            "description": "(After the new version 1.22.0 est. May 2023) Allow Sygna Bridge VASP to send txid (=transaction ID =transaction hash) at the first place by hitting <POST /permission-request> and at any point by hitting <POST /txid> during the data transfer."
           }
         },
         "required": [
@@ -1623,7 +1623,7 @@
       },
       "bridgeExpireDate": {
         "title": "expire_date",
-        "description": "Unix timestamp.To set an expiry date of your transfer request. Bridge will stop relaying transfer requests once the transfer expires.",
+        "description": "Use a Unix timestamp with milliseconds for expire_date and avoid setting it to a past time. The Sygna Bridge protocol stops relaying transfer requests after the expiration date.\nDefault “30 days of expire date” if “expire_date” is not specified.",
         "type": "integer",
         "minimum": 0
       },
@@ -1638,7 +1638,7 @@
             "type": "string",
             "minLength": 1,
             "pattern": "^[0123456789A-Za-z]+$",
-            "description": "(After the new version est. May 2023) Allow Sygna Bridge VASP to send txid (=transaction ID =transaction hash) at the first place by hitting <POST /permission-request> and at any point by hitting <POST /txid> during the data transfer."
+            "description": "(After the new version 1.22.0 est. May 2023) Allow Sygna Bridge VASP to send txid (=transaction ID =transaction hash) at the first place by hitting <POST /permission-request> and at any point by hitting <POST /txid> during the data transfer."
           },
           "signature": {
             "$ref": "#/components/schemas/bridgeSignature"
@@ -1727,6 +1727,14 @@
             "items": {
               "type": "string"
             }
+          },
+          "elliptic_holistic_wallet_analysis": {
+            "type": "boolean",
+            "x-stoplight": {
+              "id": "daoct0wjahr5a"
+            },
+            "default": false,
+            "description": "Support Elliptic Holistic Screening.\nVASPs must opt-in for Elliptic Holistic searching to avoid errors."
           }
         },
         "required": [
